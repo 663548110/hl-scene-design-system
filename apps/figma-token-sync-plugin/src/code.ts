@@ -378,7 +378,12 @@ async function syncGitHubFile(
     sha = existing.sha;
     log("success", sha ? "已读取远程文件，将基于现有文件更新。" : "远程文件可访问，将继续更新。", file.path);
   } else if (readResponse.status !== 404) {
-    const error = await extractGitHubError(readResponse);
+    const error = formatGitHubApiError(
+      await extractGitHubError(readResponse),
+      readResponse.status,
+      settings,
+      "读取远程文件",
+    );
     return {
       ok: false,
       error: `${file.path}: ${error}`,
@@ -416,7 +421,12 @@ async function syncGitHubFile(
   );
 
   if (!writeResponse.ok) {
-    const error = await extractGitHubError(writeResponse);
+    const error = formatGitHubApiError(
+      await extractGitHubError(writeResponse),
+      writeResponse.status,
+      settings,
+      "写入文件",
+    );
     return {
       ok: false,
       error: `${file.path}: ${error}`,
@@ -565,6 +575,27 @@ async function extractGitHubError(response: Response): Promise<string> {
   } catch {
     return rawText || `GitHub API 请求失败，状态码 ${response.status}。`;
   }
+}
+
+function formatGitHubApiError(
+  message: string,
+  status: number,
+  settings: StoredSettings,
+  action: string,
+): string {
+  if (status === 401) {
+    return `${message}。GitHub Token 无效或已过期，请重新生成并保存 Token。`;
+  }
+
+  if (status === 403 && message.indexOf("Resource not accessible by personal access token") !== -1) {
+    return `${message}。${action}被 GitHub 拒绝：当前 Token 没有 ${settings.repoOwner}/${settings.repoName} 的 Contents 写入权限。Fine-grained PAT 请确认 Repository access 包含该仓库，并将 Repository permissions -> Contents 设置为 Read and write；Classic PAT 请确认包含 repo 权限。更新后请在插件中清空并重新保存 Token。`;
+  }
+
+  if (status === 403) {
+    return `${message}。GitHub 返回 403，通常是 Token 权限不足、组织 SSO 未授权、分支保护或 API 限制导致。`;
+  }
+
+  return message;
 }
 
 function formatUnknownError(error: unknown): string {

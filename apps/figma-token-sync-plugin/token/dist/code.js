@@ -701,9 +701,9 @@
   }
   function syncGitHubFile(settings, file, headers, log) {
     return __awaiter(this, void 0, void 0, function() {
-      var encodedPath, contentUrl, sha, readResponse, existing, error, content, writeResponse, error, fileUrl;
-      return __generator(this, function(_a) {
-        switch (_a.label) {
+      var encodedPath, contentUrl, sha, readResponse, existing, error, _a, content, writeResponse, error, _b, fileUrl;
+      return __generator(this, function(_c) {
+        switch (_c.label) {
           case 0:
             encodedPath = encodeGitHubPath(file.path);
             contentUrl = "https://api.github.com/repos/".concat(encodeURIComponent(settings.repoOwner), "/").concat(encodeURIComponent(settings.repoName), "/contents/").concat(encodedPath);
@@ -714,26 +714,32 @@
               headers: headers
             }, "GET \u8FDC\u7A0B\u6587\u4EF6", file.path, log, GITHUB_READ_TIMEOUT_MS)];
           case 1:
-            readResponse = _a.sent();
+            readResponse = _c.sent();
             if (!readResponse.ok) return [3, 3];
             return [4, readGitHubJson(readResponse, "\u8BFB\u53D6\u8FDC\u7A0B\u6587\u4EF6 JSON", file.path, log)];
           case 2:
-            existing = _a.sent();
+            existing = _c.sent();
             sha = existing.sha;
             log("success", sha ? "\u5DF2\u8BFB\u53D6\u8FDC\u7A0B\u6587\u4EF6\uFF0C\u5C06\u57FA\u4E8E\u73B0\u6709\u6587\u4EF6\u66F4\u65B0\u3002" : "\u8FDC\u7A0B\u6587\u4EF6\u53EF\u8BBF\u95EE\uFF0C\u5C06\u7EE7\u7EED\u66F4\u65B0\u3002", file.path);
             return [3, 6];
           case 3:
             if (!(readResponse.status !== 404)) return [3, 5];
+            _a = formatGitHubApiError;
             return [4, extractGitHubError(readResponse)];
           case 4:
-            error = _a.sent();
+            error = _a.apply(void 0, [
+              _c.sent(),
+              readResponse.status,
+              settings,
+              "\u8BFB\u53D6\u8FDC\u7A0B\u6587\u4EF6"
+            ]);
             return [2, {
               ok: false,
               error: "".concat(file.path, ": ").concat(error)
             }];
           case 5:
             log("info", "\u8FDC\u7A0B\u6587\u4EF6\u4E0D\u5B58\u5728\uFF0C\u5C06\u521B\u5EFA\u65B0\u6587\u4EF6\u3002", file.path);
-            _a.label = 6;
+            _c.label = 6;
           case 6:
             content = file.content;
             log("info", "\u4F7F\u7528\u5168\u91CF\u8986\u76D6\u7B56\u7565\u51C6\u5907\u5199\u5165\u3002", file.path);
@@ -745,11 +751,17 @@
               body: JSON.stringify(__assign({ message: settings.commitMessage, branch: settings.branch, content: base64EncodeUtf8(content) }, sha ? { sha: sha } : {}))
             }, "PUT \u5199\u5165\u6587\u4EF6", file.path, log, GITHUB_WRITE_TIMEOUT_MS)];
           case 7:
-            writeResponse = _a.sent();
+            writeResponse = _c.sent();
             if (!!writeResponse.ok) return [3, 9];
+            _b = formatGitHubApiError;
             return [4, extractGitHubError(writeResponse)];
           case 8:
-            error = _a.sent();
+            error = _b.apply(void 0, [
+              _c.sent(),
+              writeResponse.status,
+              settings,
+              "\u5199\u5165\u6587\u4EF6"
+            ]);
             return [2, {
               ok: false,
               error: "".concat(file.path, ": ").concat(error)
@@ -908,6 +920,18 @@
         }
       });
     });
+  }
+  function formatGitHubApiError(message, status, settings, action) {
+    if (status === 401) {
+      return "".concat(message, "\u3002GitHub Token \u65E0\u6548\u6216\u5DF2\u8FC7\u671F\uFF0C\u8BF7\u91CD\u65B0\u751F\u6210\u5E76\u4FDD\u5B58 Token\u3002");
+    }
+    if (status === 403 && message.indexOf("Resource not accessible by personal access token") !== -1) {
+      return "".concat(message, "\u3002").concat(action, "\u88AB GitHub \u62D2\u7EDD\uFF1A\u5F53\u524D Token \u6CA1\u6709 ").concat(settings.repoOwner, "/").concat(settings.repoName, " \u7684 Contents \u5199\u5165\u6743\u9650\u3002Fine-grained PAT \u8BF7\u786E\u8BA4 Repository access \u5305\u542B\u8BE5\u4ED3\u5E93\uFF0C\u5E76\u5C06 Repository permissions -> Contents \u8BBE\u7F6E\u4E3A Read and write\uFF1BClassic PAT \u8BF7\u786E\u8BA4\u5305\u542B repo \u6743\u9650\u3002\u66F4\u65B0\u540E\u8BF7\u5728\u63D2\u4EF6\u4E2D\u6E05\u7A7A\u5E76\u91CD\u65B0\u4FDD\u5B58 Token\u3002");
+    }
+    if (status === 403) {
+      return "".concat(message, "\u3002GitHub \u8FD4\u56DE 403\uFF0C\u901A\u5E38\u662F Token \u6743\u9650\u4E0D\u8DB3\u3001\u7EC4\u7EC7 SSO \u672A\u6388\u6743\u3001\u5206\u652F\u4FDD\u62A4\u6216 API \u9650\u5236\u5BFC\u81F4\u3002");
+    }
+    return message;
   }
   function formatUnknownError(error) {
     if (error instanceof Error && error.message) {
