@@ -45,6 +45,8 @@ AI skill、prompt、agent 工作流属于消费端，不放在本仓库；它们
 - 先维护模板和数据结构
 - 当前不改造下游系统
 - 当前组件库代码已纳入 `packages/flutter/rdesign_component`
+- 当前文档站代码已纳入 `apps/docs`
+- 当前文档站依赖的主题生成器已纳入 `packages/theme-generator`
 - 当前预留后续扩展需要的字段和解析规则
 
 ## 目录结构
@@ -79,6 +81,12 @@ AI skill、prompt、agent 工作流属于消费端，不放在本仓库；它们
 - `packages/flutter/rdesign_component/`
   - Flutter 组件库源码
   - 示例工程与组件库测试一并维护
+- `apps/docs/`
+  - RDesign Flutter 文档站源码
+  - 读取组件文档、站点配置和示例说明，后续逐步对齐本仓库的事实源与组件库源码
+- `packages/theme-generator/`
+  - 文档站运行所需的主题生成器 WebComponent
+  - 当前保留已构建的 `dist/td-theme-generator.js` 供文档站直接引用
 
 ### 解析与服务层
 
@@ -95,6 +103,9 @@ AI skill、prompt、agent 工作流属于消费端，不放在本仓库；它们
 
 - `package.json` / `tsconfig.json`
   - 解析器和校验器的本地工程配置
+- `apps/docs/package.json`
+  - 文档站独立依赖与运行脚本
+  - 可通过根目录 `npm run docs:dev` / `npm run docs:build` 调用
 
 ## 维护原则
 

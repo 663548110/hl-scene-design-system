@@ -1,0 +1,129 @@
+---
+title: Footer 页脚
+description: 用于展示App的版权声明、联系信息、重要页面链接和其他相关内容等信息。
+spline: base
+isComponent: true
+---
+
+<span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20lines-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20functions-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20statements-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20branches-83%25-blue" /></span>
+## 引入
+
+在rdesign_flutter/rdesign_flutter.dart中有所有组件的路径。
+
+```dart
+import 'package:rdesign_flutter/rdesign_flutter.dart';
+```
+
+## 代码演示
+
+[td_footer_page.dart](https://codeup.aliyun.com/656d6f743e469c2f3534a9ac/team3/flutter/rdesign-flutter-develop/blob/master/rdesign-component/example/lib/page/td_footer_page.dart)
+
+### 1 组件类型
+
+基础页脚
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+  Widget _buildFooter(BuildContext context) {
+    return const RDFooter(
+      RDFooterType.text,
+      text: 'Copyright © 2019-2023 RDesign.All Rights Reserved.',
+    );
+  }</pre>
+
+</td-code-block>
+                                  
+
+基础加链接页脚
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+  Widget _buildSingleLinkFooter(BuildContext context) {
+    return RDFooter(
+      RDFooterType.link,
+      links: [
+        RDLink(
+          label: '底部链接',
+          style: RDLinkStyle.primary,
+          type: RDLinkType.withSuffixIcon,
+          uri: Uri.parse('https://example.com'),
+          linkClick: (link) {
+            print('点击了链接 $link');
+          },
+        ),
+      ],
+      text: 'Copyright © 2019-2023 RDesign.All Rights Reserved.',
+    );
+  }</pre>
+
+</td-code-block>
+                                  
+
+
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+  Widget _buildLinksFooter(BuildContext context) {
+    return RDFooter(
+      RDFooterType.link,
+      links: [
+        RDLink(
+          label: '底部链接1',
+          style: RDLinkStyle.primary,
+          uri: Uri.parse('https://example.com'),
+          linkClick: (link) {
+            print('点击了链接1 $link');
+          },
+        ),
+        RDLink(
+          label: '底部链接2',
+          style: RDLinkStyle.primary,
+          uri: Uri.parse('https://example.com'),
+          linkClick: (link) {
+            print('点击了链接2 $link');
+          },
+        ),
+      ],
+      text: 'Copyright © 2019-2023 RDesign.All Rights Reserved.',
+    );
+  }</pre>
+
+</td-code-block>
+                                  
+
+品牌页脚
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+  Widget _buildBrandFooter(BuildContext context) {
+    return const RDFooter(
+      RDFooterType.brand,
+      logo: 'assets/img/td_brand.png',
+      width: 204,
+    );
+  }</pre>
+
+</td-code-block>
+                                  
+
+
+## API
+### RDFooter
+#### 默认构造方法
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| height | double? | - | 自定义图片高 |
+| key |  | - |  |
+| links | List<RDLink> | const [] | 链接 |
+| logo | String? | - | 品牌图片 |
+| text | String | '' | 文字 |
+| type | RDFooterType | type | 样式 |
+| width | double? | - | 自定义图片宽 |
+
+
+  

@@ -1,0 +1,253 @@
+---
+title: Cell 单元格
+description: 一行内容/功能的垂直排列方式。一行项目左侧为主要内容展示区域，右侧可增加更多操作内容。
+spline: base
+isComponent: true
+---
+
+<span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20lines-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20functions-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20statements-100%25-blue" /></span><span class="coverages-badge" style="margin-right: 10px"><img src="https://img.shields.io/badge/coverages%3A%20branches-83%25-blue" /></span>
+## 引入
+
+在rdesign_flutter/rdesign_flutter.dart中有所有组件的路径。
+
+```dart
+import 'package:rdesign_flutter/rdesign_flutter.dart';
+```
+
+## 代码演示
+
+[td_cell_page.dart](https://codeup.aliyun.com/656d6f743e469c2f3534a9ac/team3/flutter/rdesign-flutter-develop/blob/master/rdesign-component/example/lib/page/td_cell_page.dart)
+
+### 1 组件类型
+
+单行单元格
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+Widget _buildSimple(BuildContext context) {
+  // 可统一修改样式
+  var style = RDCellStyle(context: context);
+  return RDCellGroup(
+    style: style,
+    cells: [
+      // 可单独修改样式
+      RDCell(
+        arrow: true,
+        title: '单行标题',
+        style: RDCellStyle.cellStyle(context),
+      ),
+      RDCell(
+        arrow: true,
+        title: '单行标题',
+        required: true,
+        onClick: (cell) {
+          print('单行标题');
+        },
+        onLongPress: (cell) {
+          print('onLongPress 单行标题');
+        },
+      ),
+      const RDCell(
+        arrow: true,
+        title: '单行标题',
+        noteWidget: RDBadge(RDBadgeType.message, count: '8'),
+      ),
+      const RDCell(
+        arrow: false,
+        title: '单行标题',
+        rightIconWidget: RDSwitch(isOn: true),
+      ),
+      const RDCell(
+        arrow: true,
+        title: '单行标题',
+        note: '辅助信息',
+      ),
+      const RDCell(
+        arrow: true,
+        title: '单行标题',
+        leftIcon: RDIcons.lock_on,
+      ),
+      const RDCell(arrow: false, title: '单行标题'),
+    ],
+  );
+}</pre>
+
+</td-code-block>
+                                  
+
+多行单元格
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+Widget _buildDesSimple(BuildContext context) {
+  return const RDCellGroup(
+    cells: [
+      RDCell(arrow: true, title: '单行标题', description: '一段很长很长的内容文字'),
+      RDCell(
+          arrow: true,
+          title: '单行标题',
+          description: '一段很长很长的内容文字',
+          required: true),
+      RDCell(
+          arrow: true,
+          title: '单行标题',
+          description: '一段很长很长的内容文字',
+          noteWidget: RDBadge(RDBadgeType.message, count: '8')),
+      RDCell(
+          arrow: false,
+          title: '单行标题',
+          description: '一段很长很长的内容文字',
+          rightIconWidget: RDSwitch(isOn: true)),
+      RDCell(
+          arrow: true, title: '单行标题', description: '一段很长很长的内容文字', note: '辅助信息'),
+      RDCell(
+          arrow: true,
+          title: '单行标题',
+          description: '一段很长很长的内容文字一段很长很长的内容文字一段很长很长的内',
+          leftIcon: RDIcons.lock_on),
+      RDCell(
+          arrow: false,
+          title: '单行标题',
+          description: '一段很长很长的内容文字一段很长很长的内容文字一段很长很长的内'),
+      RDCell(
+          arrow: false,
+          title: '多行高度不定，长文本自动换行，该选项的描述是一段很长的内容',
+          description: '一段很长很长的内容文字一段很长很长的内容文字一段很长很长的内'),
+      RDCell(
+        arrow: true,
+        title: '多行带头像',
+        description: '一段很长很长的内容文字一段很长很长的内容文字一段很长很长的内容',
+        image: AssetImage('assets/img/td_avatar_1.png'),
+      ),
+      // NetworkImage('https://tdesign.gtimg.com/mobile/demos/avatar1.png')),
+      RDCell(
+        arrow: true,
+        title: '多行带图片',
+        description: '一段很长很长的内容文字',
+        image: AssetImage('assets/img/image.png'),
+        imageCircle: 8,
+      ),
+    ],
+  );
+}</pre>
+
+</td-code-block>
+                                  
+### 1 组件样式
+
+卡片单元格
+            
+<td-code-block panel="Dart">
+
+  <pre slot="Dart" lang="javascript">
+Widget _buildCard(BuildContext context) {
+  return const RDCellGroup(
+    theme: RDCellGroupTheme.cardTheme,
+    cells: [
+      RDCell(arrow: true, title: '单行标题'),
+      RDCell(arrow: true, title: '单行标题', required: true),
+      RDCell(arrow: true, title: '单行标题'),
+    ],
+  );
+}</pre>
+
+</td-code-block>
+                                  
+
+
+## API
+### RDCell
+#### 简介
+单元格组件
+#### 默认构造方法
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| align | RDCellAlign? | RDCellAlign.middle | 内容的对齐方式，默认居中对齐。可选项：top/middle/bottom |
+| arrow | bool? | false | 是否显示右侧箭头 |
+| bordered | bool? | true | 是否显示下边框，仅在RDCellGroup组件下起作用 |
+| description | String? | - | 下方内容描述文字 |
+| descriptionWidget | Widget? | - | 下方内容描述组件 |
+| disabled | bool? | false | 禁用 |
+| height | double? | - | 高度 |
+| hover | bool? | true | 是否开启点击反馈 |
+| image | ImageProvider? | - | 主图 |
+| imageCircle | double? | 50 | 主图圆角，默认50（圆形） |
+| imageSize | double? | - | 主图尺寸 |
+| imageWidget | Widget? | - | 主图组件 |
+| key |  | - |  |
+| leftIcon | IconData? | - | 左侧图标，出现在单元格标题的左侧 |
+| leftIconWidget | Widget? | - | 左侧图标组件 |
+| note | String? | - | 和标题同行的说明文字 |
+| noteMaxLine | int | 1 | 说明文字组件 最大行数 |
+| noteMaxWidth | double? | - | 说明文字组件 最大宽度，超过部分显示省略号，防止文字溢出 |
+| noteWidget | Widget? | - | 说明文字组件 |
+| onClick | RDCellClick? | - | 点击事件 |
+| onLongPress | RDCellClick? | - | 长按事件 |
+| required | bool? | false | 是否显示表单必填星号 |
+| rightIcon | IconData? | - | 最右侧图标 |
+| rightIconWidget | Widget? | - | 最右侧图标组件 |
+| showBottomBorder | bool? | false | 是否显示下边框（建议RDCellGroup组件下false，避免与bordered重叠） |
+| style | RDCellStyle? | - | 自定义样式 |
+| title | String? | - | 标题 |
+| titleWidget | Widget? | - | 标题组件 |
+
+```
+```
+ ### RDCellGroup
+#### 简介
+单元格组组件
+#### 默认构造方法
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| bordered | bool? | false | 是否显示组边框 |
+| builder | CellBuilder? | - | cell构建器，可自定义cell父组件，如Dismissible |
+| cells | List<RDCell> | - | 单元格列表 |
+| isShowLastBordered | bool? | false | 是否显示最后一个cell的下边框 |
+| key |  | - |  |
+| scrollable | bool? | false | 可滚动 |
+| style | RDCellStyle? | - | 自定义样式 |
+| theme | RDCellGroupTheme? | RDCellGroupTheme.defaultTheme | 单元格组风格。可选项：default/card |
+| title | String? | - | 单元格组标题 |
+| titleWidget | Widget? | - | 单元格组标题组件 |
+
+```
+```
+ ### RDCellStyle
+#### 简介
+单元格组件样式
+#### 默认构造方法
+
+| 参数 | 类型 | 默认值 | 说明 |
+| --- | --- | --- | --- |
+| arrowColor | Color? | - | 箭头颜色 |
+| backgroundColor | Color? | - | 默认状态背景颜色 |
+| borderedColor | Color? | - | 单元格边框颜色 |
+| cardBorderRadius | BorderRadius? | - | 卡片模式边框圆角 |
+| cardPadding | EdgeInsets? | - | 卡片模式内边距 |
+| clickBackgroundColor | Color? | - | 点击状态背景颜色 |
+| context | BuildContext? | - | 传递context，会生成默认样式 |
+| descriptionStyle | TextStyle? | - | 内容描述文字样式 |
+| groupBorderedColor | Color? | - | 单元格组边框颜色 |
+| groupTitleStyle | TextStyle? | - | 单元组标题文字样式 |
+| leftIconColor | Color? | - | 左侧图标颜色 |
+| noteStyle | TextStyle? | - | 说明文字样式 |
+| padding | EdgeInsets? | - | 单元格内边距 |
+| requiredStyle | TextStyle? | - | 必填星号文字样式 |
+| rightIconColor | Color? | - | 右侧图标颜色 |
+| titleBackgroundColor | Color? | - | 单元格组标题背景颜色 |
+| titlePadding | EdgeInsets? | - | 单元格组标题内边距 |
+| titleStyle | TextStyle? | - | 标题文字样式 |
+
+
+#### 工厂构造方法
+
+| 名称  | 说明 |
+| --- |  --- |
+| RDCellStyle.cellStyle  | 生成单元格默认样式 |
+
+
+  

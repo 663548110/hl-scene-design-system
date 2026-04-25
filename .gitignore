@@ -1,6 +1,19 @@
 node_modules/
 dist/
 *.tsbuildinfo
+.DS_Store
+.npmrc
+
+# The docs site imports the checked-in theme generator web component build.
+!packages/theme-generator/dist/
+!packages/theme-generator/dist/**
+
+# Docs site generated artifacts
+_site/
+coverage/
+miniprogram_dist/
+.vite/
+.cache/
 
 # Flutter / Dart
 .dart_tool/
