@@ -251,13 +251,18 @@ function renderThemeList(themes: FlutterThemeSummary[]): void {
 
   for (const theme of themes) {
     const label = document.createElement("label");
-    label.className = "theme-option";
+    label.className = theme.selected ? "theme-option is-selected" : "theme-option";
+    label.style.setProperty("--theme-preview-color", theme.previewColor || "#8a8a8a");
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.value = theme.themeId;
     checkbox.checked = theme.selected;
     checkbox.addEventListener("change", handleThemeSelectionChange);
+
+    const swatch = document.createElement("span");
+    swatch.className = "theme-option-swatch";
+    swatch.title = theme.previewColor ? `主题色 ${theme.previewColor}` : "未识别主题色";
 
     const body = document.createElement("span");
     body.className = "theme-option-body";
@@ -270,9 +275,15 @@ function renderThemeList(themes: FlutterThemeSummary[]): void {
     modes.className = "theme-option-modes";
     modes.textContent = `${formatModeNames(theme.lightModeNames)} / ${formatModeNames(theme.darkModeNames)}`;
 
+    const color = document.createElement("span");
+    color.className = "theme-option-color";
+    color.textContent = theme.previewColor ? `主题色 ${theme.previewColor}` : "主题色未识别";
+
     body.appendChild(name);
     body.appendChild(modes);
+    body.appendChild(color);
     label.appendChild(checkbox);
+    label.appendChild(swatch);
     label.appendChild(body);
     elements.themeList.appendChild(label);
   }

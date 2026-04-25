@@ -182,14 +182,35 @@
 
       .theme-option {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 8px;
         padding: 9px 10px;
         border-radius: 12px;
         border: 1px solid var(--figma-color-border);
-        background: var(--figma-color-bg-secondary);
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 16%, transparent), transparent 46%),
+          var(--figma-color-bg-secondary);
         color: var(--figma-color-text);
         min-width: 0;
+      }
+
+      .theme-option.is-selected {
+        border-color: color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 70%, var(--figma-color-border));
+        box-shadow: inset 3px 0 0 var(--theme-preview-color, #8a8a8a);
+      }
+
+      .theme-option input[type="checkbox"] {
+        flex: 0 0 auto;
+      }
+
+      .theme-option-swatch {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--theme-preview-color, #8a8a8a);
+        border: 2px solid color-mix(in srgb, white 74%, var(--theme-preview-color, #8a8a8a));
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 48%, var(--figma-color-border));
       }
 
       .theme-option-body {
@@ -204,10 +225,15 @@
       }
 
       .theme-option-modes,
+      .theme-option-color,
       .theme-list-empty {
         color: var(--figma-color-text-secondary);
         font-size: 11px;
         overflow-wrap: anywhere;
+      }
+
+      .theme-option-color {
+        font-family: "SFMono-Regular", ui-monospace, Menlo, monospace;
       }
 
       .theme-list-empty {
@@ -1457,6 +1483,14 @@
     };
     throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
   };
+  var THEME_PREVIEW_COLOR_KEYS = [
+    "brandNormalColor",
+    "brandColor7",
+    "brandColor6",
+    "brandColor5",
+    "brandColor1",
+    "brandLightColor"
+  ];
   function generateMultiArtifacts(snapshot2, settings2) {
     var e_1, _a, e_2, _b;
     var model = buildTokenModel(snapshot2, settings2);
@@ -1469,7 +1503,8 @@
         themeId: spec.themeId,
         lightModeNames: spec.lightModeNames,
         darkModeNames: spec.darkModeNames,
-        selected: isFlutterThemeSelected(model.settings, spec.themeId)
+        selected: isFlutterThemeSelected(model.settings, spec.themeId),
+        previewColor: getThemePreviewColor(rows, spec)
       };
     });
     if (settings2.includeCssTheme) {
@@ -1865,6 +1900,54 @@
     }
     return selectedThemeIds.indexOf(themeId) !== -1;
   }
+  function getThemePreviewColor(rows, themeSpec) {
+    var e_11, _a, e_12, _b;
+    try {
+      for (var THEME_PREVIEW_COLOR_KEYS_1 = __values3(THEME_PREVIEW_COLOR_KEYS), THEME_PREVIEW_COLOR_KEYS_1_1 = THEME_PREVIEW_COLOR_KEYS_1.next(); !THEME_PREVIEW_COLOR_KEYS_1_1.done; THEME_PREVIEW_COLOR_KEYS_1_1 = THEME_PREVIEW_COLOR_KEYS_1.next()) {
+        var colorKey = THEME_PREVIEW_COLOR_KEYS_1_1.value;
+        try {
+          for (var rows_3 = (e_12 = void 0, __values3(rows)), rows_3_1 = rows_3.next(); !rows_3_1.done; rows_3_1 = rows_3.next()) {
+            var token = rows_3_1.value;
+            if (token.category !== "color" || token.tdesignThemeKey !== colorKey) {
+              continue;
+            }
+            var modeValue = pickThemeModeValue(token, themeSpec.lightModeIds) || pickThemeModeValue(token, themeSpec.darkModeIds) || token.lightValue || token.defaultValue;
+            var color = modeValue ? normalizePreviewColor(modeValue.formatted.cssValue || modeValue.formatted.value) : null;
+            if (color) {
+              return color;
+            }
+          }
+        } catch (e_12_1) {
+          e_12 = { error: e_12_1 };
+        } finally {
+          try {
+            if (rows_3_1 && !rows_3_1.done && (_b = rows_3.return)) _b.call(rows_3);
+          } finally {
+            if (e_12) throw e_12.error;
+          }
+        }
+      }
+    } catch (e_11_1) {
+      e_11 = { error: e_11_1 };
+    } finally {
+      try {
+        if (THEME_PREVIEW_COLOR_KEYS_1_1 && !THEME_PREVIEW_COLOR_KEYS_1_1.done && (_a = THEME_PREVIEW_COLOR_KEYS_1.return)) _a.call(THEME_PREVIEW_COLOR_KEYS_1);
+      } finally {
+        if (e_11) throw e_11.error;
+      }
+    }
+    return null;
+  }
+  function normalizePreviewColor(value) {
+    if (typeof value !== "string") {
+      return null;
+    }
+    var trimmed = value.trim();
+    if (/^#[0-9a-f]{3,8}$/i.test(trimmed) || /^rgba?\(/i.test(trimmed)) {
+      return trimmed;
+    }
+    return null;
+  }
   function parseFlutterThemeModeName(modeValue, defaultThemeId) {
     var role = inferThemeModeRole(modeValue);
     if (!role) {
@@ -1921,7 +2004,7 @@
     return "".concat(prefix, "themes/").concat(themeIdToFileSlug(themeId), ".css");
   }
   function renderCssThemeEntry(model, themeSpecs) {
-    var e_11, _a;
+    var e_13, _a;
     var entryPath = cssThemeEntryFilePath(model.settings.cssFilePath);
     var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
     var lines = [
@@ -1937,19 +2020,19 @@
         var themeSpec = themeSpecs_1_1.value;
         lines.push('@import "'.concat(relativeCssImportPath(entryDirectory, cssThemeTokenFilePath(model.settings.cssFilePath, themeSpec.themeId)), '";'));
       }
-    } catch (e_11_1) {
-      e_11 = { error: e_11_1 };
+    } catch (e_13_1) {
+      e_13 = { error: e_13_1 };
     } finally {
       try {
         if (themeSpecs_1_1 && !themeSpecs_1_1.done && (_a = themeSpecs_1.return)) _a.call(themeSpecs_1);
       } finally {
-        if (e_11) throw e_11.error;
+        if (e_13) throw e_13.error;
       }
     }
     return "".concat(lines.join("\n"), "\n");
   }
   function buildCssThemeSelectors(themeId, mode, isDefaultTheme) {
-    var e_12, _a, e_13, _b;
+    var e_14, _a, e_15, _b;
     var escapedThemeId = escapeCssAttributeValue(themeId);
     var themeAttributes = ["theme-id", "data-theme", "theme"];
     var selectors = [];
@@ -1962,13 +2045,13 @@
           var attributeName = themeAttributes_1_1.value;
           selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"]'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="light"]'));
         }
-      } catch (e_12_1) {
-        e_12 = { error: e_12_1 };
+      } catch (e_14_1) {
+        e_14 = { error: e_14_1 };
       } finally {
         try {
           if (themeAttributes_1_1 && !themeAttributes_1_1.done && (_a = themeAttributes_1.return)) _a.call(themeAttributes_1);
         } finally {
-          if (e_12) throw e_12.error;
+          if (e_14) throw e_14.error;
         }
       }
     } else {
@@ -1980,13 +2063,13 @@
           var attributeName = themeAttributes_2_1.value;
           selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"].dark'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="dark"]'));
         }
-      } catch (e_13_1) {
-        e_13 = { error: e_13_1 };
+      } catch (e_15_1) {
+        e_15 = { error: e_15_1 };
       } finally {
         try {
           if (themeAttributes_2_1 && !themeAttributes_2_1.done && (_b = themeAttributes_2.return)) _b.call(themeAttributes_2);
         } finally {
-          if (e_13) throw e_13.error;
+          if (e_15) throw e_15.error;
         }
       }
     }
@@ -2032,7 +2115,7 @@
     return matches.join("_") || "default";
   }
   function renderFlutterThemeEntryDart(model, themeSpecs) {
-    var e_14, _a, e_15, _b, e_16, _c;
+    var e_16, _a, e_17, _b, e_18, _c;
     var entryPath = flutterThemeEntryFilePath(model.settings.flutterFilePath);
     var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
     var imports = themeSpecs.map(function(themeSpec2) {
@@ -2049,13 +2132,13 @@
         var importPath = imports_1_1.value;
         lines.push("import '".concat(importPath, "';"));
       }
-    } catch (e_14_1) {
-      e_14 = { error: e_14_1 };
+    } catch (e_16_1) {
+      e_16 = { error: e_16_1 };
     } finally {
       try {
         if (imports_1_1 && !imports_1_1.done && (_a = imports_1.return)) _a.call(imports_1);
       } finally {
-        if (e_14) throw e_14.error;
+        if (e_16) throw e_16.error;
       }
     }
     lines.push("");
@@ -2064,13 +2147,13 @@
         var importPath = imports_2_1.value;
         lines.push("export '".concat(importPath, "';"));
       }
-    } catch (e_15_1) {
-      e_15 = { error: e_15_1 };
+    } catch (e_17_1) {
+      e_17 = { error: e_17_1 };
     } finally {
       try {
         if (imports_2_1 && !imports_2_1.done && (_b = imports_2.return)) _b.call(imports_2);
       } finally {
-        if (e_15) throw e_15.error;
+        if (e_17) throw e_17.error;
       }
     }
     lines.push("", "class RDThemeTokenSpec {", "  const RDThemeTokenSpec({", "    required this.id,", "    required this.darkId,", "    required this.lightJson,", "    required this.darkJson,", "  });", "", "  final String id;", "  final String darkId;", "  final String lightJson;", "  final String darkJson;", "}", "", "const List<RDThemeTokenSpec> rdThemeTokenSpecs = [");
@@ -2080,13 +2163,13 @@
         var dartPrefix = "rd".concat(toPascalCase([themeSpec.themeId]));
         lines.push("  RDThemeTokenSpec(", "    id: '".concat(escapeDartSingleQuotedString(themeSpec.themeId), "',"), "    darkId: '".concat(escapeDartSingleQuotedString("".concat(themeSpec.themeId, "Dark")), "',"), "    lightJson: ".concat(dartPrefix, "LightJson,"), "    darkJson: ".concat(dartPrefix, "DarkJson,"), "  ),");
       }
-    } catch (e_16_1) {
-      e_16 = { error: e_16_1 };
+    } catch (e_18_1) {
+      e_18 = { error: e_18_1 };
     } finally {
       try {
         if (themeSpecs_2_1 && !themeSpecs_2_1.done && (_c = themeSpecs_2.return)) _c.call(themeSpecs_2);
       } finally {
-        if (e_16) throw e_16.error;
+        if (e_18) throw e_18.error;
       }
     }
     lines.push("];");
@@ -2099,26 +2182,26 @@
     return toPath;
   }
   function renderSingleFlutterThemeDart(model, rows, themeSpec, warnings) {
-    var e_17, _a;
+    var e_19, _a;
     var _b, _c, _d;
     var lightSections = createEmptyFlutterThemeSections();
     var darkSections = createEmptyFlutterThemeSections();
     var mappedTokenCount = 0;
     try {
-      for (var rows_3 = __values3(rows), rows_3_1 = rows_3.next(); !rows_3_1.done; rows_3_1 = rows_3.next()) {
-        var token = rows_3_1.value;
+      for (var rows_4 = __values3(rows), rows_4_1 = rows_4.next(); !rows_4_1.done; rows_4_1 = rows_4.next()) {
+        var token = rows_4_1.value;
         var lightValue = (_b = pickThemeModeValue(token, themeSpec.lightModeIds)) !== null && _b !== void 0 ? _b : token.lightValue;
         var darkValue = (_d = (_c = pickThemeModeValue(token, themeSpec.darkModeIds)) !== null && _c !== void 0 ? _c : token.darkValue) !== null && _d !== void 0 ? _d : token.category === "color" ? null : lightValue;
         mappedTokenCount += addFlutterThemeToken(token, lightValue, lightSections, warnings, "".concat(themeSpec.themeId, " light"));
         mappedTokenCount += addFlutterThemeToken(token, darkValue, darkSections, warnings, "".concat(themeSpec.themeId, " dark"));
       }
-    } catch (e_17_1) {
-      e_17 = { error: e_17_1 };
+    } catch (e_19_1) {
+      e_19 = { error: e_19_1 };
     } finally {
       try {
-        if (rows_3_1 && !rows_3_1.done && (_a = rows_3.return)) _a.call(rows_3);
+        if (rows_4_1 && !rows_4_1.done && (_a = rows_4.return)) _a.call(rows_4);
       } finally {
-        if (e_17) throw e_17.error;
+        if (e_19) throw e_19.error;
       }
     }
     appendMissingFlutterWarnings("".concat(themeSpec.themeId, " light"), lightSections.color, warnings);
@@ -2129,7 +2212,7 @@
     };
   }
   function pickThemeModeValue(token, modeIds) {
-    var e_18, _a;
+    var e_20, _a;
     var _loop_1 = function(modeId2) {
       var value = token.valuesByMode.find(function(modeValue) {
         return modeValue.modeId === modeId2;
@@ -2145,13 +2228,13 @@
         if (typeof state_1 === "object")
           return state_1.value;
       }
-    } catch (e_18_1) {
-      e_18 = { error: e_18_1 };
+    } catch (e_20_1) {
+      e_20 = { error: e_20_1 };
     } finally {
       try {
         if (modeIds_1_1 && !modeIds_1_1.done && (_a = modeIds_1.return)) _a.call(modeIds_1);
       } finally {
-        if (e_18) throw e_18.error;
+        if (e_20) throw e_20.error;
       }
     }
     return null;
@@ -2310,7 +2393,7 @@
     return null;
   }
   function parseFlutterShadowValue(value) {
-    var e_19, _a;
+    var e_21, _a;
     if (Array.isArray(value)) {
       return normalizeShadowLayerArray(value);
     }
@@ -2341,19 +2424,19 @@
         }
         layers.push(layer);
       }
-    } catch (e_19_1) {
-      e_19 = { error: e_19_1 };
+    } catch (e_21_1) {
+      e_21 = { error: e_21_1 };
     } finally {
       try {
         if (parts_1_1 && !parts_1_1.done && (_a = parts_1.return)) _a.call(parts_1);
       } finally {
-        if (e_19) throw e_19.error;
+        if (e_21) throw e_21.error;
       }
     }
     return layers.length > 0 ? layers : null;
   }
   function normalizeShadowLayerArray(value) {
-    var e_20, _a;
+    var e_22, _a;
     var layers = [];
     try {
       for (var value_1 = __values3(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
@@ -2378,19 +2461,19 @@
           offset: { x: x, y: y }
         });
       }
-    } catch (e_20_1) {
-      e_20 = { error: e_20_1 };
+    } catch (e_22_1) {
+      e_22 = { error: e_22_1 };
     } finally {
       try {
         if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
       } finally {
-        if (e_20) throw e_20.error;
+        if (e_22) throw e_22.error;
       }
     }
     return layers;
   }
   function parseCssShadowLayer(value) {
-    var e_21, _a;
+    var e_23, _a;
     var tokens = splitCssTokens(value).filter(function(token2) {
       return token2.toLowerCase() !== "inset";
     });
@@ -2409,13 +2492,13 @@
           lengths.push(numberValue);
         }
       }
-    } catch (e_21_1) {
-      e_21 = { error: e_21_1 };
+    } catch (e_23_1) {
+      e_23 = { error: e_23_1 };
     } finally {
       try {
         if (tokens_1_1 && !tokens_1_1.done && (_a = tokens_1.return)) _a.call(tokens_1);
       } finally {
-        if (e_21) throw e_21.error;
+        if (e_23) throw e_23.error;
       }
     }
     if (!color || lengths.length < 2) {
@@ -2508,7 +2591,7 @@
     return tokens;
   }
   function containsAllParts(segments, parts) {
-    var e_22, _a;
+    var e_24, _a;
     try {
       for (var parts_2 = __values3(parts), parts_2_1 = parts_2.next(); !parts_2_1.done; parts_2_1 = parts_2.next()) {
         var part = parts_2_1.value;
@@ -2516,19 +2599,19 @@
           return false;
         }
       }
-    } catch (e_22_1) {
-      e_22 = { error: e_22_1 };
+    } catch (e_24_1) {
+      e_24 = { error: e_24_1 };
     } finally {
       try {
         if (parts_2_1 && !parts_2_1.done && (_a = parts_2.return)) _a.call(parts_2);
       } finally {
-        if (e_22) throw e_22.error;
+        if (e_24) throw e_24.error;
       }
     }
     return true;
   }
   function appendMissingFlutterWarnings(modeName, colors, warnings) {
-    var e_23, _a;
+    var e_25, _a;
     var missing = [];
     try {
       for (var REQUIRED_TDESIGN_COLOR_KEYS_1 = __values3(REQUIRED_TDESIGN_COLOR_KEYS), REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next(); !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done; REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next()) {
@@ -2537,13 +2620,13 @@
           missing.push(key);
         }
       }
-    } catch (e_23_1) {
-      e_23 = { error: e_23_1 };
+    } catch (e_25_1) {
+      e_25 = { error: e_25_1 };
     } finally {
       try {
         if (REQUIRED_TDESIGN_COLOR_KEYS_1_1 && !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done && (_a = REQUIRED_TDESIGN_COLOR_KEYS_1.return)) _a.call(REQUIRED_TDESIGN_COLOR_KEYS_1);
       } finally {
-        if (e_23) throw e_23.error;
+        if (e_25) throw e_25.error;
       }
     }
     if (missing.length > 0) {
@@ -2580,7 +2663,7 @@
     return JSON.stringify(root);
   }
   function buildFlutterColorValues(colors) {
-    var e_24, _a;
+    var e_26, _a;
     var groups = [
       rangeThemeKeys("brandColor", 10),
       rangeThemeKeys("warningColor", 10),
@@ -2635,13 +2718,13 @@
         }
         pushOrderedColorValues(values, keys, colors, used);
       }
-    } catch (e_24_1) {
-      e_24 = { error: e_24_1 };
+    } catch (e_26_1) {
+      e_26 = { error: e_26_1 };
     } finally {
       try {
         if (groups_1_1 && !groups_1_1.done && (_a = groups_1.return)) _a.call(groups_1);
       } finally {
-        if (e_24) throw e_24.error;
+        if (e_26) throw e_26.error;
       }
     }
     var extraKeys = Object.keys(colors).filter(function(key) {
@@ -2653,7 +2736,7 @@
     return values;
   }
   function buildFlutterNumberValues(values, preferredOrder) {
-    var e_25, _a;
+    var e_27, _a;
     var keys = sortKnownKeys(Object.keys(values), preferredOrder);
     var output = {};
     try {
@@ -2661,19 +2744,19 @@
         var key = keys_1_1.value;
         output[key] = normalizeJsonNumber(values[key]);
       }
-    } catch (e_25_1) {
-      e_25 = { error: e_25_1 };
+    } catch (e_27_1) {
+      e_27 = { error: e_27_1 };
     } finally {
       try {
         if (keys_1_1 && !keys_1_1.done && (_a = keys_1.return)) _a.call(keys_1);
       } finally {
-        if (e_25) throw e_25.error;
+        if (e_27) throw e_27.error;
       }
     }
     return output;
   }
   function buildFlutterShadowValues(shadows) {
-    var e_26, _a;
+    var e_28, _a;
     var keys = sortKnownKeys(Object.keys(shadows), ["shadowsBase", "shadowsMiddle", "shadowsTop"]);
     var output = {};
     try {
@@ -2691,32 +2774,32 @@
           };
         });
       }
-    } catch (e_26_1) {
-      e_26 = { error: e_26_1 };
+    } catch (e_28_1) {
+      e_28 = { error: e_28_1 };
     } finally {
       try {
         if (keys_2_1 && !keys_2_1.done && (_a = keys_2.return)) _a.call(keys_2);
       } finally {
-        if (e_26) throw e_26.error;
+        if (e_28) throw e_28.error;
       }
     }
     return output;
   }
   function pushOrderedColorValues(output, keys, colors, used) {
-    var e_27, _a;
+    var e_29, _a;
     try {
       for (var keys_3 = __values3(keys), keys_3_1 = keys_3.next(); !keys_3_1.done; keys_3_1 = keys_3.next()) {
         var key = keys_3_1.value;
         output[key] = normalizeFlutterColorValue(colors[key]);
         used.add(key);
       }
-    } catch (e_27_1) {
-      e_27 = { error: e_27_1 };
+    } catch (e_29_1) {
+      e_29 = { error: e_29_1 };
     } finally {
       try {
         if (keys_3_1 && !keys_3_1.done && (_a = keys_3.return)) _a.call(keys_3);
       } finally {
-        if (e_27) throw e_27.error;
+        if (e_29) throw e_29.error;
       }
     }
   }
@@ -2820,33 +2903,33 @@
     return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
   }
   function countModes(model) {
-    var e_28, _a, e_29, _b;
+    var e_30, _a, e_31, _b;
     var modeNames = /* @__PURE__ */ new Set();
     try {
       for (var _c = __values3(model.selectedCollections), _d = _c.next(); !_d.done; _d = _c.next()) {
         var collection = _d.value;
         try {
-          for (var _e = (e_29 = void 0, __values3(collection.modes)), _f = _e.next(); !_f.done; _f = _e.next()) {
+          for (var _e = (e_31 = void 0, __values3(collection.modes)), _f = _e.next(); !_f.done; _f = _e.next()) {
             var mode = _f.value;
             modeNames.add(mode.name);
           }
-        } catch (e_29_1) {
-          e_29 = { error: e_29_1 };
+        } catch (e_31_1) {
+          e_31 = { error: e_31_1 };
         } finally {
           try {
             if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
           } finally {
-            if (e_29) throw e_29.error;
+            if (e_31) throw e_31.error;
           }
         }
       }
-    } catch (e_28_1) {
-      e_28 = { error: e_28_1 };
+    } catch (e_30_1) {
+      e_30 = { error: e_30_1 };
     } finally {
       try {
         if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
       } finally {
-        if (e_28) throw e_28.error;
+        if (e_30) throw e_30.error;
       }
     }
     return modeNames.size;
@@ -3215,12 +3298,16 @@
       for (var themes_1 = __values4(themes), themes_1_1 = themes_1.next(); !themes_1_1.done; themes_1_1 = themes_1.next()) {
         var theme = themes_1_1.value;
         var label = document.createElement("label");
-        label.className = "theme-option";
+        label.className = theme.selected ? "theme-option is-selected" : "theme-option";
+        label.style.setProperty("--theme-preview-color", theme.previewColor || "#8a8a8a");
         var checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.value = theme.themeId;
         checkbox.checked = theme.selected;
         checkbox.addEventListener("change", handleThemeSelectionChange);
+        var swatch = document.createElement("span");
+        swatch.className = "theme-option-swatch";
+        swatch.title = theme.previewColor ? "\u4E3B\u9898\u8272 ".concat(theme.previewColor) : "\u672A\u8BC6\u522B\u4E3B\u9898\u8272";
         var body = document.createElement("span");
         body.className = "theme-option-body";
         var name_1 = document.createElement("span");
@@ -3229,9 +3316,14 @@
         var modes = document.createElement("span");
         modes.className = "theme-option-modes";
         modes.textContent = "".concat(formatModeNames(theme.lightModeNames), " / ").concat(formatModeNames(theme.darkModeNames));
+        var color = document.createElement("span");
+        color.className = "theme-option-color";
+        color.textContent = theme.previewColor ? "\u4E3B\u9898\u8272 ".concat(theme.previewColor) : "\u4E3B\u9898\u8272\u672A\u8BC6\u522B";
         body.appendChild(name_1);
         body.appendChild(modes);
+        body.appendChild(color);
         label.appendChild(checkbox);
+        label.appendChild(swatch);
         label.appendChild(body);
         elements.themeList.appendChild(label);
       }

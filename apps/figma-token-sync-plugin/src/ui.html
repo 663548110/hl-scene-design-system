@@ -182,14 +182,35 @@
 
       .theme-option {
         display: flex;
-        align-items: flex-start;
+        align-items: center;
         gap: 8px;
         padding: 9px 10px;
         border-radius: 12px;
         border: 1px solid var(--figma-color-border);
-        background: var(--figma-color-bg-secondary);
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 16%, transparent), transparent 46%),
+          var(--figma-color-bg-secondary);
         color: var(--figma-color-text);
         min-width: 0;
+      }
+
+      .theme-option.is-selected {
+        border-color: color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 70%, var(--figma-color-border));
+        box-shadow: inset 3px 0 0 var(--theme-preview-color, #8a8a8a);
+      }
+
+      .theme-option input[type="checkbox"] {
+        flex: 0 0 auto;
+      }
+
+      .theme-option-swatch {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        background: var(--theme-preview-color, #8a8a8a);
+        border: 2px solid color-mix(in srgb, white 74%, var(--theme-preview-color, #8a8a8a));
+        box-shadow: 0 0 0 1px color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 48%, var(--figma-color-border));
       }
 
       .theme-option-body {
@@ -204,10 +225,15 @@
       }
 
       .theme-option-modes,
+      .theme-option-color,
       .theme-list-empty {
         color: var(--figma-color-text-secondary);
         font-size: 11px;
         overflow-wrap: anywhere;
+      }
+
+      .theme-option-color {
+        font-family: "SFMono-Regular", ui-monospace, Menlo, monospace;
       }
 
       .theme-list-empty {

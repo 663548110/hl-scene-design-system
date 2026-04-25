@@ -29,6 +29,7 @@ export interface FlutterThemeSummary {
   lightModeNames: string[];
   darkModeNames: string[];
   selected: boolean;
+  previewColor: string | null;
 }
 
 export interface MultiArtifactBundle extends ExportArtifact {
@@ -89,6 +90,15 @@ interface FlutterThemeSections {
   shadow: Record<string, FlutterShadowLayer[]>;
 }
 
+const THEME_PREVIEW_COLOR_KEYS = [
+  "brandNormalColor",
+  "brandColor7",
+  "brandColor6",
+  "brandColor5",
+  "brandColor1",
+  "brandLightColor",
+];
+
 export function generateMultiArtifacts(snapshot: TokenSnapshot, settings: StoredSettings): MultiArtifactBundle {
   const model = buildTokenModel(snapshot, settings);
   const renderedFiles: RenderedFile[] = [];
@@ -100,6 +110,7 @@ export function generateMultiArtifacts(snapshot: TokenSnapshot, settings: Stored
     lightModeNames: spec.lightModeNames,
     darkModeNames: spec.darkModeNames,
     selected: isFlutterThemeSelected(model.settings, spec.themeId),
+    previewColor: getThemePreviewColor(rows, spec),
   }));
 
   if (settings.includeCssTheme) {
@@ -445,6 +456,43 @@ function isFlutterThemeSelected(settings: StoredSettings, themeId: string): bool
   }
 
   return selectedThemeIds.indexOf(themeId) !== -1;
+}
+
+function getThemePreviewColor(rows: NormalizedToken[], themeSpec: FlutterThemeSpec): string | null {
+  for (const colorKey of THEME_PREVIEW_COLOR_KEYS) {
+    for (const token of rows) {
+      if (token.category !== "color" || token.tdesignThemeKey !== colorKey) {
+        continue;
+      }
+
+      const modeValue =
+        pickThemeModeValue(token, themeSpec.lightModeIds) ||
+        pickThemeModeValue(token, themeSpec.darkModeIds) ||
+        token.lightValue ||
+        token.defaultValue;
+      const color = modeValue ? normalizePreviewColor(modeValue.formatted.cssValue || modeValue.formatted.value) : null;
+
+      if (color) {
+        return color;
+      }
+    }
+  }
+
+  return null;
+}
+
+function normalizePreviewColor(value: unknown): string | null {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const trimmed = value.trim();
+
+  if (/^#[0-9a-f]{3,8}$/i.test(trimmed) || /^rgba?\(/i.test(trimmed)) {
+    return trimmed;
+  }
+
+  return null;
 }
 
 function parseFlutterThemeModeName(
