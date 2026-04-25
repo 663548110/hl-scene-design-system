@@ -39,7 +39,7 @@
       }
 
       .hero {
-        padding: 12px;
+        padding: 10px 12px;
         border: 1px solid var(--figma-color-border);
         border-radius: 14px;
         background:
@@ -54,33 +54,35 @@
       }
 
       .hero-subtitle {
-        margin: 6px 0 0;
+        margin: 3px 0 0;
         color: var(--figma-color-text-secondary);
+        font-size: 11px;
       }
 
       .stats {
-        display: grid;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 8px;
-        margin-top: 12px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-top: 8px;
       }
 
       .stat {
-        padding: 10px;
-        border-radius: 12px;
-        background: color-mix(in srgb, var(--figma-color-bg) 80%, transparent);
-        border: 1px solid color-mix(in srgb, var(--figma-color-border) 80%, transparent);
+        display: inline-flex;
+        align-items: baseline;
+        gap: 4px;
+        padding: 4px 8px;
+        border-radius: 999px;
+        background: color-mix(in srgb, var(--figma-color-bg) 70%, transparent);
+        border: 1px solid color-mix(in srgb, var(--figma-color-border) 64%, transparent);
       }
 
       .stat-label {
-        display: block;
         color: var(--figma-color-text-secondary);
         font-size: 11px;
       }
 
       .stat-value {
-        margin-top: 4px;
-        font-size: 15px;
+        font-size: 12px;
         font-weight: 700;
       }
 
@@ -154,7 +156,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 8px;
-        margin-bottom: 8px;
+        margin-bottom: 6px;
       }
 
       .theme-picker-title {
@@ -175,8 +177,8 @@
       .theme-list {
         display: grid;
         grid-template-columns: minmax(0, 1fr);
-        gap: 8px;
-        max-height: 174px;
+        gap: 6px;
+        max-height: 260px;
         overflow: auto;
       }
 
@@ -184,11 +186,11 @@
         display: flex;
         align-items: center;
         gap: 8px;
-        padding: 9px 10px;
+        padding: 7px 9px;
         border-radius: 12px;
         border: 1px solid var(--figma-color-border);
         background:
-          linear-gradient(135deg, color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 16%, transparent), transparent 46%),
+          linear-gradient(135deg, color-mix(in srgb, var(--theme-preview-color, #8a8a8a) 12%, transparent), transparent 44%),
           var(--figma-color-bg-secondary);
         color: var(--figma-color-text);
         min-width: 0;
@@ -205,8 +207,8 @@
 
       .theme-option-swatch {
         flex: 0 0 auto;
-        width: 28px;
-        height: 28px;
+        width: 22px;
+        height: 22px;
         border-radius: 999px;
         background: var(--theme-preview-color, #8a8a8a);
         border: 2px solid color-mix(in srgb, white 74%, var(--theme-preview-color, #8a8a8a));
@@ -214,8 +216,8 @@
       }
 
       .theme-option-body {
-        display: grid;
-        gap: 2px;
+        display: flex;
+        align-items: center;
         min-width: 0;
       }
 
@@ -224,16 +226,10 @@
         overflow-wrap: anywhere;
       }
 
-      .theme-option-modes,
-      .theme-option-color,
       .theme-list-empty {
         color: var(--figma-color-text-secondary);
         font-size: 11px;
         overflow-wrap: anywhere;
-      }
-
-      .theme-option-color {
-        font-family: "SFMono-Regular", ui-monospace, Menlo, monospace;
       }
 
       .theme-list-empty {
@@ -289,7 +285,7 @@
       }
 
       .sync-log-shell {
-        margin-top: 12px;
+        margin-top: 8px;
       }
 
       .sync-log-header {
@@ -381,20 +377,14 @@
         color: var(--figma-color-text-secondary);
       }
 
-      .sync-target {
-        margin-bottom: 10px;
-        padding: 9px 10px;
-        border-radius: 12px;
-        background: var(--figma-color-bg-secondary);
-        border: 1px solid var(--figma-color-border);
-        color: var(--figma-color-text-secondary);
-        overflow-wrap: anywhere;
-      }
-
+      .settings-details,
+      .sync-log-details,
       .preview-details {
         margin-top: 12px;
       }
 
+      .settings-details summary,
+      .sync-log-details summary,
       .preview-details summary {
         cursor: pointer;
         color: var(--figma-color-text-secondary);
@@ -402,6 +392,8 @@
         user-select: none;
       }
 
+      .settings-details summary:hover,
+      .sync-log-details summary:hover,
       .preview-details summary:hover {
         color: var(--figma-color-text);
       }
@@ -415,7 +407,7 @@
     <div class="shell">
       <section class="hero">
         <h1 class="hero-title">Figma Token Sync</h1>
-        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：按主题拆分 CSS / Flutter 产物。</p>
+        <p class="hero-subtitle">Variables -> CSS / Flutter 主题文件</p>
         <div class="stats">
           <div class="stat">
             <span class="stat-label">集合</span>
@@ -434,10 +426,9 @@
 
       <section class="panel">
         <h2 class="panel-title">同步主题</h2>
-        <div class="sync-target">目标仓库：663548110/hl-scene-design-system#main<br />产物：CSS 主题 token + Flutter 主题 Dart</div>
         <div class="theme-picker">
           <div class="theme-picker-header">
-            <div class="theme-picker-title">选择要同步的主题</div>
+            <div class="theme-picker-title">选择主题</div>
             <div class="theme-picker-actions">
               <button id="select-all-themes-button" type="button">全选</button>
               <button id="clear-themes-button" type="button">清空</button>
@@ -447,20 +438,7 @@
             <div class="theme-list-empty">等待识别 Figma 主题...</div>
           </div>
         </div>
-        <div class="hint">默认读取全部本地 Variables；组件级 token 不进入全局主题产物。</div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">GitHub Token</h2>
-        <label>
-          Personal Access Token
-          <input id="github-token" type="password" placeholder="需要 repo contents 写入权限" />
-        </label>
-        <div class="actions" style="margin-top: 10px">
-          <button id="save-token-button" type="button">保存 Token</button>
-          <button id="clear-token-button" type="button">清空 Token</button>
-        </div>
-        <div class="hint">Token 只保存到本机 Figma 插件存储，不写入仓库。</div>
+        <div class="hint">组件级 token 已自动排除。</div>
       </section>
 
       <section class="panel">
@@ -469,19 +447,34 @@
           <button id="refresh-button" type="button">刷新 Figma 变量</button>
           <button id="sync-button" class="primary" type="button">同步到 GitHub</button>
         </div>
+        <details id="token-details" class="settings-details">
+          <summary>GitHub Token 设置</summary>
+          <label style="margin-top: 10px">
+            Personal Access Token
+            <input id="github-token" type="password" placeholder="需要 repo contents 写入权限" />
+          </label>
+          <div class="actions" style="margin-top: 10px">
+            <button id="save-token-button" type="button">保存 Token</button>
+            <button id="clear-token-button" type="button">清空 Token</button>
+          </div>
+          <div class="hint">Token 只保存到本机 Figma 插件存储。</div>
+        </details>
         <div id="status" class="status hidden" style="margin-top: 12px"></div>
-        <div class="sync-log-shell">
-          <div class="sync-log-header">
-            <div class="sync-log-title">同步日志</div>
-            <div class="sync-log-actions">
-              <button id="copy-log-button" type="button">复制日志</button>
-              <button id="clear-log-button" type="button">清空日志</button>
+        <details id="sync-log-details" class="sync-log-details">
+          <summary>同步日志</summary>
+          <div class="sync-log-shell">
+            <div class="sync-log-header">
+              <div class="sync-log-title">日志</div>
+              <div class="sync-log-actions">
+                <button id="copy-log-button" type="button">复制</button>
+                <button id="clear-log-button" type="button">清空</button>
+              </div>
+            </div>
+            <div id="sync-log" class="sync-log">
+              <div class="sync-log-empty">同步时会显示读取、合并和上传日志。</div>
             </div>
           </div>
-          <div id="sync-log" class="sync-log">
-            <div class="sync-log-empty">点击“同步到 GitHub”后，这里会显示读取、合并和上传日志。</div>
-          </div>
-        </div>
+        </details>
         <details class="preview-details">
           <summary>查看产物预览</summary>
           <pre id="preview" class="preview" style="margin-top: 10px"></pre>
@@ -3082,11 +3075,13 @@
     selectAllThemesButton: getInput("select-all-themes-button"),
     clearThemesButton: getInput("clear-themes-button"),
     githubToken: getInput("github-token"),
+    tokenDetails: getInput("token-details"),
     saveTokenButton: getInput("save-token-button"),
     clearTokenButton: getInput("clear-token-button"),
     refreshButton: getInput("refresh-button"),
     copyLogButton: getInput("copy-log-button"),
     clearLogButton: getInput("clear-log-button"),
+    syncLogDetails: getInput("sync-log-details"),
     syncButton: getInput("sync-button"),
     status: getElement("status"),
     syncLog: getElement("sync-log"),
@@ -3174,6 +3169,7 @@
       }
       syncInFlight = true;
       syncButtonState();
+      elements.syncLogDetails.open = true;
       clearSyncLog();
       appendSyncLog({
         level: "info",
@@ -3283,6 +3279,7 @@
   }
   function hydrateForm() {
     elements.githubToken.value = githubToken;
+    elements.tokenDetails.open = !githubToken;
   }
   function renderThemeList(themes) {
     var e_2, _a;
@@ -3300,6 +3297,7 @@
         var label = document.createElement("label");
         label.className = theme.selected ? "theme-option is-selected" : "theme-option";
         label.style.setProperty("--theme-preview-color", theme.previewColor || "#8a8a8a");
+        label.title = "".concat(theme.themeId, " \xB7 ").concat(formatModeNames(theme.lightModeNames), " / ").concat(formatModeNames(theme.darkModeNames)).concat(theme.previewColor ? " \xB7 ".concat(theme.previewColor) : "");
         var checkbox = document.createElement("input");
         checkbox.type = "checkbox";
         checkbox.value = theme.themeId;
@@ -3313,15 +3311,7 @@
         var name_1 = document.createElement("span");
         name_1.className = "theme-option-name";
         name_1.textContent = theme.themeId;
-        var modes = document.createElement("span");
-        modes.className = "theme-option-modes";
-        modes.textContent = "".concat(formatModeNames(theme.lightModeNames), " / ").concat(formatModeNames(theme.darkModeNames));
-        var color = document.createElement("span");
-        color.className = "theme-option-color";
-        color.textContent = theme.previewColor ? "\u4E3B\u9898\u8272 ".concat(theme.previewColor) : "\u4E3B\u9898\u8272\u672A\u8BC6\u522B";
         body.appendChild(name_1);
-        body.appendChild(modes);
-        body.appendChild(color);
         label.appendChild(checkbox);
         label.appendChild(swatch);
         label.appendChild(body);
@@ -3450,7 +3440,7 @@
   function renderEmptySyncLog() {
     var empty = document.createElement("div");
     empty.className = "sync-log-empty";
-    empty.textContent = "\u70B9\u51FB\u201C\u540C\u6B65\u5230 GitHub\u201D\u540E\uFF0C\u8FD9\u91CC\u4F1A\u663E\u793A\u8BFB\u53D6\u3001\u5408\u5E76\u548C\u4E0A\u4F20\u65E5\u5FD7\u3002";
+    empty.textContent = "\u540C\u6B65\u65F6\u4F1A\u663E\u793A\u8BFB\u53D6\u3001\u5408\u5E76\u548C\u4E0A\u4F20\u65E5\u5FD7\u3002";
     elements.syncLog.appendChild(empty);
   }
   function formatSyncLogEntries(entries) {

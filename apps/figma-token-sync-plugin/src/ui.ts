@@ -17,11 +17,13 @@ const elements = {
   selectAllThemesButton: getInput<HTMLButtonElement>("select-all-themes-button"),
   clearThemesButton: getInput<HTMLButtonElement>("clear-themes-button"),
   githubToken: getInput<HTMLInputElement>("github-token"),
+  tokenDetails: getInput<HTMLDetailsElement>("token-details"),
   saveTokenButton: getInput<HTMLButtonElement>("save-token-button"),
   clearTokenButton: getInput<HTMLButtonElement>("clear-token-button"),
   refreshButton: getInput<HTMLButtonElement>("refresh-button"),
   copyLogButton: getInput<HTMLButtonElement>("copy-log-button"),
   clearLogButton: getInput<HTMLButtonElement>("clear-log-button"),
+  syncLogDetails: getInput<HTMLDetailsElement>("sync-log-details"),
   syncButton: getInput<HTMLButtonElement>("sync-button"),
   status: getElement("status"),
   syncLog: getElement("sync-log"),
@@ -136,6 +138,7 @@ function wireEvents(): void {
 
     syncInFlight = true;
     syncButtonState();
+    elements.syncLogDetails.open = true;
     clearSyncLog();
     appendSyncLog({
       level: "info",
@@ -236,6 +239,7 @@ function refreshPreview(): void {
 
 function hydrateForm(): void {
   elements.githubToken.value = githubToken;
+  elements.tokenDetails.open = !githubToken;
 }
 
 function renderThemeList(themes: FlutterThemeSummary[]): void {
@@ -253,6 +257,9 @@ function renderThemeList(themes: FlutterThemeSummary[]): void {
     const label = document.createElement("label");
     label.className = theme.selected ? "theme-option is-selected" : "theme-option";
     label.style.setProperty("--theme-preview-color", theme.previewColor || "#8a8a8a");
+    label.title = `${theme.themeId} · ${formatModeNames(theme.lightModeNames)} / ${formatModeNames(theme.darkModeNames)}${
+      theme.previewColor ? ` · ${theme.previewColor}` : ""
+    }`;
 
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
@@ -271,17 +278,7 @@ function renderThemeList(themes: FlutterThemeSummary[]): void {
     name.className = "theme-option-name";
     name.textContent = theme.themeId;
 
-    const modes = document.createElement("span");
-    modes.className = "theme-option-modes";
-    modes.textContent = `${formatModeNames(theme.lightModeNames)} / ${formatModeNames(theme.darkModeNames)}`;
-
-    const color = document.createElement("span");
-    color.className = "theme-option-color";
-    color.textContent = theme.previewColor ? `主题色 ${theme.previewColor}` : "主题色未识别";
-
     body.appendChild(name);
-    body.appendChild(modes);
-    body.appendChild(color);
     label.appendChild(checkbox);
     label.appendChild(swatch);
     label.appendChild(body);
@@ -430,7 +427,7 @@ function isStaleSyncLogEntry(entry: SyncLogEntry): boolean {
 function renderEmptySyncLog(): void {
   const empty = document.createElement("div");
   empty.className = "sync-log-empty";
-  empty.textContent = "点击“同步到 GitHub”后，这里会显示读取、合并和上传日志。";
+  empty.textContent = "同步时会显示读取、合并和上传日志。";
   elements.syncLog.appendChild(empty);
 }
 
