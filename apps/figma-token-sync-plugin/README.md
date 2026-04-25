@@ -8,7 +8,7 @@
 - `artifacts/css/theme.css` 与 `artifacts/css/themes/*.css`：CSS 主题入口与分主题文件。
 - `packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart`：Flutter 组件库直接使用的主题 token 注册文件。
 
-组件级 token 默认不会进入全局主题产物；组件规则继续由仓库根目录的 `components/*.md` 维护。
+组件级 token 默认不会进入全局主题产物；组件规则继续由 `docs/design-system/components/*.md` 维护。
 
 ## 目录说明
 

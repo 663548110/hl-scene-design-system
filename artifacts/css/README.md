@@ -10,4 +10,4 @@
 
 - 由 Figma 插件或后续 exporter 生成。
 - 不在这里手工补默认值。
-- 缺失 token 应回到 Figma Variables 或 `tokens.md` 修正。
+- 缺失 token 应回到 Figma Variables 或 `docs/design-system/tokens.md` 修正。

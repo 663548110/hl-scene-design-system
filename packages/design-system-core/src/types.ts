@@ -159,6 +159,7 @@ export interface DesignSystemSnapshot {
 
 export interface ParserOptions {
   rootDir: string;
+  docsDir?: string;
 }
 
 export interface ExtractedYamlBlock {

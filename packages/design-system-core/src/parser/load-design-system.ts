@@ -1,5 +1,5 @@
 import { readdir, readFile } from 'node:fs/promises';
-import { join } from 'node:path';
+import { isAbsolute, join, resolve } from 'node:path';
 
 import type { ComponentDocument, DesignSystemSnapshot, ParserOptions } from '../types.js';
 import { parseComponentDocument, isComponentEntryFile } from './parse-components.js';
@@ -7,9 +7,10 @@ import { parseRulesDocument } from './parse-rules.js';
 import { parseTokensDocument } from './parse-tokens.js';
 
 export async function loadDesignSystem(options: ParserOptions): Promise<DesignSystemSnapshot> {
-  const rulesPath = join(options.rootDir, 'rules.md');
-  const tokensPath = join(options.rootDir, 'tokens.md');
-  const componentsDir = join(options.rootDir, 'components');
+  const docsDir = resolveDocsDir(options);
+  const rulesPath = join(docsDir, 'rules.md');
+  const tokensPath = join(docsDir, 'tokens.md');
+  const componentsDir = join(docsDir, 'components');
 
   const [rulesMarkdown, tokensMarkdown, componentFiles] = await Promise.all([
     readFile(rulesPath, 'utf8'),
@@ -34,4 +35,12 @@ export async function loadDesignSystem(options: ParserOptions): Promise<DesignSy
     tokens: parseTokensDocument(tokensPath, tokensMarkdown),
     components: componentDocs
   };
+}
+
+function resolveDocsDir(options: ParserOptions): string {
+  if (!options.docsDir) {
+    return join(options.rootDir, 'docs', 'design-system');
+  }
+
+  return isAbsolute(options.docsDir) ? options.docsDir : resolve(options.rootDir, options.docsDir);
 }

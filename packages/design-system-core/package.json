@@ -1,0 +1,16 @@
+{
+  "name": "@hl-scene/design-system-core",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Parser, exporter, and MCP core for HL Scene Design System facts.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  }
+}

@@ -196,7 +196,7 @@ export const DEFAULT_COMPONENT_TOKEN_PREFIXES = [
 
 export function defaultFilePath(format: ExportFormat): string {
   if (format === "design-system") {
-    return "generated/figma-token-source.json";
+    return "docs/design-system/tokens.md";
   }
 
   return format === "md" ? "artifacts/flutter/colors.md" : "artifacts/css/colors.css";

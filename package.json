@@ -4,14 +4,14 @@
   "private": true,
   "description": "HL Scene design system monorepo for Figma tokens, design rules, generated assets, and Flutter components.",
   "type": "module",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "main": "packages/design-system-core/dist/index.js",
+  "types": "packages/design-system-core/dist/index.d.ts",
   "files": [
-    "dist"
+    "packages/design-system-core/dist"
   ],
   "scripts": {
-    "build": "tsc -p tsconfig.json",
-    "typecheck": "tsc -p tsconfig.json --noEmit",
+    "build": "npm --prefix packages/design-system-core run build",
+    "typecheck": "npm --prefix packages/design-system-core run typecheck",
     "docs:dev": "pnpm --dir apps/docs site:dev",
     "docs:build": "pnpm --dir apps/docs site",
     "figma:check": "npm --prefix apps/figma-token-sync-plugin run check",

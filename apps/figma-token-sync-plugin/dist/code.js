@@ -101,7 +101,7 @@
   ].join(", ");
   function defaultFilePath(format) {
     if (format === "design-system") {
-      return "generated/figma-token-source.json";
+      return "docs/design-system/tokens.md";
     }
     return format === "md" ? "artifacts/flutter/colors.md" : "artifacts/css/colors.css";
   }
