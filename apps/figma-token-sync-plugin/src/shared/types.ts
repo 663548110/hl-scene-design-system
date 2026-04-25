@@ -209,11 +209,6 @@ export function defaultFlutterFilePath(themeId: string): string {
   return "packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart";
 }
 
-export function defaultThemeId(sourceName?: string): string {
-  void sourceName;
-  return "default";
-}
-
 export const DEFAULT_SETTINGS: StoredSettings = {
   repoOwner: "663548110",
   repoName: "hl-scene-design-system",
@@ -239,43 +234,30 @@ export function normalizeSettings(
   maybeSettings?: Partial<StoredSettings> | null,
   sourceName?: string,
 ): StoredSettings {
-  const format =
-    maybeSettings?.format === "md" || maybeSettings?.format === "css" || maybeSettings?.format === "design-system"
-      ? maybeSettings.format
-      : DEFAULT_SETTINGS.format;
-  const themeId = normalizeThemeId(maybeSettings?.themeId?.trim() || defaultThemeId(sourceName));
+  void sourceName;
+  const format = DEFAULT_SETTINGS.format;
+  const themeId = DEFAULT_SETTINGS.themeId;
 
   return {
-    repoOwner: maybeSettings?.repoOwner?.trim() ?? DEFAULT_SETTINGS.repoOwner,
-    repoName: maybeSettings?.repoName?.trim() ?? DEFAULT_SETTINGS.repoName,
-    branch: maybeSettings?.branch?.trim() || DEFAULT_SETTINGS.branch,
-    filePath: maybeSettings?.filePath?.trim() || defaultFilePath(format),
-    cssFilePath: normalizeOutputPath(
-      maybeSettings?.cssFilePath?.trim(),
-      DEFAULT_SETTINGS.cssFilePath,
-    ),
-    flutterFilePath: normalizeOutputPath(
-      maybeSettings?.flutterFilePath?.trim(),
-      defaultFlutterFilePath(themeId),
-    ),
+    repoOwner: DEFAULT_SETTINGS.repoOwner,
+    repoName: DEFAULT_SETTINGS.repoName,
+    branch: DEFAULT_SETTINGS.branch,
+    filePath: defaultFilePath(format),
+    cssFilePath: DEFAULT_SETTINGS.cssFilePath,
+    flutterFilePath: defaultFlutterFilePath(themeId),
     format,
-    collectionId: maybeSettings?.collectionId?.trim() || DEFAULT_SETTINGS.collectionId,
-    namePrefix: maybeSettings?.namePrefix?.trim() || DEFAULT_SETTINGS.namePrefix,
+    collectionId: DEFAULT_SETTINGS.collectionId,
+    namePrefix: DEFAULT_SETTINGS.namePrefix,
     themeId,
     selectedThemeIds: normalizeStringArray(maybeSettings?.selectedThemeIds, DEFAULT_SETTINGS.selectedThemeIds),
-    lightModeName: maybeSettings?.lightModeName?.trim() ?? DEFAULT_SETTINGS.lightModeName,
-    darkModeName: maybeSettings?.darkModeName?.trim() ?? DEFAULT_SETTINGS.darkModeName,
+    lightModeName: DEFAULT_SETTINGS.lightModeName,
+    darkModeName: DEFAULT_SETTINGS.darkModeName,
     includeTokenEntries: false,
-    includeCssTheme: normalizeBoolean(maybeSettings?.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
-    includeFlutterTheme: normalizeBoolean(maybeSettings?.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
-    componentTokenPrefixes:
-      maybeSettings?.componentTokenPrefixes?.trim() || DEFAULT_SETTINGS.componentTokenPrefixes,
-    commitMessage: maybeSettings?.commitMessage?.trim() || DEFAULT_SETTINGS.commitMessage,
+    includeCssTheme: true,
+    includeFlutterTheme: true,
+    componentTokenPrefixes: DEFAULT_SETTINGS.componentTokenPrefixes,
+    commitMessage: DEFAULT_SETTINGS.commitMessage,
   };
-}
-
-function normalizeBoolean(value: boolean | undefined, fallback: boolean): boolean {
-  return typeof value === "boolean" ? value : fallback;
 }
 
 function normalizeStringArray(value: string[] | undefined, fallback: string[]): string[] {
@@ -302,37 +284,4 @@ function normalizeStringArray(value: string[] | undefined, fallback: string[]): 
 
 function normalizeThemeId(value: string): string {
   return value === "2_0_flutter" ? "default" : value;
-}
-
-function normalizeOutputPath(value: string | undefined, fallback: string): string {
-  if (!value) {
-    return fallback;
-  }
-
-  if (value.indexOf("tokens/css/") === 0) {
-    return `packages/theme-generator/src/common/themes/tokens/${value.slice("tokens/css/".length)}`;
-  }
-
-  if (value.indexOf("artifacts/css/") === 0) {
-    return `packages/theme-generator/src/common/themes/tokens/${value.slice("artifacts/css/".length)}`;
-  }
-
-  if (value.indexOf("tokens/flutter/") === 0) {
-    return fallback;
-  }
-
-  if (value.indexOf("artifacts/flutter/") === 0) {
-    return fallback;
-  }
-
-  if (/^artifacts\/flutter\/rd_.+_theme\.dart$/.test(value)) {
-    return fallback;
-  }
-
-  return value;
-}
-
-function toSnakeCase(value: string): string {
-  const matches = value.toLowerCase().match(/[a-z0-9]+/g) ?? [];
-  return matches.join("_");
 }

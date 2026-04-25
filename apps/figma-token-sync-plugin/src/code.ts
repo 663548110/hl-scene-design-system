@@ -23,8 +23,8 @@ const GITHUB_BODY_TIMEOUT_MS = 60000;
 const BASE64_ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/";
 
 figma.showUI(__html__, {
-  width: 560,
-  height: 760,
+  width: 420,
+  height: 720,
   title: "Figma Token Sync",
   themeColors: true,
 });

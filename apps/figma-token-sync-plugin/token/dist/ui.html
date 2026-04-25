@@ -15,7 +15,10 @@
       html,
       body {
         margin: 0;
+        width: 100%;
+        max-width: 100%;
         min-height: 100%;
+        overflow-x: hidden;
         background:
           radial-gradient(circle at top right, color-mix(in srgb, var(--figma-color-bg-brand, #0d99ff) 12%, transparent), transparent 28%),
           linear-gradient(180deg, var(--figma-color-bg) 0%, color-mix(in srgb, var(--figma-color-bg) 92%, var(--figma-color-bg-secondary) 8%) 100%);
@@ -24,18 +27,21 @@
       }
 
       body {
-        padding: 16px;
+        padding: 12px;
       }
 
       .shell {
         display: grid;
-        gap: 12px;
+        gap: 10px;
+        width: 100%;
+        max-width: 396px;
+        margin: 0 auto;
       }
 
       .hero {
-        padding: 14px;
+        padding: 12px;
         border: 1px solid var(--figma-color-border);
-        border-radius: 16px;
+        border-radius: 14px;
         background:
           linear-gradient(135deg, color-mix(in srgb, var(--figma-color-bg-brand, #0d99ff) 14%, transparent), transparent 42%),
           var(--figma-color-bg-secondary);
@@ -79,9 +85,9 @@
       }
 
       .panel {
-        padding: 14px;
+        padding: 12px;
         border: 1px solid var(--figma-color-border);
-        border-radius: 16px;
+        border-radius: 14px;
         background: var(--figma-color-bg);
       }
 
@@ -89,15 +95,6 @@
         margin: 0 0 12px;
         font-size: 13px;
         font-weight: 700;
-      }
-
-      .grid {
-        display: grid;
-        gap: 10px;
-      }
-
-      .grid.two {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
       label {
@@ -148,31 +145,8 @@
         gap: 8px;
       }
 
-      .checkbox-grid {
-        display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-        gap: 8px;
-      }
-
-      .advanced-config {
-        margin-top: 12px;
-        border-top: 1px solid color-mix(in srgb, var(--figma-color-border) 64%, transparent);
-        padding-top: 10px;
-      }
-
-      .advanced-config summary {
-        cursor: pointer;
-        color: var(--figma-color-text-secondary);
-        font-weight: 700;
-        user-select: none;
-      }
-
-      .advanced-config summary:hover {
-        color: var(--figma-color-text);
-      }
-
       .theme-picker {
-        margin-top: 12px;
+        margin-top: 0;
       }
 
       .theme-picker-header {
@@ -200,8 +174,10 @@
 
       .theme-list {
         display: grid;
-        grid-template-columns: repeat(2, minmax(0, 1fr));
+        grid-template-columns: minmax(0, 1fr);
         gap: 8px;
+        max-height: 174px;
+        overflow: auto;
       }
 
       .theme-option {
@@ -213,6 +189,7 @@
         border: 1px solid var(--figma-color-border);
         background: var(--figma-color-bg-secondary);
         color: var(--figma-color-text);
+        min-width: 0;
       }
 
       .theme-option-body {
@@ -223,12 +200,14 @@
 
       .theme-option-name {
         font-weight: 700;
+        overflow-wrap: anywhere;
       }
 
       .theme-option-modes,
       .theme-list-empty {
         color: var(--figma-color-text-secondary);
         font-size: 11px;
+        overflow-wrap: anywhere;
       }
 
       .theme-list-empty {
@@ -236,17 +215,6 @@
         padding: 9px 10px;
         border-radius: 12px;
         border: 1px dashed var(--figma-color-border);
-      }
-
-      .checkbox-label {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px 10px;
-        border: 1px solid var(--figma-color-border);
-        border-radius: 10px;
-        background: var(--figma-color-bg-secondary);
-        color: var(--figma-color-text);
       }
 
       button {
@@ -370,8 +338,8 @@
       }
 
       .preview {
-        min-height: 240px;
-        max-height: 420px;
+        min-height: 120px;
+        max-height: 240px;
         overflow: auto;
         padding: 14px;
         border-radius: 14px;
@@ -385,6 +353,31 @@
       .hint {
         margin-top: 10px;
         color: var(--figma-color-text-secondary);
+      }
+
+      .sync-target {
+        margin-bottom: 10px;
+        padding: 9px 10px;
+        border-radius: 12px;
+        background: var(--figma-color-bg-secondary);
+        border: 1px solid var(--figma-color-border);
+        color: var(--figma-color-text-secondary);
+        overflow-wrap: anywhere;
+      }
+
+      .preview-details {
+        margin-top: 12px;
+      }
+
+      .preview-details summary {
+        cursor: pointer;
+        color: var(--figma-color-text-secondary);
+        font-weight: 700;
+        user-select: none;
+      }
+
+      .preview-details summary:hover {
+        color: var(--figma-color-text);
       }
 
       .hidden {
@@ -414,17 +407,11 @@
       </section>
 
       <section class="panel">
-        <h2 class="panel-title">导出配置</h2>
-        <div class="grid">
-          <label>
-            Theme ID
-            <input id="theme-id" type="text" placeholder="default" />
-          </label>
-        </div>
-        <div class="hint">默认导出全部变量集合；Light/Dark 与 SL/Mrj 等多主题会自动识别。一般只需要确认 Theme ID。</div>
+        <h2 class="panel-title">同步主题</h2>
+        <div class="sync-target">目标仓库：663548110/hl-scene-design-system#main<br />产物：CSS 主题 token + Flutter 主题 Dart</div>
         <div class="theme-picker">
           <div class="theme-picker-header">
-            <div class="theme-picker-title">同步主题</div>
+            <div class="theme-picker-title">选择要同步的主题</div>
             <div class="theme-picker-actions">
               <button id="select-all-themes-button" type="button">全选</button>
               <button id="clear-themes-button" type="button">清空</button>
@@ -434,99 +421,26 @@
             <div class="theme-list-empty">等待识别 Figma 主题...</div>
           </div>
         </div>
-        <details class="advanced-config">
-          <summary>高级配置</summary>
-          <div class="grid two" style="margin-top: 10px">
-            <label>
-              变量集合
-              <select id="collection"></select>
-            </label>
-            <label>
-              CSS / Flutter 前缀
-              <input id="name-prefix" type="text" placeholder="rd" />
-            </label>
-          </div>
-          <div class="grid two" style="margin-top: 10px">
-            <label>
-              Light mode 名称
-              <input id="light-mode-name" type="text" placeholder="留空自动识别 light/default/亮色" />
-            </label>
-            <label>
-              Dark mode 名称
-              <input id="dark-mode-name" type="text" placeholder="留空自动识别 dark/暗色" />
-            </label>
-          </div>
-          <label style="margin-top: 10px">
-            组件 token 前缀
-            <textarea id="component-token-prefixes" placeholder="button, input, tabs"></textarea>
-          </label>
-          <div class="hint">这些项通常不用改，仅在 Figma mode 命名不规范或组件 token 识别需要调试时使用。</div>
-        </details>
+        <div class="hint">默认读取全部本地 Variables；组件级 token 不进入全局主题产物。</div>
       </section>
 
       <section class="panel">
-        <h2 class="panel-title">同步产物</h2>
-        <input id="include-token-entries" type="checkbox" hidden />
-        <input id="file-path" type="hidden" />
-        <div class="checkbox-grid">
-          <label class="checkbox-label">
-            <input id="include-css-theme" type="checkbox" />
-            CSS 主题文件
-          </label>
-          <label class="checkbox-label">
-            <input id="include-flutter-theme" type="checkbox" />
-            Flutter 主题 Dart
-          </label>
-        </div>
-        <label style="margin-top: 10px">
-          CSS 主题入口文件
-          <input id="css-file-path" type="text" placeholder="packages/theme-generator/src/common/themes/tokens/theme.css" />
+        <h2 class="panel-title">GitHub Token</h2>
+        <label>
+          Personal Access Token
+          <input id="github-token" type="password" placeholder="需要 repo contents 写入权限" />
         </label>
-        <label style="margin-top: 10px">
-          Flutter 主题入口 Dart
-          <input id="flutter-file-path" type="text" placeholder="packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart" />
-        </label>
-        <div class="hint">CSS 和 Dart 都会按选中主题拆分；入口文件只负责 import/export 每套主题文件。</div>
-      </section>
-
-      <section class="panel">
-        <h2 class="panel-title">GitHub 同步</h2>
-        <div class="grid two">
-          <label>
-            Owner / 组织
-            <input id="repo-owner" type="text" placeholder="your-org" />
-          </label>
-          <label>
-            Repo
-            <input id="repo-name" type="text" placeholder="your-repo" />
-          </label>
-        </div>
-        <div class="grid two" style="margin-top: 10px">
-          <label>
-            Branch
-            <input id="branch" type="text" placeholder="main" />
-          </label>
-          <label>
-            GitHub Token
-            <input id="github-token" type="password" placeholder="保存需要插件 manifest 带 id" />
-          </label>
-        </div>
         <div class="actions" style="margin-top: 10px">
           <button id="save-token-button" type="button">保存 Token</button>
           <button id="clear-token-button" type="button">清空 Token</button>
         </div>
-        <label style="margin-top: 10px">
-          Commit message
-          <input id="commit-message" type="text" placeholder="chore(tokens): sync figma color tokens" />
-        </label>
-        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入 CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
+        <div class="hint">Token 只保存到本机 Figma 插件存储，不写入仓库。</div>
       </section>
 
       <section class="panel">
-        <h2 class="panel-title">预览</h2>
+        <h2 class="panel-title">同步</h2>
         <div class="actions">
           <button id="refresh-button" type="button">刷新 Figma 变量</button>
-          <button id="copy-button" type="button">复制预览</button>
           <button id="sync-button" class="primary" type="button">同步到 GitHub</button>
         </div>
         <div id="status" class="status hidden" style="margin-top: 12px"></div>
@@ -542,7 +456,10 @@
             <div class="sync-log-empty">点击“同步到 GitHub”后，这里会显示读取、合并和上传日志。</div>
           </div>
         </div>
-        <pre id="preview" class="preview" style="margin-top: 12px"></pre>
+        <details class="preview-details">
+          <summary>查看产物预览</summary>
+          <pre id="preview" class="preview" style="margin-top: 10px"></pre>
+        </details>
       </section>
     </div>
 
@@ -659,10 +576,6 @@
     void themeId;
     return "packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart";
   }
-  function defaultThemeId(sourceName) {
-    void sourceName;
-    return "default";
-  }
   var DEFAULT_SETTINGS = {
     repoOwner: "663548110",
     repoName: "hl-scene-design-system",
@@ -684,32 +597,29 @@
     commitMessage: "chore(tokens): sync figma design tokens"
   };
   function normalizeSettings(maybeSettings, sourceName) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
-    var format = (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "md" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "css" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "design-system" ? maybeSettings.format : DEFAULT_SETTINGS.format;
-    var themeId = normalizeThemeId(((_a = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.themeId) === null || _a === void 0 ? void 0 : _a.trim()) || defaultThemeId(sourceName));
+    void sourceName;
+    var format = DEFAULT_SETTINGS.format;
+    var themeId = DEFAULT_SETTINGS.themeId;
     return {
-      repoOwner: (_c = (_b = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoOwner) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : DEFAULT_SETTINGS.repoOwner,
-      repoName: (_e = (_d = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoName) === null || _d === void 0 ? void 0 : _d.trim()) !== null && _e !== void 0 ? _e : DEFAULT_SETTINGS.repoName,
-      branch: ((_f = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.branch) === null || _f === void 0 ? void 0 : _f.trim()) || DEFAULT_SETTINGS.branch,
-      filePath: ((_g = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.filePath) === null || _g === void 0 ? void 0 : _g.trim()) || defaultFilePath(format),
-      cssFilePath: normalizeOutputPath((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _h === void 0 ? void 0 : _h.trim(), DEFAULT_SETTINGS.cssFilePath),
-      flutterFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _j === void 0 ? void 0 : _j.trim(), defaultFlutterFilePath(themeId)),
+      repoOwner: DEFAULT_SETTINGS.repoOwner,
+      repoName: DEFAULT_SETTINGS.repoName,
+      branch: DEFAULT_SETTINGS.branch,
+      filePath: defaultFilePath(format),
+      cssFilePath: DEFAULT_SETTINGS.cssFilePath,
+      flutterFilePath: defaultFlutterFilePath(themeId),
       format: format,
-      collectionId: ((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _k === void 0 ? void 0 : _k.trim()) || DEFAULT_SETTINGS.collectionId,
-      namePrefix: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.namePrefix,
+      collectionId: DEFAULT_SETTINGS.collectionId,
+      namePrefix: DEFAULT_SETTINGS.namePrefix,
       themeId: themeId,
       selectedThemeIds: normalizeStringArray(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.selectedThemeIds, DEFAULT_SETTINGS.selectedThemeIds),
-      lightModeName: (_o = (_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _m === void 0 ? void 0 : _m.trim()) !== null && _o !== void 0 ? _o : DEFAULT_SETTINGS.lightModeName,
-      darkModeName: (_q = (_p = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _p === void 0 ? void 0 : _p.trim()) !== null && _q !== void 0 ? _q : DEFAULT_SETTINGS.darkModeName,
+      lightModeName: DEFAULT_SETTINGS.lightModeName,
+      darkModeName: DEFAULT_SETTINGS.darkModeName,
       includeTokenEntries: false,
-      includeCssTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
-      includeFlutterTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
-      componentTokenPrefixes: ((_r = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _r === void 0 ? void 0 : _r.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
-      commitMessage: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.commitMessage
+      includeCssTheme: true,
+      includeFlutterTheme: true,
+      componentTokenPrefixes: DEFAULT_SETTINGS.componentTokenPrefixes,
+      commitMessage: DEFAULT_SETTINGS.commitMessage
     };
-  }
-  function normalizeBoolean(value, fallback) {
-    return typeof value === "boolean" ? value : fallback;
   }
   function normalizeStringArray(value, fallback) {
     var e_1, _a;
@@ -741,27 +651,6 @@
   }
   function normalizeThemeId(value) {
     return value === "2_0_flutter" ? "default" : value;
-  }
-  function normalizeOutputPath(value, fallback) {
-    if (!value) {
-      return fallback;
-    }
-    if (value.indexOf("tokens/css/") === 0) {
-      return "packages/theme-generator/src/common/themes/tokens/".concat(value.slice("tokens/css/".length));
-    }
-    if (value.indexOf("artifacts/css/") === 0) {
-      return "packages/theme-generator/src/common/themes/tokens/".concat(value.slice("artifacts/css/".length));
-    }
-    if (value.indexOf("tokens/flutter/") === 0) {
-      return fallback;
-    }
-    if (value.indexOf("artifacts/flutter/") === 0) {
-      return fallback;
-    }
-    if (/^artifacts\/flutter\/rd_.+_theme\.dart$/.test(value)) {
-      return fallback;
-    }
-    return value;
   }
 
   // .build-tmp/shared/token-model.js
@@ -1976,13 +1865,13 @@
     }
     return selectedThemeIds.indexOf(themeId) !== -1;
   }
-  function parseFlutterThemeModeName(modeValue, defaultThemeId2) {
+  function parseFlutterThemeModeName(modeValue, defaultThemeId) {
     var role = inferThemeModeRole(modeValue);
     if (!role) {
       return null;
     }
     var baseName = stripThemeModeRole(modeValue.modeName, role);
-    var themeId = themeIdFromModeBase(baseName, defaultThemeId2);
+    var themeId = themeIdFromModeBase(baseName, defaultThemeId);
     return {
       themeId: themeId,
       role: role
@@ -2008,14 +1897,14 @@
     }
     return value.replace(/[\/_-]+/g, " ").replace(/\s+/g, " ").trim();
   }
-  function themeIdFromModeBase(baseName, defaultThemeId2) {
+  function themeIdFromModeBase(baseName, defaultThemeId) {
     var _a;
     var normalizedBase = baseName.toLowerCase();
     if (!normalizedBase || normalizedBase === "default" || normalizedBase === "\u9ED8\u8BA4") {
-      return defaultThemeId2 || "rdesign";
+      return defaultThemeId || "rdesign";
     }
     var matches = (_a = normalizedBase.match(/[a-z0-9]+/g)) !== null && _a !== void 0 ? _a : [];
-    return matches.join("_") || defaultThemeId2 || "rdesign";
+    return matches.join("_") || defaultThemeId || "rdesign";
   }
   function cssThemeEntryFilePath(pathValue) {
     var value = pathValue || defaultCssFilePath();
@@ -3106,30 +2995,13 @@
     collectionCount: getElement("collection-count"),
     tokenCount: getElement("token-count"),
     warningCount: getElement("warning-count"),
-    collection: getInput("collection"),
-    themeId: getInput("theme-id"),
-    namePrefix: getInput("name-prefix"),
-    lightModeName: getInput("light-mode-name"),
-    darkModeName: getInput("dark-mode-name"),
     themeList: getElement("theme-list"),
     selectAllThemesButton: getInput("select-all-themes-button"),
     clearThemesButton: getInput("clear-themes-button"),
-    includeTokenEntries: getInput("include-token-entries"),
-    includeCssTheme: getInput("include-css-theme"),
-    includeFlutterTheme: getInput("include-flutter-theme"),
-    filePath: getInput("file-path"),
-    cssFilePath: getInput("css-file-path"),
-    flutterFilePath: getInput("flutter-file-path"),
-    componentTokenPrefixes: getInput("component-token-prefixes"),
-    repoOwner: getInput("repo-owner"),
-    repoName: getInput("repo-name"),
-    branch: getInput("branch"),
     githubToken: getInput("github-token"),
-    commitMessage: getInput("commit-message"),
     saveTokenButton: getInput("save-token-button"),
     clearTokenButton: getInput("clear-token-button"),
     refreshButton: getInput("refresh-button"),
-    copyButton: getInput("copy-button"),
     copyLogButton: getInput("copy-log-button"),
     clearLogButton: getInput("clear-log-button"),
     syncButton: getInput("sync-button"),
@@ -3160,7 +3032,6 @@
       snapshot = payload.snapshot;
       settings = normalizeSettings(payload.settings, payload.snapshot.fileName);
       githubToken = (_a = payload.githubToken) !== null && _a !== void 0 ? _a : "";
-      renderCollectionOptions();
       hydrateForm();
       refreshPreview();
       setStatus("\u5DF2\u8BFB\u53D6 ".concat(snapshot.fileName, " \u7684\u672C\u5730 Variables\u3002"), "neutral");
@@ -3169,7 +3040,6 @@
     if (typedMessage.type === "snapshot") {
       var payload = pluginMessage;
       snapshot = payload.snapshot;
-      renderCollectionOptions();
       refreshPreview();
       setStatus("\u53D8\u91CF\u6570\u636E\u5DF2\u5237\u65B0\u3002", "success");
       return;
@@ -3204,40 +3074,13 @@
   wireEvents();
   syncButtonState();
   function wireEvents() {
-    var e_1, _a;
     var _this = this;
     elements.refreshButton.addEventListener("click", function() {
       postToPlugin({ type: "refresh" });
       setStatus("\u6B63\u5728\u91CD\u65B0\u8BFB\u53D6 Figma Variables...", "neutral");
     });
-    elements.copyButton.addEventListener("click", function() {
-      return __awaiter(_this, void 0, void 0, function() {
-        return __generator(this, function(_a2) {
-          switch (_a2.label) {
-            case 0:
-              if (!previewContent) {
-                return [
-                  2
-                  /*return*/
-                ];
-              }
-              return [4, copyTextToClipboard(previewContent)];
-            case 1:
-              if (_a2.sent()) {
-                setStatus("\u9884\u89C8\u5185\u5BB9\u5DF2\u590D\u5236\u3002", "success");
-              } else {
-                setStatus("\u590D\u5236\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u9009\u4E2D\u6587\u672C\u3002", "error");
-              }
-              return [
-                2
-                /*return*/
-              ];
-          }
-        });
-      });
-    });
     elements.syncButton.addEventListener("click", function() {
-      var e_2, _a2;
+      var e_1, _a;
       if (!snapshot) {
         setStatus("\u8FD8\u6CA1\u6709\u62FF\u5230 Figma Variables\u3002", "error");
         return;
@@ -3263,13 +3106,13 @@
             timestamp: (/* @__PURE__ */ new Date()).toISOString()
           });
         }
-      } catch (e_2_1) {
-        e_2 = { error: e_2_1 };
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
       } finally {
         try {
-          if (artifactWarnings_1_1 && !artifactWarnings_1_1.done && (_a2 = artifactWarnings_1.return)) _a2.call(artifactWarnings_1);
+          if (artifactWarnings_1_1 && !artifactWarnings_1_1.done && (_a = artifactWarnings_1.return)) _a.call(artifactWarnings_1);
         } finally {
-          if (e_2) throw e_2.error;
+          if (e_1) throw e_1.error;
         }
       }
       githubToken = elements.githubToken.value.trim();
@@ -3283,39 +3126,6 @@
       });
       setStatus("\u6B63\u5728\u540C\u6B65\u5230 GitHub...", "neutral");
     });
-    var watchedInputs = [
-      elements.collection,
-      elements.themeId,
-      elements.namePrefix,
-      elements.lightModeName,
-      elements.darkModeName,
-      elements.includeTokenEntries,
-      elements.includeCssTheme,
-      elements.includeFlutterTheme,
-      elements.filePath,
-      elements.cssFilePath,
-      elements.flutterFilePath,
-      elements.componentTokenPrefixes,
-      elements.repoOwner,
-      elements.repoName,
-      elements.branch,
-      elements.commitMessage
-    ];
-    try {
-      for (var watchedInputs_1 = __values4(watchedInputs), watchedInputs_1_1 = watchedInputs_1.next(); !watchedInputs_1_1.done; watchedInputs_1_1 = watchedInputs_1.next()) {
-        var input = watchedInputs_1_1.value;
-        input.addEventListener("input", handleSettingsChange);
-        input.addEventListener("change", handleSettingsChange);
-      }
-    } catch (e_1_1) {
-      e_1 = { error: e_1_1 };
-    } finally {
-      try {
-        if (watchedInputs_1_1 && !watchedInputs_1_1.done && (_a = watchedInputs_1.return)) _a.call(watchedInputs_1);
-      } finally {
-        if (e_1) throw e_1.error;
-      }
-    }
     elements.githubToken.addEventListener("input", handleGithubTokenChange);
     elements.saveTokenButton.addEventListener("click", function() {
       githubToken = elements.githubToken.value.trim();
@@ -3340,8 +3150,8 @@
     });
     elements.copyLogButton.addEventListener("click", function() {
       return __awaiter(_this, void 0, void 0, function() {
-        return __generator(this, function(_a2) {
-          switch (_a2.label) {
+        return __generator(this, function(_a) {
+          switch (_a.label) {
             case 0:
               if (syncLogEntries.length === 0) {
                 setStatus("\u5F53\u524D\u6CA1\u6709\u53EF\u590D\u5236\u7684\u540C\u6B65\u65E5\u5FD7\u3002", "neutral");
@@ -3352,7 +3162,7 @@
               }
               return [4, copyTextToClipboard(formatSyncLogEntries(syncLogEntries))];
             case 1:
-              if (_a2.sent()) {
+              if (_a.sent()) {
                 setStatus("\u540C\u6B65\u65E5\u5FD7\u5DF2\u590D\u5236\u3002", "success");
               } else {
                 setStatus("\u590D\u5236\u65E5\u5FD7\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u9009\u4E2D\u6587\u672C\u3002", "error");
@@ -3369,18 +3179,6 @@
       clearSyncLog();
       setStatus("\u540C\u6B65\u65E5\u5FD7\u5DF2\u6E05\u7A7A\u3002", "success");
     });
-  }
-  function handleSettingsChange(event) {
-    var previousThemeId = settings.themeId;
-    var previousFlutterFilePath = settings.flutterFilePath;
-    var nextSettings = collectSettingsFromForm();
-    if (event.target === elements.themeId && previousFlutterFilePath === defaultFlutterFilePath(previousThemeId) && nextSettings.flutterFilePath === previousFlutterFilePath) {
-      nextSettings.flutterFilePath = defaultFlutterFilePath(nextSettings.themeId);
-      elements.flutterFilePath.value = nextSettings.flutterFilePath;
-    }
-    settings = normalizeSettings(nextSettings, snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
-    persistSettings();
-    refreshPreview();
   }
   function refreshPreview() {
     if (!snapshot) {
@@ -3401,56 +3199,10 @@
     }
   }
   function hydrateForm() {
-    elements.collection.value = settings.collectionId;
-    elements.themeId.value = settings.themeId;
-    elements.namePrefix.value = settings.namePrefix;
-    elements.lightModeName.value = settings.lightModeName;
-    elements.darkModeName.value = settings.darkModeName;
-    elements.includeTokenEntries.checked = settings.includeTokenEntries;
-    elements.includeCssTheme.checked = settings.includeCssTheme;
-    elements.includeFlutterTheme.checked = settings.includeFlutterTheme;
-    elements.filePath.value = settings.filePath;
-    elements.cssFilePath.value = settings.cssFilePath;
-    elements.flutterFilePath.value = settings.flutterFilePath;
-    elements.componentTokenPrefixes.value = settings.componentTokenPrefixes;
-    elements.repoOwner.value = settings.repoOwner;
-    elements.repoName.value = settings.repoName;
-    elements.branch.value = settings.branch;
     elements.githubToken.value = githubToken;
-    elements.commitMessage.value = settings.commitMessage;
-  }
-  function renderCollectionOptions() {
-    var e_3, _a;
-    var _b;
-    var currentValue = settings.collectionId;
-    elements.collection.innerHTML = "";
-    var allOption = document.createElement("option");
-    allOption.value = ALL_COLLECTIONS;
-    allOption.textContent = "\u5168\u90E8\u53D8\u91CF\u96C6\u5408";
-    elements.collection.appendChild(allOption);
-    try {
-      for (var _c = __values4((_b = snapshot === null || snapshot === void 0 ? void 0 : snapshot.collections) !== null && _b !== void 0 ? _b : []), _d = _c.next(); !_d.done; _d = _c.next()) {
-        var collection = _d.value;
-        var option = document.createElement("option");
-        option.value = collection.id;
-        option.textContent = "".concat(collection.name, " (").concat(collection.modes.length, " modes)");
-        elements.collection.appendChild(option);
-      }
-    } catch (e_3_1) {
-      e_3 = { error: e_3_1 };
-    } finally {
-      try {
-        if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
-      } finally {
-        if (e_3) throw e_3.error;
-      }
-    }
-    elements.collection.value = (snapshot === null || snapshot === void 0 ? void 0 : snapshot.collections.some(function(collection2) {
-      return collection2.id === currentValue;
-    })) ? currentValue : ALL_COLLECTIONS;
   }
   function renderThemeList(themes) {
-    var e_4, _a;
+    var e_2, _a;
     elements.themeList.innerHTML = "";
     if (themes.length === 0) {
       var empty = document.createElement("div");
@@ -3483,13 +3235,13 @@
         label.appendChild(body);
         elements.themeList.appendChild(label);
       }
-    } catch (e_4_1) {
-      e_4 = { error: e_4_1 };
+    } catch (e_2_1) {
+      e_2 = { error: e_2_1 };
     } finally {
       try {
         if (themes_1_1 && !themes_1_1.done && (_a = themes_1.return)) _a.call(themes_1);
       } finally {
-        if (e_4) throw e_4.error;
+        if (e_2) throw e_2.error;
       }
     }
   }
@@ -3517,26 +3269,7 @@
     return names.length > 0 ? names.join(", ") : "\u672A\u8BC6\u522B";
   }
   function collectSettingsFromForm() {
-    return normalizeSettings({
-      format: "design-system",
-      collectionId: elements.collection.value || ALL_COLLECTIONS,
-      themeId: elements.themeId.value,
-      selectedThemeIds: collectSelectedThemeIdsFromThemeList(),
-      namePrefix: elements.namePrefix.value,
-      lightModeName: elements.lightModeName.value,
-      darkModeName: elements.darkModeName.value,
-      includeTokenEntries: elements.includeTokenEntries.checked,
-      includeCssTheme: elements.includeCssTheme.checked,
-      includeFlutterTheme: elements.includeFlutterTheme.checked,
-      filePath: elements.filePath.value,
-      cssFilePath: elements.cssFilePath.value,
-      flutterFilePath: elements.flutterFilePath.value,
-      componentTokenPrefixes: elements.componentTokenPrefixes.value,
-      repoOwner: elements.repoOwner.value,
-      repoName: elements.repoName.value,
-      branch: elements.branch.value,
-      commitMessage: elements.commitMessage.value
-    }, snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+    return normalizeSettings(__assign(__assign({}, settings), { format: "design-system", selectedThemeIds: collectSelectedThemeIdsFromThemeList() }), snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
   }
   function persistSettings() {
     postToPlugin({

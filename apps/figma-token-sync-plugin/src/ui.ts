@@ -1,8 +1,6 @@
 import { generateMultiArtifacts, type FlutterThemeSummary } from "./shared/multi-artifacts";
 import {
-  ALL_COLLECTIONS,
   ALL_THEMES,
-  defaultFlutterFilePath,
   normalizeSettings,
   type SyncLogEntry,
   type SyncFileRequest,
@@ -15,30 +13,13 @@ const elements = {
   collectionCount: getElement("collection-count"),
   tokenCount: getElement("token-count"),
   warningCount: getElement("warning-count"),
-  collection: getInput<HTMLSelectElement>("collection"),
-  themeId: getInput<HTMLInputElement>("theme-id"),
-  namePrefix: getInput<HTMLInputElement>("name-prefix"),
-  lightModeName: getInput<HTMLInputElement>("light-mode-name"),
-  darkModeName: getInput<HTMLInputElement>("dark-mode-name"),
   themeList: getElement("theme-list"),
   selectAllThemesButton: getInput<HTMLButtonElement>("select-all-themes-button"),
   clearThemesButton: getInput<HTMLButtonElement>("clear-themes-button"),
-  includeTokenEntries: getInput<HTMLInputElement>("include-token-entries"),
-  includeCssTheme: getInput<HTMLInputElement>("include-css-theme"),
-  includeFlutterTheme: getInput<HTMLInputElement>("include-flutter-theme"),
-  filePath: getInput<HTMLInputElement>("file-path"),
-  cssFilePath: getInput<HTMLInputElement>("css-file-path"),
-  flutterFilePath: getInput<HTMLInputElement>("flutter-file-path"),
-  componentTokenPrefixes: getInput<HTMLTextAreaElement>("component-token-prefixes"),
-  repoOwner: getInput<HTMLInputElement>("repo-owner"),
-  repoName: getInput<HTMLInputElement>("repo-name"),
-  branch: getInput<HTMLInputElement>("branch"),
   githubToken: getInput<HTMLInputElement>("github-token"),
-  commitMessage: getInput<HTMLInputElement>("commit-message"),
   saveTokenButton: getInput<HTMLButtonElement>("save-token-button"),
   clearTokenButton: getInput<HTMLButtonElement>("clear-token-button"),
   refreshButton: getInput<HTMLButtonElement>("refresh-button"),
-  copyButton: getInput<HTMLButtonElement>("copy-button"),
   copyLogButton: getInput<HTMLButtonElement>("copy-log-button"),
   clearLogButton: getInput<HTMLButtonElement>("clear-log-button"),
   syncButton: getInput<HTMLButtonElement>("sync-button"),
@@ -79,7 +60,6 @@ window.onmessage = (event: MessageEvent<{ pluginMessage?: unknown }>) => {
     snapshot = payload.snapshot;
     settings = normalizeSettings(payload.settings, payload.snapshot.fileName);
     githubToken = payload.githubToken ?? "";
-    renderCollectionOptions();
     hydrateForm();
     refreshPreview();
     setStatus(`已读取 ${snapshot.fileName} 的本地 Variables。`, "neutral");
@@ -89,7 +69,6 @@ window.onmessage = (event: MessageEvent<{ pluginMessage?: unknown }>) => {
   if (typedMessage.type === "snapshot") {
     const payload = pluginMessage as { type: "snapshot"; snapshot: TokenSnapshot };
     snapshot = payload.snapshot;
-    renderCollectionOptions();
     refreshPreview();
     setStatus("变量数据已刷新。", "success");
     return;
@@ -144,18 +123,6 @@ function wireEvents(): void {
     setStatus("正在重新读取 Figma Variables...", "neutral");
   });
 
-  elements.copyButton.addEventListener("click", async () => {
-    if (!previewContent) {
-      return;
-    }
-
-    if (await copyTextToClipboard(previewContent)) {
-      setStatus("预览内容已复制。", "success");
-    } else {
-      setStatus("复制失败，请手动选中文本。", "error");
-    }
-  });
-
   elements.syncButton.addEventListener("click", () => {
     if (!snapshot) {
       setStatus("还没有拿到 Figma Variables。", "error");
@@ -193,30 +160,6 @@ function wireEvents(): void {
     });
     setStatus("正在同步到 GitHub...", "neutral");
   });
-
-  const watchedInputs = [
-    elements.collection,
-    elements.themeId,
-    elements.namePrefix,
-    elements.lightModeName,
-    elements.darkModeName,
-    elements.includeTokenEntries,
-    elements.includeCssTheme,
-    elements.includeFlutterTheme,
-    elements.filePath,
-    elements.cssFilePath,
-    elements.flutterFilePath,
-    elements.componentTokenPrefixes,
-    elements.repoOwner,
-    elements.repoName,
-    elements.branch,
-    elements.commitMessage,
-  ];
-
-  for (const input of watchedInputs) {
-    input.addEventListener("input", handleSettingsChange);
-    input.addEventListener("change", handleSettingsChange);
-  }
 
   elements.githubToken.addEventListener("input", handleGithubTokenChange);
 
@@ -270,25 +213,6 @@ function wireEvents(): void {
   });
 }
 
-function handleSettingsChange(event: Event): void {
-  const previousThemeId = settings.themeId;
-  const previousFlutterFilePath = settings.flutterFilePath;
-  const nextSettings = collectSettingsFromForm();
-
-  if (
-    event.target === elements.themeId &&
-    previousFlutterFilePath === defaultFlutterFilePath(previousThemeId) &&
-    nextSettings.flutterFilePath === previousFlutterFilePath
-  ) {
-    nextSettings.flutterFilePath = defaultFlutterFilePath(nextSettings.themeId);
-    elements.flutterFilePath.value = nextSettings.flutterFilePath;
-  }
-
-  settings = normalizeSettings(nextSettings, snapshot?.fileName);
-  persistSettings();
-  refreshPreview();
-}
-
 function refreshPreview(): void {
   if (!snapshot) {
     elements.preview.textContent = "等待 Figma Variables...";
@@ -311,44 +235,7 @@ function refreshPreview(): void {
 }
 
 function hydrateForm(): void {
-  elements.collection.value = settings.collectionId;
-  elements.themeId.value = settings.themeId;
-  elements.namePrefix.value = settings.namePrefix;
-  elements.lightModeName.value = settings.lightModeName;
-  elements.darkModeName.value = settings.darkModeName;
-  elements.includeTokenEntries.checked = settings.includeTokenEntries;
-  elements.includeCssTheme.checked = settings.includeCssTheme;
-  elements.includeFlutterTheme.checked = settings.includeFlutterTheme;
-  elements.filePath.value = settings.filePath;
-  elements.cssFilePath.value = settings.cssFilePath;
-  elements.flutterFilePath.value = settings.flutterFilePath;
-  elements.componentTokenPrefixes.value = settings.componentTokenPrefixes;
-  elements.repoOwner.value = settings.repoOwner;
-  elements.repoName.value = settings.repoName;
-  elements.branch.value = settings.branch;
   elements.githubToken.value = githubToken;
-  elements.commitMessage.value = settings.commitMessage;
-}
-
-function renderCollectionOptions(): void {
-  const currentValue = settings.collectionId;
-  elements.collection.innerHTML = "";
-
-  const allOption = document.createElement("option");
-  allOption.value = ALL_COLLECTIONS;
-  allOption.textContent = "全部变量集合";
-  elements.collection.appendChild(allOption);
-
-  for (const collection of snapshot?.collections ?? []) {
-    const option = document.createElement("option");
-    option.value = collection.id;
-    option.textContent = `${collection.name} (${collection.modes.length} modes)`;
-    elements.collection.appendChild(option);
-  }
-
-  elements.collection.value = snapshot?.collections.some((collection) => collection.id === currentValue)
-    ? currentValue
-    : ALL_COLLECTIONS;
 }
 
 function renderThemeList(themes: FlutterThemeSummary[]): void {
@@ -421,24 +308,9 @@ function formatModeNames(names: string[]): string {
 
 function collectSettingsFromForm(): StoredSettings {
   return normalizeSettings({
+    ...settings,
     format: "design-system",
-    collectionId: elements.collection.value || ALL_COLLECTIONS,
-    themeId: elements.themeId.value,
     selectedThemeIds: collectSelectedThemeIdsFromThemeList(),
-    namePrefix: elements.namePrefix.value,
-    lightModeName: elements.lightModeName.value,
-    darkModeName: elements.darkModeName.value,
-    includeTokenEntries: elements.includeTokenEntries.checked,
-    includeCssTheme: elements.includeCssTheme.checked,
-    includeFlutterTheme: elements.includeFlutterTheme.checked,
-    filePath: elements.filePath.value,
-    cssFilePath: elements.cssFilePath.value,
-    flutterFilePath: elements.flutterFilePath.value,
-    componentTokenPrefixes: elements.componentTokenPrefixes.value,
-    repoOwner: elements.repoOwner.value,
-    repoName: elements.repoName.value,
-    branch: elements.branch.value,
-    commitMessage: elements.commitMessage.value,
   }, snapshot?.fileName);
 }
 
