@@ -13,7 +13,6 @@ docs/
     tokens.md                    # token truth，保留 Token Entries
     components/                  # 一组件一文档
 
-generated/                       # Figma 同步的全量原始数据
 artifacts/                       # 面向消费端的生成产物
 
 apps/
@@ -54,7 +53,6 @@ packages/
 
 ### 产物层
 
-- `generated/figma-token-source.json`：全量 Figma Variables 数据源。
 - `artifacts/css/`：CSS 主题变量生成产物。
 
 ## 常用命令
@@ -92,6 +90,6 @@ const snapshot = await loadDesignSystem({
 
 1. 单一事实源：规则、token、组件事实只维护在 `docs/design-system/`。
 2. 一组件一文件：组件事实来自 `docs/design-system/components/*.md`。
-3. 生成产物不手写：`generated/`、`artifacts/` 和 Flutter token 文件由工具生成。
+3. 生成产物不手写：`artifacts/` 和 Flutter token 文件由工具生成。
 4. 应用不反写事实源：文档站、Figma 插件、AI agent、MCP 都是消费方或同步方。
 5. 解析逻辑集中：Markdown/YAML 解析统一放在 `packages/design-system-core`。

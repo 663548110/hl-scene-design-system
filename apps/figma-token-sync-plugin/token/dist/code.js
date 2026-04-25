@@ -121,7 +121,6 @@
     repoName: "hl-scene-design-system",
     branch: "main",
     filePath: defaultFilePath("design-system"),
-    fullDataFilePath: "generated/figma-token-source.json",
     cssFilePath: defaultCssFilePath(),
     flutterFilePath: defaultFlutterFilePath("default"),
     format: "design-system",
@@ -132,14 +131,13 @@
     lightModeName: "",
     darkModeName: "",
     includeTokenEntries: false,
-    includeFullData: true,
     includeCssTheme: true,
     includeFlutterTheme: true,
     componentTokenPrefixes: DEFAULT_COMPONENT_TOKEN_PREFIXES,
     commitMessage: "chore(tokens): sync figma design tokens"
   };
   function normalizeSettings(maybeSettings, sourceName) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
     var format = (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "md" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "css" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "design-system" ? maybeSettings.format : DEFAULT_SETTINGS.format;
     var themeId = normalizeThemeId(((_a = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.themeId) === null || _a === void 0 ? void 0 : _a.trim()) || defaultThemeId(sourceName));
     return {
@@ -147,22 +145,20 @@
       repoName: (_e = (_d = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoName) === null || _d === void 0 ? void 0 : _d.trim()) !== null && _e !== void 0 ? _e : DEFAULT_SETTINGS.repoName,
       branch: ((_f = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.branch) === null || _f === void 0 ? void 0 : _f.trim()) || DEFAULT_SETTINGS.branch,
       filePath: ((_g = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.filePath) === null || _g === void 0 ? void 0 : _g.trim()) || defaultFilePath(format),
-      fullDataFilePath: ((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.fullDataFilePath) === null || _h === void 0 ? void 0 : _h.trim()) || DEFAULT_SETTINGS.fullDataFilePath,
-      cssFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _j === void 0 ? void 0 : _j.trim(), DEFAULT_SETTINGS.cssFilePath),
-      flutterFilePath: normalizeOutputPath((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _k === void 0 ? void 0 : _k.trim(), defaultFlutterFilePath(themeId)),
+      cssFilePath: normalizeOutputPath((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _h === void 0 ? void 0 : _h.trim(), DEFAULT_SETTINGS.cssFilePath),
+      flutterFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _j === void 0 ? void 0 : _j.trim(), defaultFlutterFilePath(themeId)),
       format: format,
-      collectionId: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.collectionId,
-      namePrefix: ((_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _m === void 0 ? void 0 : _m.trim()) || DEFAULT_SETTINGS.namePrefix,
+      collectionId: ((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _k === void 0 ? void 0 : _k.trim()) || DEFAULT_SETTINGS.collectionId,
+      namePrefix: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.namePrefix,
       themeId: themeId,
       selectedThemeIds: normalizeStringArray(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.selectedThemeIds, DEFAULT_SETTINGS.selectedThemeIds),
-      lightModeName: (_p = (_o = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _o === void 0 ? void 0 : _o.trim()) !== null && _p !== void 0 ? _p : DEFAULT_SETTINGS.lightModeName,
-      darkModeName: (_r = (_q = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _q === void 0 ? void 0 : _q.trim()) !== null && _r !== void 0 ? _r : DEFAULT_SETTINGS.darkModeName,
+      lightModeName: (_o = (_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _m === void 0 ? void 0 : _m.trim()) !== null && _o !== void 0 ? _o : DEFAULT_SETTINGS.lightModeName,
+      darkModeName: (_q = (_p = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _p === void 0 ? void 0 : _p.trim()) !== null && _q !== void 0 ? _q : DEFAULT_SETTINGS.darkModeName,
       includeTokenEntries: false,
-      includeFullData: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFullData, DEFAULT_SETTINGS.includeFullData),
       includeCssTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
       includeFlutterTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
-      componentTokenPrefixes: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
-      commitMessage: ((_t = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _t === void 0 ? void 0 : _t.trim()) || DEFAULT_SETTINGS.commitMessage
+      componentTokenPrefixes: ((_r = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _r === void 0 ? void 0 : _r.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
+      commitMessage: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.commitMessage
     };
   }
   function normalizeBoolean(value, fallback) {

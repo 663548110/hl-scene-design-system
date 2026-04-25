@@ -396,7 +396,7 @@
     <div class="shell">
       <section class="hero">
         <h1 class="hero-title">Figma Token Sync</h1>
-        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：全量数据源 + 按主题拆分的 CSS / Flutter 产物。</p>
+        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：按主题拆分 CSS / Flutter 产物。</p>
         <div class="stats">
           <div class="stat">
             <span class="stat-label">集合</span>
@@ -470,22 +470,12 @@
         <input id="file-path" type="hidden" />
         <div class="checkbox-grid">
           <label class="checkbox-label">
-            <input id="include-full-data" type="checkbox" />
-            全量 JSON 数据源
-          </label>
-          <label class="checkbox-label">
             <input id="include-css-theme" type="checkbox" />
             CSS 主题文件
           </label>
           <label class="checkbox-label">
             <input id="include-flutter-theme" type="checkbox" />
             Flutter 主题 Dart
-          </label>
-        </div>
-        <div style="margin-top: 10px">
-          <label>
-            全量数据源
-            <input id="full-data-file-path" type="text" placeholder="generated/figma-token-source.json" />
           </label>
         </div>
         <label style="margin-top: 10px">
@@ -529,7 +519,7 @@
           Commit message
           <input id="commit-message" type="text" placeholder="chore(tokens): sync figma color tokens" />
         </label>
-        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入全量 JSON、CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
+        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入 CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
       </section>
 
       <section class="panel">

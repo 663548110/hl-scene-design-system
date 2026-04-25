@@ -22,7 +22,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorBrandPage"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "20fd8bc35f8f4298ead59ebbb70b62e47c01f2ea"
@@ -80,7 +80,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorComponent"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "21f1a1225f2dabaeb151d0a922416e4868f6b85d"
@@ -138,7 +138,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorComponentActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "747085c7794b1b6b63d5438e068173686e286c9e"
@@ -196,7 +196,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorComponentDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a79b9bada0ba5660efb4fc9ff5051f9b60619a6d"
@@ -254,7 +254,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorContainer"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "26f0ae08fdbd532398eef9e72d2369199bb24829"
@@ -312,7 +312,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorContainerActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7be75d92f48949bd83d89b2e24ff4623bab1b4ec"
@@ -370,7 +370,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorGroundGlass"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c63a2970e413d13c0d1479a4ff22a7a6f07b73f5"
@@ -428,7 +428,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorPage"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c163aabad8909ec8019334654ed86475abc1bc68"
@@ -486,7 +486,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorSecondarycomponent"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cdc3c80b8667a8f2c5ab84a720ceccdd5fa4529e"
@@ -544,7 +544,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorSecondarycomponentActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8dc0fc3e6c2b322ec11749ce10e5eaebee625ec7"
@@ -602,7 +602,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorSecondarycontainer"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "db6fbe20a53594f5e89e7278e2a0e58f0924b26b"
@@ -660,7 +660,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorSecondarycontainerActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "686b38519181fa1c18d47279cda47fd4935e69a9"
@@ -718,7 +718,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBgColorSpecialcomponent"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e1ed3aa662be2416da233c781622cb5664b75f8c"
@@ -776,7 +776,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBorderColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c7891f90517e4b36d9bb974def2910efbe77e267"
@@ -834,7 +834,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBorderLevel1Color"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f5aa206c6220e93ce3ad7dfd0ea64f8329e681c9"
@@ -892,7 +892,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBorderLevel2Color"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "92a2748742eedb3678c914dffbfe07ca3626e221"
@@ -950,7 +950,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a7472ef25fefe58dc8b2da198116dc80f8c6dd04"
@@ -1008,7 +1008,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e5b2b4e545afa0ab2f1fe66347374350de1daec5"
@@ -1066,7 +1066,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "9afeed5db1e57fe29a11bbaa0452ceecd9a8c723"
@@ -1124,7 +1124,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "50d45c0d542d4021c32f15247bc9f545c94cf378"
@@ -1182,7 +1182,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "efac85fbca168739993cfeb7734b31a75cfe936f"
@@ -1240,7 +1240,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "d7c7999220f5bb775248b2cf11632d5102c6f3fb"
@@ -1298,7 +1298,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "051981fb486920f20d46e0a2001e8375f6a7e5de"
@@ -1356,7 +1356,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f9e3a9603238aeaffc1ef27073b26b1819e2498c"
@@ -1414,7 +1414,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0acf5321742ee74ecb192871046c37dfe1143864"
@@ -1472,7 +1472,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "68b69023f537cfa2026eb6c97f816aa6b6d913a2"
@@ -1530,7 +1530,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "630727699af3910cfcd4f940e09ad67b3d2aa1b9"
@@ -1588,7 +1588,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColorActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8cea47b1b8a6d2621645f4377d1c720bd07e786c"
@@ -1646,7 +1646,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "142610d6b06e7adcd6d7670ba86c025d571b37e0"
@@ -1704,7 +1704,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColorFocus"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8f4f7c0a873f6bc8a00c01fa90f024ff82d8fc87"
@@ -1762,7 +1762,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColorLight"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "2ad0388a7bb94a4c620b1e5b31f741810e9b1993"
@@ -1820,7 +1820,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdBrandColorLightActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3a5d6ee77b1df7cac3b589d2ce6a481a6b004ef6"
@@ -1878,7 +1878,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdCapsuleActiveBg"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "531c5a4deae3880e864c13d1e956d8d99b281c88"
@@ -1936,7 +1936,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdCapsuleActiveBorderColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "87c7d48b0ac285c119c55f6968d3217eded46402"
@@ -1994,7 +1994,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdCapsuleBg"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a9c81890028298df76fc0d6565b7da7aade84953"
@@ -2052,7 +2052,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdCapsuleWrapBg"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4eee39ea05d49fd1f0a0f12ef721d88ed7e6c4d5"
@@ -2110,7 +2110,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdComponentBorder"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "12ef6d310dfdb3f01544a15a3ee0705c74d6d275"
@@ -2168,7 +2168,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdComponentStroke"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "bed086efdd612f1ff481d90b8b4e537f202f7804"
@@ -2226,7 +2226,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "731ea96bceb0afff7330852bb0d6d88ebd0c0238"
@@ -2284,7 +2284,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "89c805e7f4e4166e1da317d6a1f546ea3b71c43f"
@@ -2342,7 +2342,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5c33a1aaa35e252321d0ac3ff3d3433304bfa311"
@@ -2400,7 +2400,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "76f5ca4113361d051d88486164b7194f0898b31d"
@@ -2458,7 +2458,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8d313437367e5063df0312e64afc7d45d145d099"
@@ -2516,7 +2516,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "ff7f542c1001cd31afeb226c21ae887e5ad62680"
@@ -2574,7 +2574,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5758884bc7e7c47c92a04c2d72e8ec0447d6f661"
@@ -2632,7 +2632,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "30cd439678582083feef172701046b756927ec69"
@@ -2690,7 +2690,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "bb8dfa9366bd5c1e69b3818cd8fbaf9293445caa"
@@ -2748,7 +2748,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "983a5d8e0f979ce4704914be10b47ba43ad68fc7"
@@ -2806,7 +2806,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cfda5d3f9e4b9372a23c37d12354f0850fa32590"
@@ -2864,7 +2864,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColorActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "79162bb541dccbef4fa7ead79a18a9e7a9801126"
@@ -2922,7 +2922,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "32211ad11f01519909290b14af626addaad754e3"
@@ -2980,7 +2980,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColorFocus"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b01f62f2624d48dd0632bca32d58e4ad8c294842"
@@ -3038,7 +3038,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColorLight"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "90fcacef09e20e2d91a04fe7c453c22f677dbe59"
@@ -3096,7 +3096,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdErrorColorLightActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7e070bec9698b389f27ac713257fd4701d9a845c"
@@ -3154,7 +3154,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontGray1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "30c69acdc01ccf5105c4045517b708a3b55b1ec8"
@@ -3212,7 +3212,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontGray2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "659a7028a6416744675bb232ade58085def2fc07"
@@ -3270,7 +3270,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontGray3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "22c2068947b437b77b35d8bc08db7bc299b1f1cd"
@@ -3328,7 +3328,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontGray4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8df284ef55e80ce44f902bdbcf8f2a4a7274c04f"
@@ -3386,7 +3386,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontWhite1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "284ce556704414c10bcbd855aff874a8c898fc83"
@@ -3444,7 +3444,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontWhite2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "af08870bb1d32d22370241b10b8f90ff8abd4283"
@@ -3502,7 +3502,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontWhite3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e15ff68dc239b8c2838514288421b018f96d80a0"
@@ -3560,7 +3560,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdFontWhite4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "665e4f824399936df3f9ff28dde3906abda8b05e"
@@ -3618,7 +3618,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "21b5d640c94698488dce41bed5e55e9167f583c4"
@@ -3676,7 +3676,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3d6b62b15944cde85d6f789e51e983055d11b1cc"
@@ -3734,7 +3734,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor11"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8d5c0e4d75e513071a69fa5ed140cd25516cc52f"
@@ -3792,7 +3792,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor12"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c22570009c15cca3801d3cb5f6483730fc6baf01"
@@ -3850,7 +3850,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor13"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6545ee70ce908baa94888db3ded524849b90c186"
@@ -3908,7 +3908,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor14"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "d004b6c527c8ed0546c12e9c674094379b5441e9"
@@ -3966,7 +3966,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3a8231e67db80e072dda861c4b3e38aa4c056dcf"
@@ -4024,7 +4024,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "ae3acdd3607ae1dd5395e77ca2397f87f3c5eced"
@@ -4082,7 +4082,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0b81056697f28a62ec9d40b0d04910498788fa6b"
@@ -4140,7 +4140,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c04e403623aefde420ce7894c288467cda4b1db9"
@@ -4198,7 +4198,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f3082cf303d28d3605877c4df43bb85ec726bfcb"
@@ -4256,7 +4256,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "fb85ed0f6a5c09daa2bef862d72e958d322ac9ce"
@@ -4314,7 +4314,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a0133ca08caa9e713484ead9b784ca37eee9b1a7"
@@ -4372,7 +4372,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdGrayColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e11479e3f63e4e1c2da441da0db40d7f516ad04f"
@@ -4430,7 +4430,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "eb44bac51a99f428fbfe48602c02331e630e30ec"
@@ -4488,7 +4488,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "777354009add4a23a8d9a351851a627e3b34c72a"
@@ -4546,7 +4546,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "231fdfe58a4392900d699fb12bd7e814b1041719"
@@ -4604,7 +4604,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "24ffaddd00998593004605f8735a6742d495cc6b"
@@ -4662,7 +4662,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "1a4bfc327d71cb0c5f012d3c7c9a3205fe6eb218"
@@ -4720,7 +4720,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0292490783f1756c745024372afe3c672475f4d2"
@@ -4778,7 +4778,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cee06f72fcc3495657ee169795cdb8017024aeb5"
@@ -4836,7 +4836,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "dcecd8359fa34a5df5a556a1f602057597e2d53d"
@@ -4894,7 +4894,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6f8dbd7de0bc5a314e4f5969acc44f7e0d3587da"
@@ -4952,7 +4952,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "062cd3350b2009228b3bc835c5752f11ef1956e7"
@@ -5010,7 +5010,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3eb9e518a698e71f0c9014a3cdf746ba6ca0bf42"
@@ -5068,7 +5068,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColorActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "aed08154643f789d508ab28e2bc4a252950f2d41"
@@ -5126,7 +5126,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "19b0736d9592d53f5305ed8719d6d5d69d575db7"
@@ -5184,7 +5184,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColorFocus"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "2a9b01251139bb2953b7f922fce5e70a95a3e8a4"
@@ -5242,7 +5242,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColorLight"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "79c94a7a2aa86433fa1d06608c292f6555bbfb82"
@@ -5300,7 +5300,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdInformationColorLightActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8683ff42b5a6a27a3c8701cccf3fa0599c5087da"
@@ -5358,7 +5358,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdMaskActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "9035b3aef4b6a1b62bd8363ff32910bf691af944"
@@ -5416,7 +5416,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdMaskBackground"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "36f3c1bdd0d450dc44d625c1e2dd4a99c502a868"
@@ -5474,7 +5474,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdMaskDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "23b2f597d42a15a9381cd095c7daca279c7d50bf"
@@ -5532,7 +5532,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdScrollTrackColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3757a152f6ac16fa1bf2a476264f9ab5b3be9870"
@@ -5590,7 +5590,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdScrollbarColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8f224eb74748edb30e4fc4be33013aa65b26ed66"
@@ -5648,7 +5648,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdScrollbarHoverColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "9bd3b5c0748f5f1caf19e17d1cdf6fd956c1de42"
@@ -5706,7 +5706,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "dc9163b81785ac2bd766d42685c0ed5e2eec03e9"
@@ -5764,7 +5764,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f46f7555c8f89fab8df8dd1a66150347568e5866"
@@ -5822,7 +5822,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3be81cf4c45fe6d8f06971a2e825e1c34a41ec4e"
@@ -5880,7 +5880,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e4f34180c654c46a388a944eb411c47792ef30a4"
@@ -5938,7 +5938,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f4b8cd28eb706ca6adbb207feebf60c057538143"
@@ -5996,7 +5996,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6cc34a4fcdded52c64190078d88ec600dd59363b"
@@ -6054,7 +6054,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b091705543159294e7b5488b15f435a2fc831e00"
@@ -6112,7 +6112,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7f0d8bd5af5038afed63a3bf9a1e5bb086b37768"
@@ -6170,7 +6170,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c8f4241e4c79efe688f776c40775930ce105fa25"
@@ -6228,7 +6228,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "fe4de7800dc81afb5ea81cc72f7d16f26bf4344d"
@@ -6286,7 +6286,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "407239a5cd907f8b3ef5ca6868d5ee13abb868da"
@@ -6344,7 +6344,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColorActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "20e0a2855740012aa9f59e856a9711cb6f24e817"
@@ -6402,7 +6402,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f16ca94608ae811f803fe245fe64ad1cd8f7fa0c"
@@ -6460,7 +6460,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColorFocus"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "50d8c3ad297cf8afd08fb6e22018e2876f2062aa"
@@ -6518,7 +6518,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColorLight"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "fc2265c5640dad44ed5d66e0192a415e79df7a98"
@@ -6576,7 +6576,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdSuccessColorLightActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "79f82b4e4014c1314c037284f67eef4a58295426"
@@ -6634,7 +6634,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTableShadowColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c70529c5e3b6cbbcd0d09f29c8e3d616accff522"
@@ -6692,7 +6692,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorAnti"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "13c5960188f84a894ab7346d635712687b289b98"
@@ -6750,7 +6750,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorBrand"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "ad6b2cfdaf70c470b7b5f708059902b131138636"
@@ -6808,7 +6808,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c1e96c9f76464e8616b84ca67d391d90cd8a69c8"
@@ -6866,7 +6866,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorInverted"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b69016555345a0fae8d17204c73cca2561361192"
@@ -6924,7 +6924,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorLink"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f20fc0011943a2a46c8a1d714ce2964ee549e5e2"
@@ -6982,7 +6982,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorPlaceholder"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4cc60ece78514b33106f0ee2e237d0bb8aaf8064"
@@ -7040,7 +7040,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorPrimary"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5218117d5c5cfd6f92942c5a049f377391309a7e"
@@ -7098,7 +7098,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorSecondary"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e4a65948753c2e8b4cf3ca4e78a810d8ff200dff"
@@ -7156,7 +7156,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdTextColorWatermark"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "633d238af1cfabe21f6a4b9fcf2e2b6947558aae"
@@ -7214,7 +7214,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "45b120e7f4d0383e68407bc38faaaa5cd14ad07f"
@@ -7272,7 +7272,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "10c846ca2e364dbff9e93607dcf8914fec6a6f3d"
@@ -7330,7 +7330,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor10"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b6ab7d79245f23669e131313035cd7a277575f06"
@@ -7388,7 +7388,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "05e037add3d3f0894fa73f3a463e5bf9c1e750ae"
@@ -7446,7 +7446,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "2345f7257729fd63a56d9b572bdf81d53d115c55"
@@ -7504,7 +7504,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c28f2df8880f32e9d9f01c4fc0ae8b1bdf85eac2"
@@ -7562,7 +7562,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6631c8cc9f061774aac1c98a79e518bb5d9a8e94"
@@ -7620,7 +7620,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3fa52b421472d9c97898fd32200209ad733dd422"
@@ -7678,7 +7678,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "61868ec5a3518767aeafb8135dbbe7d987bf65ae"
@@ -7736,7 +7736,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8dcdbbf27bb42b236a7cd07325a8406af52f138c"
@@ -7794,7 +7794,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColor9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c6e5ec7f1233f94755d47f59814c74490b6367e5"
@@ -7852,7 +7852,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColorActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "206278cb00a84e3fa3068a62df64fbeea11bb3ef"
@@ -7910,7 +7910,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColorDisabled"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8b3efeca55e2dc6417792a2dbc892b887866ae62"
@@ -7968,7 +7968,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColorFocus"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e074fe6c6c8ea16ac85c1d7660dcf0b52a0b5c48"
@@ -8026,7 +8026,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColorLight"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b957ea34d224bc2ab5f3d7c0bcbce419bed25dd3"
@@ -8084,7 +8084,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdColorRdWarningColorLightActive"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f675c2ce5f064e4c662e0da1e413be6837271fd4"
@@ -8142,7 +8142,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdRadiusRdRadiusDefault"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a41dc573040f0ee079055e8e79142cdf3feef841"
@@ -8164,7 +8164,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdRadiusRdRadiusExtralarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e58b275f7a3614d55387dcc5ff159494db0a0f07"
@@ -8186,7 +8186,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdRadiusRdRadiusLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3edf778bf3d820c179933cce3e314f998c78940d"
@@ -8208,7 +8208,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdRadiusRdRadiusRound"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c1efd2a14eff75db096ee97e329a31a819f42509"
@@ -8230,7 +8230,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdRadiusRdRadiusSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "34418ec75b5bb52558358415f02fba24ebf858b3"
@@ -8252,7 +8252,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeBase"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "21f196c2f08934a53f188052bf77b6fb3936397b"
@@ -8274,7 +8274,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeBodyExtrasmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e2bf80e7e0f5ed20f000a46dcf32c08c1db39249"
@@ -8296,7 +8296,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeBodyLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "ff55c6e2d9698e5336c3b4e289987c34ee8273c9"
@@ -8318,7 +8318,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeBodyMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f1940dbd7efa70af4c53847a10698161e156a8da"
@@ -8340,7 +8340,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeBodySmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "d7233a6b11dc8b46f6091f4764dfd47e21b6bc45"
@@ -8362,7 +8362,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeDisplayLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "3fbb94562b14e77b3268acf60e15dd602cf16018"
@@ -8384,7 +8384,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeDisplayMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "e07571ee484ac4a051040164cb8f9bb9c88823a6"
@@ -8406,7 +8406,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeHeadlineLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6b9b2fb55536d151d3d0e506723c7ba81421836f"
@@ -8428,7 +8428,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeHeadlineMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "d26cbc341a6b2dd170b796887148f64a34b08cd5"
@@ -8450,7 +8450,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeHeadlineSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "033ed97a11450d173d384cd4c0f6423c45c235ad"
@@ -8472,7 +8472,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeL"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "c227a2e13ecac98209476a5bd7ec5bf151a9cfb0"
@@ -8494,7 +8494,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeLinkLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "30b17318ac0c24545ce2c6969c2f3bccfbc42a69"
@@ -8516,7 +8516,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeLinkMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "441fbb79acdc74b66544902f92713be4bb7f1c09"
@@ -8538,7 +8538,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeLinkSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7d46bd65f9f24c8413f10667b4ed731e097b23fc"
@@ -8560,7 +8560,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeM"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5fff3a9ca94dd64019cf767a74d6b353590a970a"
@@ -8582,7 +8582,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeMarkExtrasmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4a635bebbafd97bea14b4beb86ed7eebdd405231"
@@ -8604,7 +8604,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeMarkLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "60042e29fd52e47d101cbf7e3dd76b414f5d854d"
@@ -8626,7 +8626,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeMarkMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b1f27cd742e46a64c1b05c80c3b21ae70c1d3eb2"
@@ -8648,7 +8648,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeMarkSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0425b1c453f0dd3e120441bfd35fb9bd85f6b8e1"
@@ -8670,7 +8670,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeS"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cb00df340801f2e919c26eb3694cc2bfd57f22b3"
@@ -8692,7 +8692,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeTitleExtralarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "765f82c191637c979b41c8f63957b4e56b5a3a7a"
@@ -8714,7 +8714,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeTitleLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "ff977a2be34b2a213fedb7d4f973a303b125b253"
@@ -8736,7 +8736,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeTitleMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "2875d8de7561589e058c511b33209d83f8fca50a"
@@ -8758,7 +8758,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeTitleSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "fa8a0290d93b9a12945acfe0e906a12c5f3d881e"
@@ -8780,7 +8780,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeXl"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b1433f9a1d199ba5a79cb6e1caf75145450ff36b"
@@ -8802,7 +8802,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeXs"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5adf87d054cdcf123c3b47dccb2805fcb509ef31"
@@ -8824,7 +8824,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontSizeXxl"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "332f345ef513fd8ffba77923e1ba989c3a93ea0b"
@@ -8846,7 +8846,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightBodyExtrasmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4a704481514342df92167190d1276e83b85a07a3"
@@ -8868,7 +8868,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightBodyLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7ff94c5a06f8d331ae347b53494e7cf23439af03"
@@ -8890,7 +8890,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightBodyMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6e264e0524a19869fd3993f0cd14c5ce32d1aa3f"
@@ -8912,7 +8912,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightBodySmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "8e8c412ebbf53f50801925a399c8289bd5884e15"
@@ -8934,7 +8934,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightDisplayLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "637dcb4bc59c943dc2f2fa16620a66caafd6e057"
@@ -8956,7 +8956,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightDisplayMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7eecbda40cfb83d3ed1f91a18593ae99ac161bdb"
@@ -8978,7 +8978,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightHeadlineLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "7a674a6b6aa596570279209f90eebe88f56bb585"
@@ -9000,7 +9000,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightHeadlineMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "197eeba2f67c371188a4cec466f65ecab6f6d812"
@@ -9022,7 +9022,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightHeadlineSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4b37718e308f3838f9a59182a0fb36a7797cdd11"
@@ -9044,7 +9044,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightLinkLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "1d38788d3499b0ce0f0560b1a36aa9cab76fbf9c"
@@ -9066,7 +9066,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightLinkMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "1f36359489cf206c94305771172770307d2f35e0"
@@ -9088,7 +9088,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightLinkSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f5cedb1afe06d601e61159c8bc0fa6b3002a60f0"
@@ -9110,7 +9110,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightMarkExtrasmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "a2bd0f66e1f00f1114b1b9d7f8fe625c89f4c600"
@@ -9132,7 +9132,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightMarkLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f320f1693264d60b8cd23066c1f70327bf8f2ea2"
@@ -9154,7 +9154,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightMarkMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "4eef6d482a4ef851b553ea319467c39803395016"
@@ -9176,7 +9176,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightMarkSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0a899d7373dc122cba9aa7034897c9c5dba74f2b"
@@ -9198,7 +9198,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightTitleExtralarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "5060584899d7cb1ad39cf7d7a0d5d683ae1f3a4b"
@@ -9220,7 +9220,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightTitleLarge"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "64693a18896ba53781625bb630be9da728032ac8"
@@ -9242,7 +9242,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightTitleMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "d2d733d4827e67b46b6d4e1ee9eb823d358c7810"
@@ -9264,7 +9264,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdLineHeightTitleSmall"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "6c47b093de58ab0359141a08ec1285e6b7701d30"
@@ -9286,7 +9286,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "693f21029dfadb303fe3ab5b25c4fb79c84098a6"
@@ -9308,7 +9308,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer1"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "577100e73ac34730590f1d666dd103d7d75e5fbf"
@@ -9330,7 +9330,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer2"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "22d0dc1c8983333acd8894b33d42d4d6a7251b29"
@@ -9352,7 +9352,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer3"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "1856577adb63171a4361d47c619723ccb3817546"
@@ -9374,7 +9374,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer4"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "357fe10d24c04913400757f79cbe944dfa162246"
@@ -9396,7 +9396,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer5"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "0f038e906b689e61ea547ea7cff2d55788286fb5"
@@ -9418,7 +9418,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer6"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cc482d8ea12e6bac38a0038612184a31147d5f0b"
@@ -9440,7 +9440,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer7"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "f76599a738e90a3f217fd9552c01e1c8950b2396"
@@ -9462,7 +9462,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer8"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "040ad3a6ba901713588701dd35f26f90e2465e2e"
@@ -9484,7 +9484,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdSpacerRdSpacer9"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "cfe78516b00a4f5e52530367181e368c6f9145c6"
@@ -9506,7 +9506,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontFamily"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "b58d0cd8b23bff60d60058d2878ab9d055eb50a3"
@@ -9528,7 +9528,7 @@ token_entries:
     runtime_source:
       kind: generated_design_token
       name: "rdFontRdFontFamilyMedium"
-      path: "generated/figma-token-source.json"
+      path: "Figma Variables"
     figma_source:
       kind: variable
       key: "43af5a68aab87475e0f3e520a1525543280899f4"

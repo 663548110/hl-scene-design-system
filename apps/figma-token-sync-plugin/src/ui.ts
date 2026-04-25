@@ -24,11 +24,9 @@ const elements = {
   selectAllThemesButton: getInput<HTMLButtonElement>("select-all-themes-button"),
   clearThemesButton: getInput<HTMLButtonElement>("clear-themes-button"),
   includeTokenEntries: getInput<HTMLInputElement>("include-token-entries"),
-  includeFullData: getInput<HTMLInputElement>("include-full-data"),
   includeCssTheme: getInput<HTMLInputElement>("include-css-theme"),
   includeFlutterTheme: getInput<HTMLInputElement>("include-flutter-theme"),
   filePath: getInput<HTMLInputElement>("file-path"),
-  fullDataFilePath: getInput<HTMLInputElement>("full-data-file-path"),
   cssFilePath: getInput<HTMLInputElement>("css-file-path"),
   flutterFilePath: getInput<HTMLInputElement>("flutter-file-path"),
   componentTokenPrefixes: getInput<HTMLTextAreaElement>("component-token-prefixes"),
@@ -203,11 +201,9 @@ function wireEvents(): void {
     elements.lightModeName,
     elements.darkModeName,
     elements.includeTokenEntries,
-    elements.includeFullData,
     elements.includeCssTheme,
     elements.includeFlutterTheme,
     elements.filePath,
-    elements.fullDataFilePath,
     elements.cssFilePath,
     elements.flutterFilePath,
     elements.componentTokenPrefixes,
@@ -321,11 +317,9 @@ function hydrateForm(): void {
   elements.lightModeName.value = settings.lightModeName;
   elements.darkModeName.value = settings.darkModeName;
   elements.includeTokenEntries.checked = settings.includeTokenEntries;
-  elements.includeFullData.checked = settings.includeFullData;
   elements.includeCssTheme.checked = settings.includeCssTheme;
   elements.includeFlutterTheme.checked = settings.includeFlutterTheme;
   elements.filePath.value = settings.filePath;
-  elements.fullDataFilePath.value = settings.fullDataFilePath;
   elements.cssFilePath.value = settings.cssFilePath;
   elements.flutterFilePath.value = settings.flutterFilePath;
   elements.componentTokenPrefixes.value = settings.componentTokenPrefixes;
@@ -435,11 +429,9 @@ function collectSettingsFromForm(): StoredSettings {
     lightModeName: elements.lightModeName.value,
     darkModeName: elements.darkModeName.value,
     includeTokenEntries: elements.includeTokenEntries.checked,
-    includeFullData: elements.includeFullData.checked,
     includeCssTheme: elements.includeCssTheme.checked,
     includeFlutterTheme: elements.includeFlutterTheme.checked,
     filePath: elements.filePath.value,
-    fullDataFilePath: elements.fullDataFilePath.value,
     cssFilePath: elements.cssFilePath.value,
     flutterFilePath: elements.flutterFilePath.value,
     componentTokenPrefixes: elements.componentTokenPrefixes.value,

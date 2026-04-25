@@ -396,7 +396,7 @@
     <div class="shell">
       <section class="hero">
         <h1 class="hero-title">Figma Token Sync</h1>
-        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：全量数据源 + 按主题拆分的 CSS / Flutter 产物。</p>
+        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：按主题拆分 CSS / Flutter 产物。</p>
         <div class="stats">
           <div class="stat">
             <span class="stat-label">集合</span>
@@ -470,22 +470,12 @@
         <input id="file-path" type="hidden" />
         <div class="checkbox-grid">
           <label class="checkbox-label">
-            <input id="include-full-data" type="checkbox" />
-            全量 JSON 数据源
-          </label>
-          <label class="checkbox-label">
             <input id="include-css-theme" type="checkbox" />
             CSS 主题文件
           </label>
           <label class="checkbox-label">
             <input id="include-flutter-theme" type="checkbox" />
             Flutter 主题 Dart
-          </label>
-        </div>
-        <div style="margin-top: 10px">
-          <label>
-            全量数据源
-            <input id="full-data-file-path" type="text" placeholder="generated/figma-token-source.json" />
           </label>
         </div>
         <label style="margin-top: 10px">
@@ -529,7 +519,7 @@
           Commit message
           <input id="commit-message" type="text" placeholder="chore(tokens): sync figma color tokens" />
         </label>
-        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入全量 JSON、CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
+        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入 CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
       </section>
 
       <section class="panel">
@@ -678,7 +668,6 @@
     repoName: "hl-scene-design-system",
     branch: "main",
     filePath: defaultFilePath("design-system"),
-    fullDataFilePath: "generated/figma-token-source.json",
     cssFilePath: defaultCssFilePath(),
     flutterFilePath: defaultFlutterFilePath("default"),
     format: "design-system",
@@ -689,14 +678,13 @@
     lightModeName: "",
     darkModeName: "",
     includeTokenEntries: false,
-    includeFullData: true,
     includeCssTheme: true,
     includeFlutterTheme: true,
     componentTokenPrefixes: DEFAULT_COMPONENT_TOKEN_PREFIXES,
     commitMessage: "chore(tokens): sync figma design tokens"
   };
   function normalizeSettings(maybeSettings, sourceName) {
-    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s;
     var format = (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "md" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "css" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "design-system" ? maybeSettings.format : DEFAULT_SETTINGS.format;
     var themeId = normalizeThemeId(((_a = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.themeId) === null || _a === void 0 ? void 0 : _a.trim()) || defaultThemeId(sourceName));
     return {
@@ -704,22 +692,20 @@
       repoName: (_e = (_d = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoName) === null || _d === void 0 ? void 0 : _d.trim()) !== null && _e !== void 0 ? _e : DEFAULT_SETTINGS.repoName,
       branch: ((_f = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.branch) === null || _f === void 0 ? void 0 : _f.trim()) || DEFAULT_SETTINGS.branch,
       filePath: ((_g = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.filePath) === null || _g === void 0 ? void 0 : _g.trim()) || defaultFilePath(format),
-      fullDataFilePath: ((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.fullDataFilePath) === null || _h === void 0 ? void 0 : _h.trim()) || DEFAULT_SETTINGS.fullDataFilePath,
-      cssFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _j === void 0 ? void 0 : _j.trim(), DEFAULT_SETTINGS.cssFilePath),
-      flutterFilePath: normalizeOutputPath((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _k === void 0 ? void 0 : _k.trim(), defaultFlutterFilePath(themeId)),
+      cssFilePath: normalizeOutputPath((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _h === void 0 ? void 0 : _h.trim(), DEFAULT_SETTINGS.cssFilePath),
+      flutterFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _j === void 0 ? void 0 : _j.trim(), defaultFlutterFilePath(themeId)),
       format: format,
-      collectionId: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.collectionId,
-      namePrefix: ((_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _m === void 0 ? void 0 : _m.trim()) || DEFAULT_SETTINGS.namePrefix,
+      collectionId: ((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _k === void 0 ? void 0 : _k.trim()) || DEFAULT_SETTINGS.collectionId,
+      namePrefix: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.namePrefix,
       themeId: themeId,
       selectedThemeIds: normalizeStringArray(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.selectedThemeIds, DEFAULT_SETTINGS.selectedThemeIds),
-      lightModeName: (_p = (_o = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _o === void 0 ? void 0 : _o.trim()) !== null && _p !== void 0 ? _p : DEFAULT_SETTINGS.lightModeName,
-      darkModeName: (_r = (_q = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _q === void 0 ? void 0 : _q.trim()) !== null && _r !== void 0 ? _r : DEFAULT_SETTINGS.darkModeName,
+      lightModeName: (_o = (_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _m === void 0 ? void 0 : _m.trim()) !== null && _o !== void 0 ? _o : DEFAULT_SETTINGS.lightModeName,
+      darkModeName: (_q = (_p = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _p === void 0 ? void 0 : _p.trim()) !== null && _q !== void 0 ? _q : DEFAULT_SETTINGS.darkModeName,
       includeTokenEntries: false,
-      includeFullData: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFullData, DEFAULT_SETTINGS.includeFullData),
       includeCssTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
       includeFlutterTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
-      componentTokenPrefixes: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
-      commitMessage: ((_t = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _t === void 0 ? void 0 : _t.trim()) || DEFAULT_SETTINGS.commitMessage
+      componentTokenPrefixes: ((_r = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _r === void 0 ? void 0 : _r.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
+      commitMessage: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.commitMessage
     };
   }
   function normalizeBoolean(value, fallback) {
@@ -1594,16 +1580,6 @@
         selected: isFlutterThemeSelected(model.settings, spec.themeId)
       };
     });
-    if (settings2.includeFullData) {
-      addRenderedFile(renderedFiles, {
-        path: settings2.fullDataFilePath,
-        label: "\u5168\u91CF Figma token \u6570\u636E\u6E90",
-        content: renderFullDataSource(model),
-        mergeStrategy: "overwrite",
-        tokenCount: model.snapshot.variables.length,
-        warnings: []
-      });
-    }
     if (settings2.includeCssTheme) {
       var cssResult = renderCssThemeFiles(model, rows, themeSpecs);
       warnings.push.apply(warnings, __spreadArray3([], __read3(cssResult.warnings), false));
@@ -1853,116 +1829,8 @@
       warnings: warnings
     };
   }
-  function renderFullDataSource(model) {
-    var tokenByVariableId = new Map(model.tokens.map(function(token) {
-      return [token.variable.id, token];
-    }));
-    var variables = model.snapshot.variables.map(function(variable) {
-      return renderFullDataVariable(model, tokenByVariableId, variable);
-    });
-    var rows = __spreadArray3([], __read3(model.globalTokens), false).sort(compareTokens);
-    var themeSpecs = buildThemeSpecs(model, rows);
-    var selectedThemeSpecs = themeSpecs.filter(function(spec) {
-      return isFlutterThemeSelected(model.settings, spec.themeId);
-    });
-    return "".concat(JSON.stringify({
-      schema_version: "figma-token-source/v2",
-      generated_at: model.snapshot.generatedAt,
-      source_file: model.snapshot.fileName,
-      theme_id: model.settings.themeId,
-      generated_artifacts: {
-        full_data_path: model.settings.fullDataFilePath,
-        css_theme_entry_path: cssThemeEntryFilePath(model.settings.cssFilePath),
-        css_theme_paths: selectedThemeSpecs.map(function(spec) {
-          return cssThemeTokenFilePath(model.settings.cssFilePath, spec.themeId);
-        }),
-        flutter_theme_entry_path: flutterThemeEntryFilePath(model.settings.flutterFilePath),
-        flutter_theme_paths: selectedThemeSpecs.map(function(spec) {
-          return flutterThemeTokenFilePath(model.settings.flutterFilePath, spec.themeId);
-        })
-      },
-      themes: themeSpecs.map(function(spec) {
-        return {
-          theme_id: spec.themeId,
-          light_modes: spec.lightModeNames,
-          dark_modes: spec.darkModeNames,
-          selected: isFlutterThemeSelected(model.settings, spec.themeId)
-        };
-      }),
-      mode_mappings: model.modeMappings,
-      component_token_prefixes: sortedSetValues(model.componentPrefixes),
-      stats: {
-        collections: model.snapshot.collections.length,
-        variables: model.snapshot.variables.length,
-        selected_collections: model.selectedCollections.length,
-        selected_tokens: model.tokens.length,
-        global_tokens: model.globalTokens.length,
-        component_tokens: model.componentTokens.length
-      },
-      collections: model.snapshot.collections,
-      variables: variables
-    }, null, 2), "\n");
-  }
-  function sortedSetValues(values) {
-    var result = [];
-    values.forEach(function(value) {
-      result.push(value);
-    });
-    return result.sort();
-  }
-  function renderFullDataVariable(model, tokenByVariableId, variable) {
-    var e_6, _a;
-    var _b, _c, _d, _e, _f;
-    var collection = model.collectionMap.get(variable.collectionId);
-    var token = tokenByVariableId.get(variable.id);
-    var valuesByMode = {};
-    if (collection) {
-      var category = inferTokenCategory(variable);
-      try {
-        for (var _g = __values3(collection.modes), _h = _g.next(); !_h.done; _h = _g.next()) {
-          var mode = _h.value;
-          var rawValue = (_b = variable.valuesByMode[mode.modeId]) !== null && _b !== void 0 ? _b : variable.valuesByMode[collection.defaultModeId];
-          var resolved = resolveTokenValue(variable, mode.modeId, model.collectionMap, model.variableMap, []);
-          valuesByMode[mode.name] = {
-            mode_id: mode.modeId,
-            raw: rawValue,
-            resolved: resolved ? {
-              value: formatTokenValue(resolved.value, category),
-              alias_trail: resolved.aliasTrail
-            } : null
-          };
-        }
-      } catch (e_6_1) {
-        e_6 = { error: e_6_1 };
-      } finally {
-        try {
-          if (_h && !_h.done && (_a = _g.return)) _a.call(_g);
-        } finally {
-          if (e_6) throw e_6.error;
-        }
-      }
-    }
-    return {
-      id: variable.id,
-      key: variable.key,
-      name: variable.name,
-      description: variable.description,
-      collection_id: variable.collectionId,
-      collection_name: (_c = collection === null || collection === void 0 ? void 0 : collection.name) !== null && _c !== void 0 ? _c : "",
-      resolved_type: variable.resolvedType,
-      category: inferTokenCategory(variable),
-      scopes: variable.scopes,
-      hidden_from_publishing: variable.hiddenFromPublishing,
-      is_selected: model.selectedCollectionIds.has(variable.collectionId),
-      is_component_level: token ? token.isComponentLevel : collection ? isComponentLevelToken(collection, variable, model.componentPrefixes) : false,
-      token_id: (_d = token === null || token === void 0 ? void 0 : token.tokenId) !== null && _d !== void 0 ? _d : null,
-      css_variable: (_e = token === null || token === void 0 ? void 0 : token.cssVarName) !== null && _e !== void 0 ? _e : null,
-      flutter_theme_key: (_f = token === null || token === void 0 ? void 0 : token.tdesignThemeKey) !== null && _f !== void 0 ? _f : null,
-      values_by_mode: valuesByMode
-    };
-  }
   function renderPreview(model, files, summaries, warnings) {
-    var e_7, _a, e_8, _b, e_9, _c;
+    var e_6, _a, e_7, _b, e_8, _c;
     var lines = [
       "# Figma Token Sync Preview",
       "",
@@ -1987,13 +1855,13 @@
           var warning = warnings_1_1.value;
           lines.push("- ".concat(warning));
         }
-      } catch (e_7_1) {
-        e_7 = { error: e_7_1 };
+      } catch (e_6_1) {
+        e_6 = { error: e_6_1 };
       } finally {
         try {
           if (warnings_1_1 && !warnings_1_1.done && (_a = warnings_1.return)) _a.call(warnings_1);
         } finally {
-          if (e_7) throw e_7.error;
+          if (e_6) throw e_6.error;
         }
       }
     }
@@ -2003,13 +1871,13 @@
         var summary = summaries_1_1.value;
         lines.push("- ".concat(summary.path, " (").concat(summary.label, ", ").concat(summary.tokenCount, " tokens)"));
       }
-    } catch (e_8_1) {
-      e_8 = { error: e_8_1 };
+    } catch (e_7_1) {
+      e_7 = { error: e_7_1 };
     } finally {
       try {
         if (summaries_1_1 && !summaries_1_1.done && (_b = summaries_1.return)) _b.call(summaries_1);
       } finally {
-        if (e_8) throw e_8.error;
+        if (e_7) throw e_7.error;
       }
     }
     try {
@@ -2021,19 +1889,19 @@
         }
         lines.push("```");
       }
-    } catch (e_9_1) {
-      e_9 = { error: e_9_1 };
+    } catch (e_8_1) {
+      e_8 = { error: e_8_1 };
     } finally {
       try {
         if (files_1_1 && !files_1_1.done && (_c = files_1.return)) _c.call(files_1);
       } finally {
-        if (e_9) throw e_9.error;
+        if (e_8) throw e_8.error;
       }
     }
     return "".concat(lines.join("\n"), "\n");
   }
   function buildThemeSpecs(model, rows) {
-    var e_10, _a, e_11, _b;
+    var e_9, _a, e_10, _b;
     var specs = [];
     var specByThemeId = /* @__PURE__ */ new Map();
     var seenModeIds = /* @__PURE__ */ new Set();
@@ -2044,7 +1912,7 @@
           continue;
         }
         try {
-          for (var _c = (e_11 = void 0, __values3(token.valuesByMode)), _d = _c.next(); !_d.done; _d = _c.next()) {
+          for (var _c = (e_10 = void 0, __values3(token.valuesByMode)), _d = _c.next(); !_d.done; _d = _c.next()) {
             var modeValue = _d.value;
             if (seenModeIds.has(modeValue.modeId)) {
               continue;
@@ -2075,23 +1943,23 @@
               names.push(modeValue.modeName);
             }
           }
-        } catch (e_11_1) {
-          e_11 = { error: e_11_1 };
+        } catch (e_10_1) {
+          e_10 = { error: e_10_1 };
         } finally {
           try {
             if (_d && !_d.done && (_b = _c.return)) _b.call(_c);
           } finally {
-            if (e_11) throw e_11.error;
+            if (e_10) throw e_10.error;
           }
         }
       }
-    } catch (e_10_1) {
-      e_10 = { error: e_10_1 };
+    } catch (e_9_1) {
+      e_9 = { error: e_9_1 };
     } finally {
       try {
         if (rows_2_1 && !rows_2_1.done && (_a = rows_2.return)) _a.call(rows_2);
       } finally {
-        if (e_10) throw e_10.error;
+        if (e_9) throw e_9.error;
       }
     }
     return specs.filter(function(spec2) {
@@ -2161,7 +2029,7 @@
     return "".concat(prefix, "themes/").concat(themeIdToFileSlug(themeId), ".css");
   }
   function renderCssThemeEntry(model, themeSpecs) {
-    var e_12, _a;
+    var e_11, _a;
     var entryPath = cssThemeEntryFilePath(model.settings.cssFilePath);
     var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
     var lines = [
@@ -2177,19 +2045,19 @@
         var themeSpec = themeSpecs_1_1.value;
         lines.push('@import "'.concat(relativeCssImportPath(entryDirectory, cssThemeTokenFilePath(model.settings.cssFilePath, themeSpec.themeId)), '";'));
       }
-    } catch (e_12_1) {
-      e_12 = { error: e_12_1 };
+    } catch (e_11_1) {
+      e_11 = { error: e_11_1 };
     } finally {
       try {
         if (themeSpecs_1_1 && !themeSpecs_1_1.done && (_a = themeSpecs_1.return)) _a.call(themeSpecs_1);
       } finally {
-        if (e_12) throw e_12.error;
+        if (e_11) throw e_11.error;
       }
     }
     return "".concat(lines.join("\n"), "\n");
   }
   function buildCssThemeSelectors(themeId, mode, isDefaultTheme) {
-    var e_13, _a, e_14, _b;
+    var e_12, _a, e_13, _b;
     var escapedThemeId = escapeCssAttributeValue(themeId);
     var themeAttributes = ["theme-id", "data-theme", "theme"];
     var selectors = [];
@@ -2202,13 +2070,13 @@
           var attributeName = themeAttributes_1_1.value;
           selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"]'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="light"]'));
         }
-      } catch (e_13_1) {
-        e_13 = { error: e_13_1 };
+      } catch (e_12_1) {
+        e_12 = { error: e_12_1 };
       } finally {
         try {
           if (themeAttributes_1_1 && !themeAttributes_1_1.done && (_a = themeAttributes_1.return)) _a.call(themeAttributes_1);
         } finally {
-          if (e_13) throw e_13.error;
+          if (e_12) throw e_12.error;
         }
       }
     } else {
@@ -2220,13 +2088,13 @@
           var attributeName = themeAttributes_2_1.value;
           selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"].dark'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="dark"]'));
         }
-      } catch (e_14_1) {
-        e_14 = { error: e_14_1 };
+      } catch (e_13_1) {
+        e_13 = { error: e_13_1 };
       } finally {
         try {
           if (themeAttributes_2_1 && !themeAttributes_2_1.done && (_b = themeAttributes_2.return)) _b.call(themeAttributes_2);
         } finally {
-          if (e_14) throw e_14.error;
+          if (e_13) throw e_13.error;
         }
       }
     }
@@ -2272,7 +2140,7 @@
     return matches.join("_") || "default";
   }
   function renderFlutterThemeEntryDart(model, themeSpecs) {
-    var e_15, _a, e_16, _b, e_17, _c;
+    var e_14, _a, e_15, _b, e_16, _c;
     var entryPath = flutterThemeEntryFilePath(model.settings.flutterFilePath);
     var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
     var imports = themeSpecs.map(function(themeSpec2) {
@@ -2289,13 +2157,13 @@
         var importPath = imports_1_1.value;
         lines.push("import '".concat(importPath, "';"));
       }
-    } catch (e_15_1) {
-      e_15 = { error: e_15_1 };
+    } catch (e_14_1) {
+      e_14 = { error: e_14_1 };
     } finally {
       try {
         if (imports_1_1 && !imports_1_1.done && (_a = imports_1.return)) _a.call(imports_1);
       } finally {
-        if (e_15) throw e_15.error;
+        if (e_14) throw e_14.error;
       }
     }
     lines.push("");
@@ -2304,13 +2172,13 @@
         var importPath = imports_2_1.value;
         lines.push("export '".concat(importPath, "';"));
       }
-    } catch (e_16_1) {
-      e_16 = { error: e_16_1 };
+    } catch (e_15_1) {
+      e_15 = { error: e_15_1 };
     } finally {
       try {
         if (imports_2_1 && !imports_2_1.done && (_b = imports_2.return)) _b.call(imports_2);
       } finally {
-        if (e_16) throw e_16.error;
+        if (e_15) throw e_15.error;
       }
     }
     lines.push("", "class RDThemeTokenSpec {", "  const RDThemeTokenSpec({", "    required this.id,", "    required this.darkId,", "    required this.lightJson,", "    required this.darkJson,", "  });", "", "  final String id;", "  final String darkId;", "  final String lightJson;", "  final String darkJson;", "}", "", "const List<RDThemeTokenSpec> rdThemeTokenSpecs = [");
@@ -2320,13 +2188,13 @@
         var dartPrefix = "rd".concat(toPascalCase([themeSpec.themeId]));
         lines.push("  RDThemeTokenSpec(", "    id: '".concat(escapeDartSingleQuotedString(themeSpec.themeId), "',"), "    darkId: '".concat(escapeDartSingleQuotedString("".concat(themeSpec.themeId, "Dark")), "',"), "    lightJson: ".concat(dartPrefix, "LightJson,"), "    darkJson: ".concat(dartPrefix, "DarkJson,"), "  ),");
       }
-    } catch (e_17_1) {
-      e_17 = { error: e_17_1 };
+    } catch (e_16_1) {
+      e_16 = { error: e_16_1 };
     } finally {
       try {
         if (themeSpecs_2_1 && !themeSpecs_2_1.done && (_c = themeSpecs_2.return)) _c.call(themeSpecs_2);
       } finally {
-        if (e_17) throw e_17.error;
+        if (e_16) throw e_16.error;
       }
     }
     lines.push("];");
@@ -2339,7 +2207,7 @@
     return toPath;
   }
   function renderSingleFlutterThemeDart(model, rows, themeSpec, warnings) {
-    var e_18, _a;
+    var e_17, _a;
     var _b, _c, _d;
     var lightSections = createEmptyFlutterThemeSections();
     var darkSections = createEmptyFlutterThemeSections();
@@ -2352,13 +2220,13 @@
         mappedTokenCount += addFlutterThemeToken(token, lightValue, lightSections, warnings, "".concat(themeSpec.themeId, " light"));
         mappedTokenCount += addFlutterThemeToken(token, darkValue, darkSections, warnings, "".concat(themeSpec.themeId, " dark"));
       }
-    } catch (e_18_1) {
-      e_18 = { error: e_18_1 };
+    } catch (e_17_1) {
+      e_17 = { error: e_17_1 };
     } finally {
       try {
         if (rows_3_1 && !rows_3_1.done && (_a = rows_3.return)) _a.call(rows_3);
       } finally {
-        if (e_18) throw e_18.error;
+        if (e_17) throw e_17.error;
       }
     }
     appendMissingFlutterWarnings("".concat(themeSpec.themeId, " light"), lightSections.color, warnings);
@@ -2369,7 +2237,7 @@
     };
   }
   function pickThemeModeValue(token, modeIds) {
-    var e_19, _a;
+    var e_18, _a;
     var _loop_1 = function(modeId2) {
       var value = token.valuesByMode.find(function(modeValue) {
         return modeValue.modeId === modeId2;
@@ -2385,13 +2253,13 @@
         if (typeof state_1 === "object")
           return state_1.value;
       }
-    } catch (e_19_1) {
-      e_19 = { error: e_19_1 };
+    } catch (e_18_1) {
+      e_18 = { error: e_18_1 };
     } finally {
       try {
         if (modeIds_1_1 && !modeIds_1_1.done && (_a = modeIds_1.return)) _a.call(modeIds_1);
       } finally {
-        if (e_19) throw e_19.error;
+        if (e_18) throw e_18.error;
       }
     }
     return null;
@@ -2550,7 +2418,7 @@
     return null;
   }
   function parseFlutterShadowValue(value) {
-    var e_20, _a;
+    var e_19, _a;
     if (Array.isArray(value)) {
       return normalizeShadowLayerArray(value);
     }
@@ -2581,19 +2449,19 @@
         }
         layers.push(layer);
       }
-    } catch (e_20_1) {
-      e_20 = { error: e_20_1 };
+    } catch (e_19_1) {
+      e_19 = { error: e_19_1 };
     } finally {
       try {
         if (parts_1_1 && !parts_1_1.done && (_a = parts_1.return)) _a.call(parts_1);
       } finally {
-        if (e_20) throw e_20.error;
+        if (e_19) throw e_19.error;
       }
     }
     return layers.length > 0 ? layers : null;
   }
   function normalizeShadowLayerArray(value) {
-    var e_21, _a;
+    var e_20, _a;
     var layers = [];
     try {
       for (var value_1 = __values3(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
@@ -2618,19 +2486,19 @@
           offset: { x: x, y: y }
         });
       }
-    } catch (e_21_1) {
-      e_21 = { error: e_21_1 };
+    } catch (e_20_1) {
+      e_20 = { error: e_20_1 };
     } finally {
       try {
         if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
       } finally {
-        if (e_21) throw e_21.error;
+        if (e_20) throw e_20.error;
       }
     }
     return layers;
   }
   function parseCssShadowLayer(value) {
-    var e_22, _a;
+    var e_21, _a;
     var tokens = splitCssTokens(value).filter(function(token2) {
       return token2.toLowerCase() !== "inset";
     });
@@ -2649,13 +2517,13 @@
           lengths.push(numberValue);
         }
       }
-    } catch (e_22_1) {
-      e_22 = { error: e_22_1 };
+    } catch (e_21_1) {
+      e_21 = { error: e_21_1 };
     } finally {
       try {
         if (tokens_1_1 && !tokens_1_1.done && (_a = tokens_1.return)) _a.call(tokens_1);
       } finally {
-        if (e_22) throw e_22.error;
+        if (e_21) throw e_21.error;
       }
     }
     if (!color || lengths.length < 2) {
@@ -2748,7 +2616,7 @@
     return tokens;
   }
   function containsAllParts(segments, parts) {
-    var e_23, _a;
+    var e_22, _a;
     try {
       for (var parts_2 = __values3(parts), parts_2_1 = parts_2.next(); !parts_2_1.done; parts_2_1 = parts_2.next()) {
         var part = parts_2_1.value;
@@ -2756,19 +2624,19 @@
           return false;
         }
       }
-    } catch (e_23_1) {
-      e_23 = { error: e_23_1 };
+    } catch (e_22_1) {
+      e_22 = { error: e_22_1 };
     } finally {
       try {
         if (parts_2_1 && !parts_2_1.done && (_a = parts_2.return)) _a.call(parts_2);
       } finally {
-        if (e_23) throw e_23.error;
+        if (e_22) throw e_22.error;
       }
     }
     return true;
   }
   function appendMissingFlutterWarnings(modeName, colors, warnings) {
-    var e_24, _a;
+    var e_23, _a;
     var missing = [];
     try {
       for (var REQUIRED_TDESIGN_COLOR_KEYS_1 = __values3(REQUIRED_TDESIGN_COLOR_KEYS), REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next(); !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done; REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next()) {
@@ -2777,13 +2645,13 @@
           missing.push(key);
         }
       }
-    } catch (e_24_1) {
-      e_24 = { error: e_24_1 };
+    } catch (e_23_1) {
+      e_23 = { error: e_23_1 };
     } finally {
       try {
         if (REQUIRED_TDESIGN_COLOR_KEYS_1_1 && !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done && (_a = REQUIRED_TDESIGN_COLOR_KEYS_1.return)) _a.call(REQUIRED_TDESIGN_COLOR_KEYS_1);
       } finally {
-        if (e_24) throw e_24.error;
+        if (e_23) throw e_23.error;
       }
     }
     if (missing.length > 0) {
@@ -2820,7 +2688,7 @@
     return JSON.stringify(root);
   }
   function buildFlutterColorValues(colors) {
-    var e_25, _a;
+    var e_24, _a;
     var groups = [
       rangeThemeKeys("brandColor", 10),
       rangeThemeKeys("warningColor", 10),
@@ -2875,13 +2743,13 @@
         }
         pushOrderedColorValues(values, keys, colors, used);
       }
-    } catch (e_25_1) {
-      e_25 = { error: e_25_1 };
+    } catch (e_24_1) {
+      e_24 = { error: e_24_1 };
     } finally {
       try {
         if (groups_1_1 && !groups_1_1.done && (_a = groups_1.return)) _a.call(groups_1);
       } finally {
-        if (e_25) throw e_25.error;
+        if (e_24) throw e_24.error;
       }
     }
     var extraKeys = Object.keys(colors).filter(function(key) {
@@ -2893,7 +2761,7 @@
     return values;
   }
   function buildFlutterNumberValues(values, preferredOrder) {
-    var e_26, _a;
+    var e_25, _a;
     var keys = sortKnownKeys(Object.keys(values), preferredOrder);
     var output = {};
     try {
@@ -2901,19 +2769,19 @@
         var key = keys_1_1.value;
         output[key] = normalizeJsonNumber(values[key]);
       }
-    } catch (e_26_1) {
-      e_26 = { error: e_26_1 };
+    } catch (e_25_1) {
+      e_25 = { error: e_25_1 };
     } finally {
       try {
         if (keys_1_1 && !keys_1_1.done && (_a = keys_1.return)) _a.call(keys_1);
       } finally {
-        if (e_26) throw e_26.error;
+        if (e_25) throw e_25.error;
       }
     }
     return output;
   }
   function buildFlutterShadowValues(shadows) {
-    var e_27, _a;
+    var e_26, _a;
     var keys = sortKnownKeys(Object.keys(shadows), ["shadowsBase", "shadowsMiddle", "shadowsTop"]);
     var output = {};
     try {
@@ -2931,32 +2799,32 @@
           };
         });
       }
-    } catch (e_27_1) {
-      e_27 = { error: e_27_1 };
+    } catch (e_26_1) {
+      e_26 = { error: e_26_1 };
     } finally {
       try {
         if (keys_2_1 && !keys_2_1.done && (_a = keys_2.return)) _a.call(keys_2);
       } finally {
-        if (e_27) throw e_27.error;
+        if (e_26) throw e_26.error;
       }
     }
     return output;
   }
   function pushOrderedColorValues(output, keys, colors, used) {
-    var e_28, _a;
+    var e_27, _a;
     try {
       for (var keys_3 = __values3(keys), keys_3_1 = keys_3.next(); !keys_3_1.done; keys_3_1 = keys_3.next()) {
         var key = keys_3_1.value;
         output[key] = normalizeFlutterColorValue(colors[key]);
         used.add(key);
       }
-    } catch (e_28_1) {
-      e_28 = { error: e_28_1 };
+    } catch (e_27_1) {
+      e_27 = { error: e_27_1 };
     } finally {
       try {
         if (keys_3_1 && !keys_3_1.done && (_a = keys_3.return)) _a.call(keys_3);
       } finally {
-        if (e_28) throw e_28.error;
+        if (e_27) throw e_27.error;
       }
     }
   }
@@ -3060,33 +2928,33 @@
     return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
   }
   function countModes(model) {
-    var e_29, _a, e_30, _b;
+    var e_28, _a, e_29, _b;
     var modeNames = /* @__PURE__ */ new Set();
     try {
       for (var _c = __values3(model.selectedCollections), _d = _c.next(); !_d.done; _d = _c.next()) {
         var collection = _d.value;
         try {
-          for (var _e = (e_30 = void 0, __values3(collection.modes)), _f = _e.next(); !_f.done; _f = _e.next()) {
+          for (var _e = (e_29 = void 0, __values3(collection.modes)), _f = _e.next(); !_f.done; _f = _e.next()) {
             var mode = _f.value;
             modeNames.add(mode.name);
           }
-        } catch (e_30_1) {
-          e_30 = { error: e_30_1 };
+        } catch (e_29_1) {
+          e_29 = { error: e_29_1 };
         } finally {
           try {
             if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
           } finally {
-            if (e_30) throw e_30.error;
+            if (e_29) throw e_29.error;
           }
         }
       }
-    } catch (e_29_1) {
-      e_29 = { error: e_29_1 };
+    } catch (e_28_1) {
+      e_28 = { error: e_28_1 };
     } finally {
       try {
         if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
       } finally {
-        if (e_29) throw e_29.error;
+        if (e_28) throw e_28.error;
       }
     }
     return modeNames.size;
@@ -3244,11 +3112,9 @@
     selectAllThemesButton: getInput("select-all-themes-button"),
     clearThemesButton: getInput("clear-themes-button"),
     includeTokenEntries: getInput("include-token-entries"),
-    includeFullData: getInput("include-full-data"),
     includeCssTheme: getInput("include-css-theme"),
     includeFlutterTheme: getInput("include-flutter-theme"),
     filePath: getInput("file-path"),
-    fullDataFilePath: getInput("full-data-file-path"),
     cssFilePath: getInput("css-file-path"),
     flutterFilePath: getInput("flutter-file-path"),
     componentTokenPrefixes: getInput("component-token-prefixes"),
@@ -3421,11 +3287,9 @@
       elements.lightModeName,
       elements.darkModeName,
       elements.includeTokenEntries,
-      elements.includeFullData,
       elements.includeCssTheme,
       elements.includeFlutterTheme,
       elements.filePath,
-      elements.fullDataFilePath,
       elements.cssFilePath,
       elements.flutterFilePath,
       elements.componentTokenPrefixes,
@@ -3540,11 +3404,9 @@
     elements.lightModeName.value = settings.lightModeName;
     elements.darkModeName.value = settings.darkModeName;
     elements.includeTokenEntries.checked = settings.includeTokenEntries;
-    elements.includeFullData.checked = settings.includeFullData;
     elements.includeCssTheme.checked = settings.includeCssTheme;
     elements.includeFlutterTheme.checked = settings.includeFlutterTheme;
     elements.filePath.value = settings.filePath;
-    elements.fullDataFilePath.value = settings.fullDataFilePath;
     elements.cssFilePath.value = settings.cssFilePath;
     elements.flutterFilePath.value = settings.flutterFilePath;
     elements.componentTokenPrefixes.value = settings.componentTokenPrefixes;
@@ -3661,11 +3523,9 @@
       lightModeName: elements.lightModeName.value,
       darkModeName: elements.darkModeName.value,
       includeTokenEntries: elements.includeTokenEntries.checked,
-      includeFullData: elements.includeFullData.checked,
       includeCssTheme: elements.includeCssTheme.checked,
       includeFlutterTheme: elements.includeFlutterTheme.checked,
       filePath: elements.filePath.value,
-      fullDataFilePath: elements.fullDataFilePath.value,
       cssFilePath: elements.cssFilePath.value,
       flutterFilePath: elements.flutterFilePath.value,
       componentTokenPrefixes: elements.componentTokenPrefixes.value,

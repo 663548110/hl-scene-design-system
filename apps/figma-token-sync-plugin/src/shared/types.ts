@@ -66,7 +66,6 @@ export interface StoredSettings {
   repoName: string;
   branch: string;
   filePath: string;
-  fullDataFilePath: string;
   cssFilePath: string;
   flutterFilePath: string;
   format: ExportFormat;
@@ -77,7 +76,6 @@ export interface StoredSettings {
   lightModeName: string;
   darkModeName: string;
   includeTokenEntries: boolean;
-  includeFullData: boolean;
   includeCssTheme: boolean;
   includeFlutterTheme: boolean;
   componentTokenPrefixes: string;
@@ -221,7 +219,6 @@ export const DEFAULT_SETTINGS: StoredSettings = {
   repoName: "hl-scene-design-system",
   branch: "main",
   filePath: defaultFilePath("design-system"),
-  fullDataFilePath: "generated/figma-token-source.json",
   cssFilePath: defaultCssFilePath(),
   flutterFilePath: defaultFlutterFilePath("default"),
   format: "design-system",
@@ -232,7 +229,6 @@ export const DEFAULT_SETTINGS: StoredSettings = {
   lightModeName: "",
   darkModeName: "",
   includeTokenEntries: false,
-  includeFullData: true,
   includeCssTheme: true,
   includeFlutterTheme: true,
   componentTokenPrefixes: DEFAULT_COMPONENT_TOKEN_PREFIXES,
@@ -254,7 +250,6 @@ export function normalizeSettings(
     repoName: maybeSettings?.repoName?.trim() ?? DEFAULT_SETTINGS.repoName,
     branch: maybeSettings?.branch?.trim() || DEFAULT_SETTINGS.branch,
     filePath: maybeSettings?.filePath?.trim() || defaultFilePath(format),
-    fullDataFilePath: maybeSettings?.fullDataFilePath?.trim() || DEFAULT_SETTINGS.fullDataFilePath,
     cssFilePath: normalizeOutputPath(
       maybeSettings?.cssFilePath?.trim(),
       DEFAULT_SETTINGS.cssFilePath,
@@ -271,7 +266,6 @@ export function normalizeSettings(
     lightModeName: maybeSettings?.lightModeName?.trim() ?? DEFAULT_SETTINGS.lightModeName,
     darkModeName: maybeSettings?.darkModeName?.trim() ?? DEFAULT_SETTINGS.darkModeName,
     includeTokenEntries: false,
-    includeFullData: normalizeBoolean(maybeSettings?.includeFullData, DEFAULT_SETTINGS.includeFullData),
     includeCssTheme: normalizeBoolean(maybeSettings?.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
     includeFlutterTheme: normalizeBoolean(maybeSettings?.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
     componentTokenPrefixes:

@@ -3,7 +3,6 @@ import {
   defaultCssFilePath,
   defaultFlutterFilePath,
   type ExportArtifact,
-  type SerializedVariable,
   type StoredSettings,
   type SyncFileRequest,
   type TokenSnapshot,
@@ -12,10 +11,6 @@ import {
   REQUIRED_TDESIGN_COLOR_KEYS,
   buildTokenModel,
   compareTokens,
-  formatTokenValue,
-  inferTokenCategory,
-  isComponentLevelToken,
-  resolveTokenValue,
   toPascalCase,
   type NormalizedModeValue,
   type NormalizedToken,
@@ -106,17 +101,6 @@ export function generateMultiArtifacts(snapshot: TokenSnapshot, settings: Stored
     darkModeNames: spec.darkModeNames,
     selected: isFlutterThemeSelected(model.settings, spec.themeId),
   }));
-
-  if (settings.includeFullData) {
-    addRenderedFile(renderedFiles, {
-      path: settings.fullDataFilePath,
-      label: "全量 Figma token 数据源",
-      content: renderFullDataSource(model),
-      mergeStrategy: "overwrite",
-      tokenCount: model.snapshot.variables.length,
-      warnings: [],
-    });
-  }
 
   if (settings.includeCssTheme) {
     const cssResult = renderCssThemeFiles(model, rows, themeSpecs);
@@ -350,105 +334,6 @@ function renderFlutterThemeDartFiles(
   return {
     files,
     warnings,
-  };
-}
-
-function renderFullDataSource(model: TokenModel): string {
-  const tokenByVariableId = new Map(model.tokens.map((token) => [token.variable.id, token]));
-  const variables = model.snapshot.variables.map((variable) => renderFullDataVariable(model, tokenByVariableId, variable));
-  const rows = [...model.globalTokens].sort(compareTokens);
-  const themeSpecs = buildThemeSpecs(model, rows);
-  const selectedThemeSpecs = themeSpecs.filter((spec) => isFlutterThemeSelected(model.settings, spec.themeId));
-
-  return `${JSON.stringify(
-    {
-      schema_version: "figma-token-source/v2",
-      generated_at: model.snapshot.generatedAt,
-      source_file: model.snapshot.fileName,
-      theme_id: model.settings.themeId,
-      generated_artifacts: {
-        full_data_path: model.settings.fullDataFilePath,
-        css_theme_entry_path: cssThemeEntryFilePath(model.settings.cssFilePath),
-        css_theme_paths: selectedThemeSpecs.map((spec) => cssThemeTokenFilePath(model.settings.cssFilePath, spec.themeId)),
-        flutter_theme_entry_path: flutterThemeEntryFilePath(model.settings.flutterFilePath),
-        flutter_theme_paths: selectedThemeSpecs.map((spec) => flutterThemeTokenFilePath(model.settings.flutterFilePath, spec.themeId)),
-      },
-      themes: themeSpecs.map((spec) => ({
-        theme_id: spec.themeId,
-        light_modes: spec.lightModeNames,
-        dark_modes: spec.darkModeNames,
-        selected: isFlutterThemeSelected(model.settings, spec.themeId),
-      })),
-      mode_mappings: model.modeMappings,
-      component_token_prefixes: sortedSetValues(model.componentPrefixes),
-      stats: {
-        collections: model.snapshot.collections.length,
-        variables: model.snapshot.variables.length,
-        selected_collections: model.selectedCollections.length,
-        selected_tokens: model.tokens.length,
-        global_tokens: model.globalTokens.length,
-        component_tokens: model.componentTokens.length,
-      },
-      collections: model.snapshot.collections,
-      variables,
-    },
-    null,
-    2,
-  )}\n`;
-}
-
-function sortedSetValues(values: Set<string>): string[] {
-  const result: string[] = [];
-  values.forEach((value) => {
-    result.push(value);
-  });
-  return result.sort();
-}
-
-function renderFullDataVariable(
-  model: TokenModel,
-  tokenByVariableId: Map<string, NormalizedToken>,
-  variable: SerializedVariable,
-): Record<string, unknown> {
-  const collection = model.collectionMap.get(variable.collectionId);
-  const token = tokenByVariableId.get(variable.id);
-  const valuesByMode: Record<string, unknown> = {};
-
-  if (collection) {
-    const category = inferTokenCategory(variable);
-    for (const mode of collection.modes) {
-      const rawValue = variable.valuesByMode[mode.modeId] ?? variable.valuesByMode[collection.defaultModeId];
-      const resolved = resolveTokenValue(variable, mode.modeId, model.collectionMap, model.variableMap, []);
-      valuesByMode[mode.name] = {
-        mode_id: mode.modeId,
-        raw: rawValue,
-        resolved: resolved
-          ? {
-              value: formatTokenValue(resolved.value, category),
-              alias_trail: resolved.aliasTrail,
-            }
-          : null,
-      };
-    }
-  }
-
-  return {
-    id: variable.id,
-    key: variable.key,
-    name: variable.name,
-    description: variable.description,
-    collection_id: variable.collectionId,
-    collection_name: collection?.name ?? "",
-    resolved_type: variable.resolvedType,
-    category: inferTokenCategory(variable),
-    scopes: variable.scopes,
-    hidden_from_publishing: variable.hiddenFromPublishing,
-    is_selected: model.selectedCollectionIds.has(variable.collectionId),
-    is_component_level: token ? token.isComponentLevel : collection ? isComponentLevelToken(collection, variable, model.componentPrefixes) : false,
-    token_id: token?.tokenId ?? null,
-    css_variable: token?.cssVarName ?? null,
-    flutter_theme_key: token?.tdesignThemeKey ?? null,
-    values_by_mode: valuesByMode,
   };
 }
 

@@ -4,7 +4,6 @@
 
 插件负责从当前 Figma 文件读取 Variables，并同步到 `663548110/hl-scene-design-system`：
 
-- `generated/figma-token-source.json`：全量 Figma Variables 数据源。
 - `artifacts/css/theme.css` 与 `artifacts/css/themes/*.css`：CSS 主题入口与分主题文件。
 - `packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart`：Flutter 组件库直接使用的主题 token 注册文件。
 
