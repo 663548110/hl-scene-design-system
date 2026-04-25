@@ -1,0 +1,20 @@
+{
+  "name": "hl-scene-design-system",
+  "version": "0.1.0",
+  "private": true,
+  "description": "HL Scene design system monorepo for Figma tokens, design rules, generated assets, and Flutter components.",
+  "type": "module",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.8.3"
+  }
+}

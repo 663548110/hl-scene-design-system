@@ -1,0 +1,48 @@
+name: rdesign_flutter_example
+description: RDesign Flutter example app.
+publish_to: 'none'
+version: 1.0.0+1
+
+environment:
+  sdk: ">=3.2.6 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  web: any
+
+  flutter_swiper_null_safety: ^1.0.2
+  intl: any
+  cupertino_icons: ^1.0.2
+  flutter_markdown: ^0.6.14
+  http: ^0.13.5
+  rdesign_flutter:
+    path: ../
+  extended_nested_scroll_view: any
+  flutter_screenutil: any
+  provider: ^6.1.5+1
+  shared_preferences: ^2.2.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_localizations:
+    sdk: flutter
+  flutter_lints: ^1.0.0
+
+dependency_overrides:
+  flutter_plugin_android_lifecycle: 2.0.32
+  web: ^1.1.1
+
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/api/
+    - assets/code/
+    - assets/version
+    - assets/img/
+    - assets/theme.json
+    - assets/publish_time

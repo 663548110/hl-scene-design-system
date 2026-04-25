@@ -1,0 +1,22 @@
+name: rdesign_flutter
+description: RDesign UI component library for Flutter, based on TDesign Flutter.
+version: 0.1.0
+homepage: https://github.com/663548110/hl-scene-design-system
+repository: https://github.com/663548110/hl-scene-design-system
+
+environment:
+  sdk: ">=3.2.6 <4.0.0"
+  flutter: ">=3.16.0"
+
+dependencies:
+  flutter:
+    sdk: flutter
+  tdesign_flutter: ^0.2.7
+
+dev_dependencies:
+  flutter_lints: ^1.0.4
+  flutter_test:
+    sdk: flutter
+
+flutter:
+  uses-material-design: true
