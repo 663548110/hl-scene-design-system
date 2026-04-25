@@ -103,10 +103,10 @@
     if (format === "design-system") {
       return "docs/design-system/tokens.md";
     }
-    return format === "md" ? "artifacts/flutter/colors.md" : "artifacts/css/colors.css";
+    return format === "md" ? "docs/design-system/tokens.md" : defaultCssFilePath();
   }
   function defaultCssFilePath() {
-    return "artifacts/css/theme.css";
+    return "packages/theme-generator/src/common/themes/tokens/theme.css";
   }
   function defaultFlutterFilePath(themeId) {
     void themeId;
@@ -200,7 +200,10 @@
       return fallback;
     }
     if (value.indexOf("tokens/css/") === 0) {
-      return "artifacts/css/".concat(value.slice("tokens/css/".length));
+      return "packages/theme-generator/src/common/themes/tokens/".concat(value.slice("tokens/css/".length));
+    }
+    if (value.indexOf("artifacts/css/") === 0) {
+      return "packages/theme-generator/src/common/themes/tokens/".concat(value.slice("artifacts/css/".length));
     }
     if (value.indexOf("tokens/flutter/") === 0) {
       return fallback;

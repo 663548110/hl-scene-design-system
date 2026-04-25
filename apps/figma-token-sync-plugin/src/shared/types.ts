@@ -197,11 +197,11 @@ export function defaultFilePath(format: ExportFormat): string {
     return "docs/design-system/tokens.md";
   }
 
-  return format === "md" ? "artifacts/flutter/colors.md" : "artifacts/css/colors.css";
+  return format === "md" ? "docs/design-system/tokens.md" : defaultCssFilePath();
 }
 
 export function defaultCssFilePath(): string {
-  return "artifacts/css/theme.css";
+  return "packages/theme-generator/src/common/themes/tokens/theme.css";
 }
 
 export function defaultFlutterFilePath(themeId: string): string {
@@ -310,7 +310,11 @@ function normalizeOutputPath(value: string | undefined, fallback: string): strin
   }
 
   if (value.indexOf("tokens/css/") === 0) {
-    return `artifacts/css/${value.slice("tokens/css/".length)}`;
+    return `packages/theme-generator/src/common/themes/tokens/${value.slice("tokens/css/".length)}`;
+  }
+
+  if (value.indexOf("artifacts/css/") === 0) {
+    return `packages/theme-generator/src/common/themes/tokens/${value.slice("artifacts/css/".length)}`;
   }
 
   if (value.indexOf("tokens/flutter/") === 0) {

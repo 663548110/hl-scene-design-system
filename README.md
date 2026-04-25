@@ -13,8 +13,6 @@ docs/
     tokens.md                    # token truth，保留 Token Entries
     components/                  # 一组件一文档
 
-artifacts/                       # 面向消费端的生成产物
-
 apps/
   docs/                          # RDesign Flutter 文档站
   figma-token-sync-plugin/        # Figma Variables 同步插件
@@ -50,10 +48,7 @@ packages/
 - `packages/flutter/rdesign_component/`：Flutter 组件库源码。
 - `packages/flutter/rdesign_component/lib/src/theme/tokens/`：Figma 插件直接同步生成的 Flutter 主题 token。
 - `packages/theme-generator/`：文档站使用的主题生成器 WebComponent。
-
-### 产物层
-
-- `artifacts/css/`：CSS 主题变量生成产物。
+- `packages/theme-generator/src/common/themes/tokens/`：Figma 插件直接同步生成的 CSS 主题 token。
 
 ## 常用命令
 
@@ -90,6 +85,6 @@ const snapshot = await loadDesignSystem({
 
 1. 单一事实源：规则、token、组件事实只维护在 `docs/design-system/`。
 2. 一组件一文件：组件事实来自 `docs/design-system/components/*.md`。
-3. 生成产物不手写：`artifacts/` 和 Flutter token 文件由工具生成。
+3. 生成产物不手写：CSS token 和 Flutter token 文件由 Figma 插件生成。
 4. 应用不反写事实源：文档站、Figma 插件、AI agent、MCP 都是消费方或同步方。
 5. 解析逻辑集中：Markdown/YAML 解析统一放在 `packages/design-system-core`。

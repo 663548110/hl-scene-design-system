@@ -17,6 +17,6 @@
       "https://api.github.com",
       "https://github.com"
     ],
-    "reasoning": "Sync generated token artifacts from Figma variables into a GitHub repository."
+    "reasoning": "Sync generated token files from Figma variables into a GitHub repository."
   }
 }
