@@ -832,7 +832,7 @@ function addFlutterThemeToken(
       return 0;
     }
 
-    if (sections.color[token.tdesignThemeKey]) {
+    if (sections.color[token.tdesignThemeKey] && sections.color[token.tdesignThemeKey] !== modeValue.formatted.value) {
       warnings.push(`Flutter ${modeLabel} 主题 key ${token.tdesignThemeKey} 被多个 Figma token 命中，保留后命中的 ${token.semanticName}。`);
     }
     sections.color[token.tdesignThemeKey] = modeValue.formatted.value;

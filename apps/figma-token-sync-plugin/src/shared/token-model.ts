@@ -136,31 +136,6 @@ export const REQUIRED_TDESIGN_COLOR_KEYS = [
   "fontGyColor2",
   "fontGyColor3",
   "fontGyColor4",
-  "brandNormalColor",
-  "brandHoverColor",
-  "brandFocusColor",
-  "brandClickColor",
-  "brandDisabledColor",
-  "brandLightColor",
-  "warningNormalColor",
-  "warningHoverColor",
-  "warningFocusColor",
-  "warningClickColor",
-  "warningDisabledColor",
-  "warningLightColor",
-  "errorNormalColor",
-  "errorHoverColor",
-  "errorFocusColor",
-  "errorClickColor",
-  "errorDisabledColor",
-  "errorLightColor",
-  "successNormalColor",
-  "successHoverColor",
-  "successFocusColor",
-  "successClickColor",
-  "successDisabledColor",
-  "successLightColor",
-  "whiteColor1",
 ];
 
 export function buildTokenModel(snapshot: TokenSnapshot, settings: StoredSettings): TokenModel {
@@ -624,7 +599,7 @@ function buildModeMapping(collection: SerializedCollection, settings: StoredSett
     warnings.push(`${collection.name}: 未找到指定 dark mode "${preferredDark}"，已回退到自动识别。`);
   }
 
-  if (!darkMode) {
+  if (!darkMode && shouldWarnMissingDarkMode(collection)) {
     warnings.push(`${collection.name}: 未识别到 dark mode，将只导出 light/default 值。`);
   }
 
@@ -690,6 +665,11 @@ function isDarkModeName(value: string): boolean {
   );
 }
 
+function shouldWarnMissingDarkMode(collection: SerializedCollection): boolean {
+  const segments = tokenize(collection.name);
+  return segments.indexOf("color") !== -1;
+}
+
 function normalizeModeLookup(value: string): string {
   const normalized = normalizeName(value);
   return normalized || value.trim().toLowerCase();
@@ -702,7 +682,7 @@ function inferTDesignThemeKey(collection: SerializedCollection, variable: Serial
 
   const segments = [...tokenize(collection.name), ...tokenize(variable.name)];
   const compact = segments.join("");
-  const semanticKey = inferSemanticThemeKey(compact);
+  const semanticKey = inferSemanticThemeKey(segments);
 
   if (semanticKey) {
     return semanticKey;
@@ -721,19 +701,61 @@ function inferTDesignThemeKey(collection: SerializedCollection, variable: Serial
   return null;
 }
 
-function inferSemanticThemeKey(compact: string): string | null {
+function inferSemanticThemeKey(segments: string[]): string | null {
   const colorTypes = ["brand", "warning", "error", "success"];
-  const states = ["normal", "hover", "focus", "click", "disabled", "light"];
+  const states = [
+    { key: "normal", aliases: ["normal"] },
+    { key: "hover", aliases: ["hover"] },
+    { key: "focus", aliases: ["focus"] },
+    { key: "click", aliases: ["click", "active", "pressed"] },
+    { key: "disabled", aliases: ["disabled"] },
+    { key: "light", aliases: ["light"] },
+  ];
 
   for (const colorType of colorTypes) {
     for (const state of states) {
-      if (compact.indexOf(`${colorType}${state}color`) !== -1 || compact.indexOf(`${colorType}color${state}`) !== -1) {
-        return `${colorType}${capitalize(state)}Color`;
+      if (hasSemanticState(segments, colorType, state.aliases)) {
+        return `${colorType}${capitalize(state.key)}Color`;
       }
     }
   }
 
   return null;
+}
+
+function hasSemanticState(segments: string[], colorType: string, stateAliases: string[]): boolean {
+  for (let index = 0; index < segments.length; index += 1) {
+    if (segments[index] !== colorType) {
+      continue;
+    }
+
+    const tail = segments.slice(index + 1);
+
+    if (tail.length === 0) {
+      continue;
+    }
+
+    if (matchesStatePattern(tail, stateAliases)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function matchesStatePattern(tail: string[], stateAliases: string[]): boolean {
+  if (tail.length === 1) {
+    return stateAliases.indexOf(tail[0]) !== -1;
+  }
+
+  if (tail.length === 2) {
+    return (
+      (tail[0] === "color" && stateAliases.indexOf(tail[1]) !== -1) ||
+      (stateAliases.indexOf(tail[0]) !== -1 && tail[1] === "color")
+    );
+  }
+
+  return false;
 }
 
 function inferPaletteThemeKey(segments: string[], compact: string): string | null {
@@ -745,12 +767,6 @@ function inferPaletteThemeKey(segments: string[], compact: string): string | nul
     if (matchedNumber) {
       return `${colorType}Color${matchedNumber}`;
     }
-  }
-
-  const grayNumber = matchPaletteNumber(compact, segments, "gray", 14);
-
-  if (grayNumber) {
-    return `grayColor${grayNumber}`;
   }
 
   const fontWhiteNumber =
@@ -767,6 +783,12 @@ function inferPaletteThemeKey(segments: string[], compact: string): string | nul
 
   if (fontGrayNumber) {
     return `fontGyColor${fontGrayNumber}`;
+  }
+
+  const grayNumber = matchPaletteNumber(compact, segments, "gray", 14);
+
+  if (grayNumber) {
+    return `grayColor${grayNumber}`;
   }
 
   return null;
