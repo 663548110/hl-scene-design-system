@@ -7,6 +7,10 @@ dist/
 # The docs site imports the checked-in theme generator web component build.
 !packages/theme-generator/dist/
 !packages/theme-generator/dist/**
+!apps/figma-token-sync-plugin/dist/
+!apps/figma-token-sync-plugin/dist/**
+!apps/figma-token-sync-plugin/token/dist/
+!apps/figma-token-sync-plugin/token/dist/**
 
 # Docs site generated artifacts
 _site/

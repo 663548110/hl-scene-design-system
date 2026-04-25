@@ -1,0 +1,3828 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>Figma Token Sync</title>
+    <style>
+      :root {
+        color-scheme: light dark;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html,
+      body {
+        margin: 0;
+        min-height: 100%;
+        background:
+          radial-gradient(circle at top right, color-mix(in srgb, var(--figma-color-bg-brand, #0d99ff) 12%, transparent), transparent 28%),
+          linear-gradient(180deg, var(--figma-color-bg) 0%, color-mix(in srgb, var(--figma-color-bg) 92%, var(--figma-color-bg-secondary) 8%) 100%);
+        color: var(--figma-color-text);
+        font: 12px/1.5 ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      }
+
+      body {
+        padding: 16px;
+      }
+
+      .shell {
+        display: grid;
+        gap: 12px;
+      }
+
+      .hero {
+        padding: 14px;
+        border: 1px solid var(--figma-color-border);
+        border-radius: 16px;
+        background:
+          linear-gradient(135deg, color-mix(in srgb, var(--figma-color-bg-brand, #0d99ff) 14%, transparent), transparent 42%),
+          var(--figma-color-bg-secondary);
+      }
+
+      .hero-title {
+        margin: 0;
+        font-size: 16px;
+        font-weight: 700;
+      }
+
+      .hero-subtitle {
+        margin: 6px 0 0;
+        color: var(--figma-color-text-secondary);
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 8px;
+        margin-top: 12px;
+      }
+
+      .stat {
+        padding: 10px;
+        border-radius: 12px;
+        background: color-mix(in srgb, var(--figma-color-bg) 80%, transparent);
+        border: 1px solid color-mix(in srgb, var(--figma-color-border) 80%, transparent);
+      }
+
+      .stat-label {
+        display: block;
+        color: var(--figma-color-text-secondary);
+        font-size: 11px;
+      }
+
+      .stat-value {
+        margin-top: 4px;
+        font-size: 15px;
+        font-weight: 700;
+      }
+
+      .panel {
+        padding: 14px;
+        border: 1px solid var(--figma-color-border);
+        border-radius: 16px;
+        background: var(--figma-color-bg);
+      }
+
+      .panel-title {
+        margin: 0 0 12px;
+        font-size: 13px;
+        font-weight: 700;
+      }
+
+      .grid {
+        display: grid;
+        gap: 10px;
+      }
+
+      .grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        color: var(--figma-color-text-secondary);
+      }
+
+      input,
+      select,
+      textarea,
+      button {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        padding: 9px 10px;
+        border-radius: 10px;
+        border: 1px solid var(--figma-color-border);
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text);
+        outline: none;
+      }
+
+      textarea {
+        min-height: 72px;
+        resize: vertical;
+      }
+
+      input[type="checkbox"] {
+        width: auto;
+        accent-color: var(--figma-color-bg-brand);
+      }
+
+      input:focus,
+      select:focus,
+      textarea:focus {
+        border-color: var(--figma-color-border-brand-strong);
+        box-shadow: 0 0 0 1px var(--figma-color-border-brand-strong);
+      }
+
+      .actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .checkbox-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .advanced-config {
+        margin-top: 12px;
+        border-top: 1px solid color-mix(in srgb, var(--figma-color-border) 64%, transparent);
+        padding-top: 10px;
+      }
+
+      .advanced-config summary {
+        cursor: pointer;
+        color: var(--figma-color-text-secondary);
+        font-weight: 700;
+        user-select: none;
+      }
+
+      .advanced-config summary:hover {
+        color: var(--figma-color-text);
+      }
+
+      .theme-picker {
+        margin-top: 12px;
+      }
+
+      .theme-picker-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .theme-picker-title {
+        color: var(--figma-color-text-secondary);
+        font-weight: 700;
+      }
+
+      .theme-picker-actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .theme-picker-actions button {
+        padding: 4px 9px;
+        font-size: 11px;
+      }
+
+      .theme-list {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+      }
+
+      .theme-option {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 9px 10px;
+        border-radius: 12px;
+        border: 1px solid var(--figma-color-border);
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text);
+      }
+
+      .theme-option-body {
+        display: grid;
+        gap: 2px;
+        min-width: 0;
+      }
+
+      .theme-option-name {
+        font-weight: 700;
+      }
+
+      .theme-option-modes,
+      .theme-list-empty {
+        color: var(--figma-color-text-secondary);
+        font-size: 11px;
+      }
+
+      .theme-list-empty {
+        grid-column: 1 / -1;
+        padding: 9px 10px;
+        border-radius: 12px;
+        border: 1px dashed var(--figma-color-border);
+      }
+
+      .checkbox-label {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--figma-color-border);
+        border-radius: 10px;
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text);
+      }
+
+      button {
+        padding: 9px 12px;
+        border-radius: 999px;
+        border: 1px solid var(--figma-color-border);
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text);
+        cursor: pointer;
+        transition: transform 120ms ease, background 120ms ease, border-color 120ms ease;
+      }
+
+      button:hover {
+        transform: translateY(-1px);
+        border-color: var(--figma-color-border-brand-strong);
+      }
+
+      button.primary {
+        border-color: var(--figma-color-border-brand-strong);
+        background: var(--figma-color-bg-brand);
+        color: var(--figma-color-text-onbrand);
+      }
+
+      button:disabled {
+        cursor: not-allowed;
+        opacity: 0.6;
+        transform: none;
+      }
+
+      .status {
+        padding: 10px 12px;
+        border-radius: 12px;
+        border: 1px solid var(--figma-color-border);
+        background: var(--figma-color-bg-secondary);
+        color: var(--figma-color-text-secondary);
+      }
+
+      .status.success {
+        border-color: color-mix(in srgb, #14ae5c 45%, var(--figma-color-border));
+        color: #14ae5c;
+      }
+
+      .status.error {
+        border-color: color-mix(in srgb, #f24822 45%, var(--figma-color-border));
+        color: #f24822;
+      }
+
+      .sync-log-shell {
+        margin-top: 12px;
+      }
+
+      .sync-log-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        margin-bottom: 6px;
+      }
+
+      .sync-log-title {
+        color: var(--figma-color-text-secondary);
+        font-weight: 700;
+      }
+
+      .sync-log-actions {
+        display: flex;
+        gap: 6px;
+      }
+
+      .sync-log-actions button {
+        padding: 4px 9px;
+        font-size: 11px;
+      }
+
+      .sync-log {
+        min-height: 118px;
+        max-height: 172px;
+        overflow: auto;
+        padding: 10px 12px;
+        border-radius: 14px;
+        border: 1px solid var(--figma-color-border);
+        background: color-mix(in srgb, var(--figma-color-bg-secondary) 88%, black 12%);
+        font: 11px/1.55 "SFMono-Regular", ui-monospace, Menlo, monospace;
+      }
+
+      .sync-log-row {
+        display: grid;
+        grid-template-columns: 58px minmax(0, 1fr);
+        gap: 8px;
+        padding: 4px 0;
+        border-bottom: 1px solid color-mix(in srgb, var(--figma-color-border) 48%, transparent);
+      }
+
+      .sync-log-row:last-child {
+        border-bottom: 0;
+      }
+
+      .sync-log-time {
+        color: var(--figma-color-text-tertiary);
+      }
+
+      .sync-log-message {
+        color: var(--figma-color-text-secondary);
+        overflow-wrap: anywhere;
+      }
+
+      .sync-log-row.success .sync-log-message {
+        color: #14ae5c;
+      }
+
+      .sync-log-row.warning .sync-log-message {
+        color: #f3b63f;
+      }
+
+      .sync-log-row.error .sync-log-message {
+        color: #f24822;
+      }
+
+      .sync-log-empty {
+        color: var(--figma-color-text-tertiary);
+      }
+
+      .preview {
+        min-height: 240px;
+        max-height: 420px;
+        overflow: auto;
+        padding: 14px;
+        border-radius: 14px;
+        border: 1px solid var(--figma-color-border);
+        background: color-mix(in srgb, var(--figma-color-bg-secondary) 84%, black 16%);
+        color: #f6f7f9;
+        font: 12px/1.55 "SFMono-Regular", ui-monospace, Menlo, monospace;
+        white-space: pre-wrap;
+      }
+
+      .hint {
+        margin-top: 10px;
+        color: var(--figma-color-text-secondary);
+      }
+
+      .hidden {
+        display: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="shell">
+      <section class="hero">
+        <h1 class="hero-title">Figma Token Sync</h1>
+        <p class="hero-subtitle">同步 Figma Variables 到设计系统仓库：全量数据源 + 按主题拆分的 CSS / Flutter 产物。</p>
+        <div class="stats">
+          <div class="stat">
+            <span class="stat-label">集合</span>
+            <div class="stat-value" id="collection-count">0</div>
+          </div>
+          <div class="stat">
+            <span class="stat-label">全局 Token</span>
+            <div class="stat-value" id="token-count">0</div>
+          </div>
+          <div class="stat">
+            <span class="stat-label">警告</span>
+            <div class="stat-value" id="warning-count">0</div>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">导出配置</h2>
+        <div class="grid">
+          <label>
+            Theme ID
+            <input id="theme-id" type="text" placeholder="default" />
+          </label>
+        </div>
+        <div class="hint">默认导出全部变量集合；Light/Dark 与 SL/Mrj 等多主题会自动识别。一般只需要确认 Theme ID。</div>
+        <div class="theme-picker">
+          <div class="theme-picker-header">
+            <div class="theme-picker-title">同步主题</div>
+            <div class="theme-picker-actions">
+              <button id="select-all-themes-button" type="button">全选</button>
+              <button id="clear-themes-button" type="button">清空</button>
+            </div>
+          </div>
+          <div id="theme-list" class="theme-list">
+            <div class="theme-list-empty">等待识别 Figma 主题...</div>
+          </div>
+        </div>
+        <details class="advanced-config">
+          <summary>高级配置</summary>
+          <div class="grid two" style="margin-top: 10px">
+            <label>
+              变量集合
+              <select id="collection"></select>
+            </label>
+            <label>
+              CSS / Flutter 前缀
+              <input id="name-prefix" type="text" placeholder="rd" />
+            </label>
+          </div>
+          <div class="grid two" style="margin-top: 10px">
+            <label>
+              Light mode 名称
+              <input id="light-mode-name" type="text" placeholder="留空自动识别 light/default/亮色" />
+            </label>
+            <label>
+              Dark mode 名称
+              <input id="dark-mode-name" type="text" placeholder="留空自动识别 dark/暗色" />
+            </label>
+          </div>
+          <label style="margin-top: 10px">
+            组件 token 前缀
+            <textarea id="component-token-prefixes" placeholder="button, input, tabs"></textarea>
+          </label>
+          <div class="hint">这些项通常不用改，仅在 Figma mode 命名不规范或组件 token 识别需要调试时使用。</div>
+        </details>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">同步产物</h2>
+        <input id="include-token-entries" type="checkbox" hidden />
+        <input id="file-path" type="hidden" />
+        <div class="checkbox-grid">
+          <label class="checkbox-label">
+            <input id="include-full-data" type="checkbox" />
+            全量 JSON 数据源
+          </label>
+          <label class="checkbox-label">
+            <input id="include-css-theme" type="checkbox" />
+            CSS 主题文件
+          </label>
+          <label class="checkbox-label">
+            <input id="include-flutter-theme" type="checkbox" />
+            Flutter 主题 Dart
+          </label>
+        </div>
+        <div style="margin-top: 10px">
+          <label>
+            全量数据源
+            <input id="full-data-file-path" type="text" placeholder="generated/figma-token-source.json" />
+          </label>
+        </div>
+        <label style="margin-top: 10px">
+          CSS 主题入口文件
+          <input id="css-file-path" type="text" placeholder="artifacts/css/theme.css" />
+        </label>
+        <label style="margin-top: 10px">
+          Flutter 主题入口 Dart
+          <input id="flutter-file-path" type="text" placeholder="packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart" />
+        </label>
+        <div class="hint">CSS 和 Dart 都会按选中主题拆分；入口文件只负责 import/export 每套主题文件。</div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">GitHub 同步</h2>
+        <div class="grid two">
+          <label>
+            Owner / 组织
+            <input id="repo-owner" type="text" placeholder="your-org" />
+          </label>
+          <label>
+            Repo
+            <input id="repo-name" type="text" placeholder="your-repo" />
+          </label>
+        </div>
+        <div class="grid two" style="margin-top: 10px">
+          <label>
+            Branch
+            <input id="branch" type="text" placeholder="main" />
+          </label>
+          <label>
+            GitHub Token
+            <input id="github-token" type="password" placeholder="保存需要插件 manifest 带 id" />
+          </label>
+        </div>
+        <div class="actions" style="margin-top: 10px">
+          <button id="save-token-button" type="button">保存 Token</button>
+          <button id="clear-token-button" type="button">清空 Token</button>
+        </div>
+        <label style="margin-top: 10px">
+          Commit message
+          <input id="commit-message" type="text" placeholder="chore(tokens): sync figma color tokens" />
+        </label>
+        <div class="hint">Token 持久化依赖 Figma plugin ID；同步会写入全量 JSON、CSS 入口/主题文件和 Flutter 入口/主题文件。</div>
+      </section>
+
+      <section class="panel">
+        <h2 class="panel-title">预览</h2>
+        <div class="actions">
+          <button id="refresh-button" type="button">刷新 Figma 变量</button>
+          <button id="copy-button" type="button">复制预览</button>
+          <button id="sync-button" class="primary" type="button">同步到 GitHub</button>
+        </div>
+        <div id="status" class="status hidden" style="margin-top: 12px"></div>
+        <div class="sync-log-shell">
+          <div class="sync-log-header">
+            <div class="sync-log-title">同步日志</div>
+            <div class="sync-log-actions">
+              <button id="copy-log-button" type="button">复制日志</button>
+              <button id="clear-log-button" type="button">清空日志</button>
+            </div>
+          </div>
+          <div id="sync-log" class="sync-log">
+            <div class="sync-log-empty">点击“同步到 GitHub”后，这里会显示读取、合并和上传日志。</div>
+          </div>
+        </div>
+        <pre id="preview" class="preview" style="margin-top: 12px"></pre>
+      </section>
+    </div>
+
+    <script>
+      "use strict";
+(function() {
+  // .build-tmp/shared/types.js
+  var __read = function(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+      while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    } catch (error) {
+      e = { error: error };
+    } finally {
+      try {
+        if (r && !r.done && (m = i["return"])) m.call(i);
+      } finally {
+        if (e) throw e.error;
+      }
+    }
+    return ar;
+  };
+  var __spreadArray = function(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+      if (ar || !(i in from)) {
+        if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+        ar[i] = from[i];
+      }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+  };
+  var __values = function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+      next: function() {
+        if (o && i >= o.length) o = void 0;
+        return { value: o && o[i++], done: !o };
+      }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+  };
+  var ALL_COLLECTIONS = "__all__";
+  var ALL_THEMES = "__all_themes__";
+  var DEFAULT_COMPONENT_TOKEN_PREFIXES = [
+    "action_sheet",
+    "avatar",
+    "backtop",
+    "badge",
+    "button",
+    "calendar",
+    "cascader",
+    "cell",
+    "checkbox",
+    "collapse",
+    "dialog",
+    "divider",
+    "drawer",
+    "dropdown_menu",
+    "empty",
+    "fab",
+    "footer",
+    "form",
+    "icon",
+    "image",
+    "image_viewer",
+    "indexes",
+    "input",
+    "link",
+    "loading",
+    "message",
+    "navbar",
+    "notice_bar",
+    "picker",
+    "popover",
+    "popup",
+    "progress",
+    "radio",
+    "rate",
+    "refresh",
+    "result",
+    "search",
+    "sidebar",
+    "skeleton",
+    "slider",
+    "stepper",
+    "steps",
+    "swipe_cell",
+    "swiper",
+    "switch",
+    "tabbar",
+    "table",
+    "tabs",
+    "tag",
+    "text",
+    "textarea",
+    "time_counter",
+    "toast",
+    "tree",
+    "upload"
+  ].join(", ");
+  function defaultFilePath(format) {
+    if (format === "design-system") {
+      return "generated/figma-token-source.json";
+    }
+    return format === "md" ? "artifacts/flutter/colors.md" : "artifacts/css/colors.css";
+  }
+  function defaultCssFilePath() {
+    return "artifacts/css/theme.css";
+  }
+  function defaultFlutterFilePath(themeId) {
+    void themeId;
+    return "packages/flutter/rdesign_component/lib/src/theme/tokens/rdesign_theme_tokens.dart";
+  }
+  function defaultThemeId(sourceName) {
+    void sourceName;
+    return "default";
+  }
+  var DEFAULT_SETTINGS = {
+    repoOwner: "663548110",
+    repoName: "hl-scene-design-system",
+    branch: "main",
+    filePath: defaultFilePath("design-system"),
+    fullDataFilePath: "generated/figma-token-source.json",
+    cssFilePath: defaultCssFilePath(),
+    flutterFilePath: defaultFlutterFilePath("default"),
+    format: "design-system",
+    collectionId: ALL_COLLECTIONS,
+    namePrefix: "rd",
+    themeId: "default",
+    selectedThemeIds: [ALL_THEMES],
+    lightModeName: "",
+    darkModeName: "",
+    includeTokenEntries: false,
+    includeFullData: true,
+    includeCssTheme: true,
+    includeFlutterTheme: true,
+    componentTokenPrefixes: DEFAULT_COMPONENT_TOKEN_PREFIXES,
+    commitMessage: "chore(tokens): sync figma design tokens"
+  };
+  function normalizeSettings(maybeSettings, sourceName) {
+    var _a, _b, _c, _d, _e, _f, _g, _h, _j, _k, _l, _m, _o, _p, _q, _r, _s, _t;
+    var format = (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "md" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "css" || (maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.format) === "design-system" ? maybeSettings.format : DEFAULT_SETTINGS.format;
+    var themeId = normalizeThemeId(((_a = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.themeId) === null || _a === void 0 ? void 0 : _a.trim()) || defaultThemeId(sourceName));
+    return {
+      repoOwner: (_c = (_b = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoOwner) === null || _b === void 0 ? void 0 : _b.trim()) !== null && _c !== void 0 ? _c : DEFAULT_SETTINGS.repoOwner,
+      repoName: (_e = (_d = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.repoName) === null || _d === void 0 ? void 0 : _d.trim()) !== null && _e !== void 0 ? _e : DEFAULT_SETTINGS.repoName,
+      branch: ((_f = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.branch) === null || _f === void 0 ? void 0 : _f.trim()) || DEFAULT_SETTINGS.branch,
+      filePath: ((_g = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.filePath) === null || _g === void 0 ? void 0 : _g.trim()) || defaultFilePath(format),
+      fullDataFilePath: ((_h = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.fullDataFilePath) === null || _h === void 0 ? void 0 : _h.trim()) || DEFAULT_SETTINGS.fullDataFilePath,
+      cssFilePath: normalizeOutputPath((_j = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.cssFilePath) === null || _j === void 0 ? void 0 : _j.trim(), DEFAULT_SETTINGS.cssFilePath),
+      flutterFilePath: normalizeOutputPath((_k = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.flutterFilePath) === null || _k === void 0 ? void 0 : _k.trim(), defaultFlutterFilePath(themeId)),
+      format: format,
+      collectionId: ((_l = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.collectionId) === null || _l === void 0 ? void 0 : _l.trim()) || DEFAULT_SETTINGS.collectionId,
+      namePrefix: ((_m = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.namePrefix) === null || _m === void 0 ? void 0 : _m.trim()) || DEFAULT_SETTINGS.namePrefix,
+      themeId: themeId,
+      selectedThemeIds: normalizeStringArray(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.selectedThemeIds, DEFAULT_SETTINGS.selectedThemeIds),
+      lightModeName: (_p = (_o = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.lightModeName) === null || _o === void 0 ? void 0 : _o.trim()) !== null && _p !== void 0 ? _p : DEFAULT_SETTINGS.lightModeName,
+      darkModeName: (_r = (_q = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.darkModeName) === null || _q === void 0 ? void 0 : _q.trim()) !== null && _r !== void 0 ? _r : DEFAULT_SETTINGS.darkModeName,
+      includeTokenEntries: false,
+      includeFullData: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFullData, DEFAULT_SETTINGS.includeFullData),
+      includeCssTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeCssTheme, DEFAULT_SETTINGS.includeCssTheme),
+      includeFlutterTheme: normalizeBoolean(maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.includeFlutterTheme, DEFAULT_SETTINGS.includeFlutterTheme),
+      componentTokenPrefixes: ((_s = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.componentTokenPrefixes) === null || _s === void 0 ? void 0 : _s.trim()) || DEFAULT_SETTINGS.componentTokenPrefixes,
+      commitMessage: ((_t = maybeSettings === null || maybeSettings === void 0 ? void 0 : maybeSettings.commitMessage) === null || _t === void 0 ? void 0 : _t.trim()) || DEFAULT_SETTINGS.commitMessage
+    };
+  }
+  function normalizeBoolean(value, fallback) {
+    return typeof value === "boolean" ? value : fallback;
+  }
+  function normalizeStringArray(value, fallback) {
+    var e_1, _a;
+    if (!Array.isArray(value)) {
+      return __spreadArray([], __read(fallback), false);
+    }
+    var normalized = [];
+    try {
+      for (var value_1 = __values(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
+        var item = value_1_1.value;
+        if (typeof item !== "string") {
+          continue;
+        }
+        var trimmed = normalizeThemeId(item.trim());
+        if (trimmed && normalized.indexOf(trimmed) === -1) {
+          normalized.push(trimmed);
+        }
+      }
+    } catch (e_1_1) {
+      e_1 = { error: e_1_1 };
+    } finally {
+      try {
+        if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
+      } finally {
+        if (e_1) throw e_1.error;
+      }
+    }
+    return normalized;
+  }
+  function normalizeThemeId(value) {
+    return value === "2_0_flutter" ? "default" : value;
+  }
+  function normalizeOutputPath(value, fallback) {
+    if (!value) {
+      return fallback;
+    }
+    if (value.indexOf("tokens/css/") === 0) {
+      return "artifacts/css/".concat(value.slice("tokens/css/".length));
+    }
+    if (value.indexOf("tokens/flutter/") === 0) {
+      return fallback;
+    }
+    if (value.indexOf("artifacts/flutter/") === 0) {
+      return fallback;
+    }
+    if (/^artifacts\/flutter\/rd_.+_theme\.dart$/.test(value)) {
+      return fallback;
+    }
+    return value;
+  }
+
+  // .build-tmp/shared/token-model.js
+  var __values2 = function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+      next: function() {
+        if (o && i >= o.length) o = void 0;
+        return { value: o && o[i++], done: !o };
+      }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+  };
+  var __read2 = function(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+      while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    } catch (error) {
+      e = { error: error };
+    } finally {
+      try {
+        if (r && !r.done && (m = i["return"])) m.call(i);
+      } finally {
+        if (e) throw e.error;
+      }
+    }
+    return ar;
+  };
+  var __spreadArray2 = function(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+      if (ar || !(i in from)) {
+        if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+        ar[i] = from[i];
+      }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+  };
+  var REQUIRED_TDESIGN_COLOR_KEYS = [
+    "brandColor1",
+    "brandColor2",
+    "brandColor3",
+    "brandColor4",
+    "brandColor5",
+    "brandColor6",
+    "brandColor7",
+    "brandColor8",
+    "brandColor9",
+    "brandColor10",
+    "warningColor1",
+    "warningColor2",
+    "warningColor3",
+    "warningColor4",
+    "warningColor5",
+    "warningColor6",
+    "warningColor7",
+    "warningColor8",
+    "warningColor9",
+    "warningColor10",
+    "errorColor1",
+    "errorColor2",
+    "errorColor3",
+    "errorColor4",
+    "errorColor5",
+    "errorColor6",
+    "errorColor7",
+    "errorColor8",
+    "errorColor9",
+    "errorColor10",
+    "successColor1",
+    "successColor2",
+    "successColor3",
+    "successColor4",
+    "successColor5",
+    "successColor6",
+    "successColor7",
+    "successColor8",
+    "successColor9",
+    "successColor10",
+    "grayColor1",
+    "grayColor2",
+    "grayColor3",
+    "grayColor4",
+    "grayColor5",
+    "grayColor6",
+    "grayColor7",
+    "grayColor8",
+    "grayColor9",
+    "grayColor10",
+    "grayColor11",
+    "grayColor12",
+    "grayColor13",
+    "grayColor14",
+    "fontWhColor1",
+    "fontWhColor2",
+    "fontWhColor3",
+    "fontWhColor4",
+    "fontGyColor1",
+    "fontGyColor2",
+    "fontGyColor3",
+    "fontGyColor4",
+    "brandNormalColor",
+    "brandHoverColor",
+    "brandFocusColor",
+    "brandClickColor",
+    "brandDisabledColor",
+    "brandLightColor",
+    "warningNormalColor",
+    "warningHoverColor",
+    "warningFocusColor",
+    "warningClickColor",
+    "warningDisabledColor",
+    "warningLightColor",
+    "errorNormalColor",
+    "errorHoverColor",
+    "errorFocusColor",
+    "errorClickColor",
+    "errorDisabledColor",
+    "errorLightColor",
+    "successNormalColor",
+    "successHoverColor",
+    "successFocusColor",
+    "successClickColor",
+    "successDisabledColor",
+    "successLightColor",
+    "whiteColor1"
+  ];
+  function buildTokenModel(snapshot2, settings2) {
+    var e_1, _a;
+    var warnings = [];
+    var collectionMap = new Map(snapshot2.collections.map(function(collection2) {
+      return [collection2.id, collection2];
+    }));
+    var variableMap = new Map(snapshot2.variables.map(function(variable2) {
+      return [variable2.id, variable2];
+    }));
+    var componentPrefixes = parseComponentPrefixes(settings2.componentTokenPrefixes);
+    var selectedCollections = snapshot2.collections.filter(function(collection2) {
+      return settings2.collectionId === ALL_COLLECTIONS || collection2.id === settings2.collectionId;
+    }).sort(function(left, right) {
+      return left.name.localeCompare(right.name, "en");
+    });
+    var selectedCollectionIds = new Set(selectedCollections.map(function(collection2) {
+      return collection2.id;
+    }));
+    var modeMappings = selectedCollections.map(function(collection2) {
+      return buildModeMapping(collection2, settings2, warnings);
+    });
+    var modeMappingByCollection = new Map(modeMappings.map(function(mapping) {
+      return [mapping.collectionId, mapping];
+    }));
+    var tokens = [];
+    try {
+      for (var _b = __values2(snapshot2.variables), _c = _b.next(); !_c.done; _c = _b.next()) {
+        var variable = _c.value;
+        if (!selectedCollectionIds.has(variable.collectionId)) {
+          continue;
+        }
+        var collection = collectionMap.get(variable.collectionId);
+        var modeMapping = modeMappingByCollection.get(variable.collectionId);
+        if (!collection || !modeMapping) {
+          warnings.push("\u65E0\u6CD5\u627E\u5230 ".concat(variable.name, " \u6240\u5C5E\u7684 variable collection\u3002"));
+          continue;
+        }
+        var token = normalizeToken(variable, collection, collectionMap, variableMap, modeMapping, settings2, componentPrefixes, warnings);
+        if (token) {
+          tokens.push(token);
+        }
+      }
+    } catch (e_1_1) {
+      e_1 = { error: e_1_1 };
+    } finally {
+      try {
+        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+      } finally {
+        if (e_1) throw e_1.error;
+      }
+    }
+    var globalTokens = tokens.filter(function(token2) {
+      return !token2.isComponentLevel;
+    });
+    var componentTokens = tokens.filter(function(token2) {
+      return token2.isComponentLevel;
+    });
+    return {
+      snapshot: snapshot2,
+      settings: settings2,
+      collectionMap: collectionMap,
+      variableMap: variableMap,
+      componentPrefixes: componentPrefixes,
+      selectedCollections: selectedCollections,
+      selectedCollectionIds: selectedCollectionIds,
+      modeMappings: modeMappings,
+      tokens: tokens,
+      globalTokens: globalTokens,
+      componentTokens: componentTokens,
+      warnings: warnings
+    };
+  }
+  function inferTokenCategory(variable) {
+    var scopes = new Set(variable.scopes);
+    var normalizedName = normalizeName(variable.name);
+    if (variable.resolvedType === "COLOR") {
+      return "color";
+    }
+    if (scopes.has("CORNER_RADIUS") || normalizedName.indexOf("radius") !== -1 || normalizedName.indexOf("round") !== -1) {
+      return "radius";
+    }
+    if (normalizedName.indexOf("shadow") !== -1 || normalizedName.indexOf("elevation") !== -1) {
+      return "shadow";
+    }
+    if (scopes.has("GAP") || normalizedName.indexOf("spacing") !== -1 || normalizedName.indexOf("space") !== -1 || normalizedName.indexOf("margin") !== -1 || normalizedName.indexOf("padding") !== -1) {
+      return "spacing";
+    }
+    if (scopes.has("WIDTH_HEIGHT") || normalizedName.indexOf("size") !== -1 || normalizedName.indexOf("width") !== -1 || normalizedName.indexOf("height") !== -1) {
+      return "size";
+    }
+    if (scopes.has("FONT_SIZE") || scopes.has("FONT_FAMILY") || scopes.has("FONT_STYLE") || scopes.has("FONT_WEIGHT") || scopes.has("LINE_HEIGHT") || scopes.has("LETTER_SPACING") || normalizedName.indexOf("font") !== -1 || normalizedName.indexOf("typography") !== -1 || normalizedName.indexOf("line_height") !== -1) {
+      return "typography";
+    }
+    if (variable.resolvedType === "FLOAT") {
+      return "number";
+    }
+    return variable.resolvedType.toLowerCase();
+  }
+  function formatTokenValue(value, category) {
+    if (value.kind === "rgba") {
+      var hex = rgbaToHex(value);
+      return {
+        value: hex,
+        cssValue: hex,
+        rawValue: {
+          r: value.r,
+          g: value.g,
+          b: value.b,
+          a: value.a
+        },
+        flutter: rgbaToArgbHex(value)
+      };
+    }
+    if (value.kind === "number") {
+      var formatted = shouldUsePx(category) ? "".concat(formatNumber(value.value), "px") : formatNumber(value.value);
+      return {
+        value: formatted,
+        cssValue: formatted,
+        rawValue: value.value
+      };
+    }
+    if (value.kind === "string") {
+      return {
+        value: value.value,
+        cssValue: value.value,
+        rawValue: value.value
+      };
+    }
+    if (value.kind === "boolean") {
+      return {
+        value: value.value,
+        cssValue: String(value.value),
+        rawValue: value.value
+      };
+    }
+    return {
+      value: null,
+      cssValue: "",
+      rawValue: null
+    };
+  }
+  function isComponentLevelToken(collection, variable, componentPrefixes) {
+    var _a, _b;
+    var collectionSegments = tokenize(collection.name);
+    var variableSegments = tokenize(variable.name);
+    var firstCollectionSegment = (_a = collectionSegments[0]) !== null && _a !== void 0 ? _a : "";
+    var firstVariableSegment = (_b = variableSegments[0]) !== null && _b !== void 0 ? _b : "";
+    if (firstCollectionSegment === "component" || firstCollectionSegment === "components") {
+      return true;
+    }
+    if (componentPrefixes.has(firstCollectionSegment) || componentPrefixes.has(firstVariableSegment)) {
+      return true;
+    }
+    var allSegments = __spreadArray2(__spreadArray2([], __read2(collectionSegments), false), __read2(variableSegments), false);
+    for (var index = 0; index < allSegments.length - 1; index += 1) {
+      if ((allSegments[index] === "component" || allSegments[index] === "components") && componentPrefixes.has(allSegments[index + 1])) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function parseComponentPrefixes(value) {
+    var e_2, _a;
+    var prefixes = /* @__PURE__ */ new Set();
+    var parts = value.split(/[,\n]+/g);
+    try {
+      for (var parts_1 = __values2(parts), parts_1_1 = parts_1.next(); !parts_1_1.done; parts_1_1 = parts_1.next()) {
+        var part = parts_1_1.value;
+        var normalized = normalizeName(part);
+        if (normalized) {
+          prefixes.add(normalized);
+        }
+      }
+    } catch (e_2_1) {
+      e_2 = { error: e_2_1 };
+    } finally {
+      try {
+        if (parts_1_1 && !parts_1_1.done && (_a = parts_1.return)) _a.call(parts_1);
+      } finally {
+        if (e_2) throw e_2.error;
+      }
+    }
+    return prefixes;
+  }
+  function createTokenSegments(prefix, collectionName, tokenName) {
+    return __spreadArray2(__spreadArray2(__spreadArray2([], __read2(tokenize(prefix)), false), __read2(tokenize(collectionName)), false), __read2(tokenize(tokenName)), false);
+  }
+  function tokenize(value) {
+    var e_3, _a, e_4, _b;
+    var _c;
+    var splitParts = value.trim().split(/[\/\s._-]+/g);
+    var parts = [];
+    try {
+      for (var splitParts_1 = __values2(splitParts), splitParts_1_1 = splitParts_1.next(); !splitParts_1_1.done; splitParts_1_1 = splitParts_1.next()) {
+        var part = splitParts_1_1.value;
+        var matches = (_c = part.match(/[A-Za-z0-9]+/g)) !== null && _c !== void 0 ? _c : [];
+        try {
+          for (var matches_1 = (e_4 = void 0, __values2(matches)), matches_1_1 = matches_1.next(); !matches_1_1.done; matches_1_1 = matches_1.next()) {
+            var match = matches_1_1.value;
+            parts.push(match.toLowerCase());
+          }
+        } catch (e_4_1) {
+          e_4 = { error: e_4_1 };
+        } finally {
+          try {
+            if (matches_1_1 && !matches_1_1.done && (_b = matches_1.return)) _b.call(matches_1);
+          } finally {
+            if (e_4) throw e_4.error;
+          }
+        }
+      }
+    } catch (e_3_1) {
+      e_3 = { error: e_3_1 };
+    } finally {
+      try {
+        if (splitParts_1_1 && !splitParts_1_1.done && (_a = splitParts_1.return)) _a.call(splitParts_1);
+      } finally {
+        if (e_3) throw e_3.error;
+      }
+    }
+    return parts;
+  }
+  function normalizeName(value) {
+    return tokenize(value).join("_");
+  }
+  function toCamelCase(parts) {
+    var e_5, _a, e_6, _b;
+    var cleanParts = [];
+    try {
+      for (var parts_2 = __values2(parts), parts_2_1 = parts_2.next(); !parts_2_1.done; parts_2_1 = parts_2.next()) {
+        var part = parts_2_1.value;
+        try {
+          for (var _c = (e_6 = void 0, __values2(tokenize(part))), _d = _c.next(); !_d.done; _d = _c.next()) {
+            var token = _d.value;
+            cleanParts.push(token);
+          }
+        } catch (e_6_1) {
+          e_6 = { error: e_6_1 };
+        } finally {
+          try {
+            if (_d && !_d.done && (_b = _c.return)) _b.call(_c);
+          } finally {
+            if (e_6) throw e_6.error;
+          }
+        }
+      }
+    } catch (e_5_1) {
+      e_5 = { error: e_5_1 };
+    } finally {
+      try {
+        if (parts_2_1 && !parts_2_1.done && (_a = parts_2.return)) _a.call(parts_2);
+      } finally {
+        if (e_5) throw e_5.error;
+      }
+    }
+    if (cleanParts.length === 0) {
+      return "token";
+    }
+    var first = cleanParts[0];
+    var rest = cleanParts.slice(1);
+    var normalizedFirst = /^[0-9]/.test(first) ? "token".concat(capitalize(first)) : first;
+    return __spreadArray2([normalizedFirst], __read2(rest.map(capitalize)), false).join("");
+  }
+  function toPascalCase(parts) {
+    return toCamelCase(__spreadArray2(["token"], __read2(parts), false)).replace(/^token/, "");
+  }
+  function toKebabCase(parts) {
+    var e_7, _a, e_8, _b;
+    var tokens = [];
+    try {
+      for (var parts_3 = __values2(parts), parts_3_1 = parts_3.next(); !parts_3_1.done; parts_3_1 = parts_3.next()) {
+        var part = parts_3_1.value;
+        try {
+          for (var _c = (e_8 = void 0, __values2(tokenize(part))), _d = _c.next(); !_d.done; _d = _c.next()) {
+            var token = _d.value;
+            tokens.push(token);
+          }
+        } catch (e_8_1) {
+          e_8 = { error: e_8_1 };
+        } finally {
+          try {
+            if (_d && !_d.done && (_b = _c.return)) _b.call(_c);
+          } finally {
+            if (e_8) throw e_8.error;
+          }
+        }
+      }
+    } catch (e_7_1) {
+      e_7 = { error: e_7_1 };
+    } finally {
+      try {
+        if (parts_3_1 && !parts_3_1.done && (_a = parts_3.return)) _a.call(parts_3);
+      } finally {
+        if (e_7) throw e_7.error;
+      }
+    }
+    return tokens.length > 0 ? tokens.join("-") : "token";
+  }
+  function rgbaToHex(color) {
+    var red = channelToHex(color.r);
+    var green = channelToHex(color.g);
+    var blue = channelToHex(color.b);
+    var alpha = channelToHex(color.a);
+    if (alpha === "FF") {
+      return "#".concat(red).concat(green).concat(blue);
+    }
+    return "#".concat(red).concat(green).concat(blue).concat(alpha);
+  }
+  function rgbaToArgbHex(color) {
+    var alpha = channelToHex(color.a);
+    var red = channelToHex(color.r);
+    var green = channelToHex(color.g);
+    var blue = channelToHex(color.b);
+    return "0x".concat(alpha).concat(red).concat(green).concat(blue);
+  }
+  function compareTokens(left, right) {
+    return left.category.localeCompare(right.category, "en") || left.tokenId.localeCompare(right.tokenId, "en");
+  }
+  function normalizeToken(variable, collection, collectionMap, variableMap, modeMapping, settings2, componentPrefixes, warnings) {
+    var e_11, _a;
+    var category = inferTokenCategory(variable);
+    var valuesByMode = [];
+    var tokenSegments = createTokenSegments("", collection.name, variable.name);
+    var safeTokenSegments = tokenSegments.length > 0 ? tokenSegments : ["token"];
+    var cssVarName = "--".concat(toKebabCase(__spreadArray2([settings2.namePrefix], __read2(safeTokenSegments), false)));
+    var runtimeName = toCamelCase(__spreadArray2([settings2.namePrefix], __read2(safeTokenSegments), false));
+    var flutterName = runtimeName;
+    var lightValue = null;
+    var darkValue = null;
+    var defaultValue = null;
+    try {
+      for (var _b = __values2(collection.modes), _c = _b.next(); !_c.done; _c = _b.next()) {
+        var mode = _c.value;
+        var resolved = resolveTokenValue(variable, mode.modeId, collectionMap, variableMap, []);
+        if (!resolved || resolved.value.kind === "unsupported") {
+          continue;
+        }
+        var modeRole = mode.modeId === modeMapping.lightModeId ? "light" : mode.modeId === modeMapping.darkModeId ? "dark" : "other";
+        var formatted = formatTokenValue(resolved.value, category);
+        var modeValue = {
+          modeId: mode.modeId,
+          modeName: mode.name,
+          modeRole: modeRole,
+          resolved: resolved.value,
+          aliasTrail: resolved.aliasTrail,
+          formatted: formatted
+        };
+        valuesByMode.push(modeValue);
+        if (modeRole === "light") {
+          lightValue = modeValue;
+        }
+        if (modeRole === "dark") {
+          darkValue = modeValue;
+        }
+        if (mode.isDefault) {
+          defaultValue = modeValue;
+        }
+      }
+    } catch (e_11_1) {
+      e_11 = { error: e_11_1 };
+    } finally {
+      try {
+        if (_c && !_c.done && (_a = _b.return)) _a.call(_b);
+      } finally {
+        if (e_11) throw e_11.error;
+      }
+    }
+    if (valuesByMode.length === 0) {
+      warnings.push("\u65E0\u6CD5\u89E3\u6790 ".concat(collection.name, " / ").concat(variable.name, " \u7684 token \u503C\u3002"));
+      return null;
+    }
+    if (!lightValue) {
+      lightValue = defaultValue !== null && defaultValue !== void 0 ? defaultValue : valuesByMode[0];
+    }
+    var tokenId = __spreadArray2([category], __read2(safeTokenSegments), false).filter(Boolean).join("_");
+    return {
+      tokenId: tokenId,
+      semanticName: "".concat(collection.name, " / ").concat(variable.name),
+      category: category,
+      tokenSegments: safeTokenSegments,
+      cssVarName: cssVarName,
+      runtimeName: runtimeName,
+      flutterName: flutterName,
+      tdesignThemeKey: inferTDesignThemeKey(collection, variable),
+      variable: variable,
+      collection: collection,
+      isComponentLevel: isComponentLevelToken(collection, variable, componentPrefixes),
+      valuesByMode: valuesByMode,
+      lightValue: lightValue,
+      darkValue: darkValue,
+      defaultValue: defaultValue
+    };
+  }
+  function resolveTokenValue(variable, modeId, collectionMap, variableMap, trail) {
+    var _a, _b, _c, _d, _e;
+    var collection = collectionMap.get(variable.collectionId);
+    if (!collection) {
+      return null;
+    }
+    var variableValue = (_a = variable.valuesByMode[modeId]) !== null && _a !== void 0 ? _a : variable.valuesByMode[collection.defaultModeId];
+    if (!variableValue || variableValue.kind === "unsupported") {
+      return null;
+    }
+    if (variableValue.kind !== "alias") {
+      return {
+        value: variableValue,
+        aliasTrail: trail
+      };
+    }
+    if (trail.indexOf(variable.id) !== -1) {
+      return null;
+    }
+    var targetVariable = variableMap.get(variableValue.id);
+    if (!targetVariable) {
+      return null;
+    }
+    var sourceModeName = (_e = (_c = (_b = collection.modes.find(function(mode) {
+      return mode.modeId === modeId;
+    })) === null || _b === void 0 ? void 0 : _b.name) !== null && _c !== void 0 ? _c : (_d = collection.modes.find(function(mode) {
+      return mode.modeId === collection.defaultModeId;
+    })) === null || _d === void 0 ? void 0 : _d.name) !== null && _e !== void 0 ? _e : "default";
+    var targetCollection = collectionMap.get(targetVariable.collectionId);
+    var targetMode = pickTargetMode(targetCollection, sourceModeName);
+    if (!targetMode) {
+      return null;
+    }
+    return resolveTokenValue(targetVariable, targetMode.modeId, collectionMap, variableMap, __spreadArray2(__spreadArray2([], __read2(trail), false), [
+      targetVariable.name
+    ], false));
+  }
+  function pickTargetMode(collection, sourceModeName) {
+    var _a, _b;
+    if (!collection) {
+      return null;
+    }
+    var normalizedSource = normalizeName(sourceModeName);
+    return (_b = (_a = collection.modes.find(function(mode) {
+      return normalizeName(mode.name) === normalizedSource;
+    })) !== null && _a !== void 0 ? _a : collection.modes.find(function(mode) {
+      return mode.isDefault;
+    })) !== null && _b !== void 0 ? _b : null;
+  }
+  function buildModeMapping(collection, settings2, warnings) {
+    var _a, _b, _c, _d, _e, _f;
+    var preferredLight = settings2.lightModeName.trim();
+    var preferredDark = settings2.darkModeName.trim();
+    var lightMode = (_a = pickConfiguredMode(collection, preferredLight)) !== null && _a !== void 0 ? _a : pickAutoLightMode(collection);
+    var darkMode = (_b = pickConfiguredMode(collection, preferredDark)) !== null && _b !== void 0 ? _b : pickAutoDarkMode(collection);
+    if (preferredLight && !pickConfiguredMode(collection, preferredLight)) {
+      warnings.push("".concat(collection.name, ': \u672A\u627E\u5230\u6307\u5B9A light mode "').concat(preferredLight, '"\uFF0C\u5DF2\u56DE\u9000\u5230\u81EA\u52A8\u8BC6\u522B\u3002'));
+    }
+    if (preferredDark && !pickConfiguredMode(collection, preferredDark)) {
+      warnings.push("".concat(collection.name, ': \u672A\u627E\u5230\u6307\u5B9A dark mode "').concat(preferredDark, '"\uFF0C\u5DF2\u56DE\u9000\u5230\u81EA\u52A8\u8BC6\u522B\u3002'));
+    }
+    if (!darkMode) {
+      warnings.push("".concat(collection.name, ": \u672A\u8BC6\u522B\u5230 dark mode\uFF0C\u5C06\u53EA\u5BFC\u51FA light/default \u503C\u3002"));
+    }
+    return {
+      collectionId: collection.id,
+      collectionName: collection.name,
+      lightModeName: (_c = lightMode === null || lightMode === void 0 ? void 0 : lightMode.name) !== null && _c !== void 0 ? _c : "",
+      darkModeName: (_d = darkMode === null || darkMode === void 0 ? void 0 : darkMode.name) !== null && _d !== void 0 ? _d : "",
+      lightModeId: (_e = lightMode === null || lightMode === void 0 ? void 0 : lightMode.modeId) !== null && _e !== void 0 ? _e : collection.defaultModeId,
+      darkModeId: (_f = darkMode === null || darkMode === void 0 ? void 0 : darkMode.modeId) !== null && _f !== void 0 ? _f : "",
+      usedAutoLight: !preferredLight,
+      usedAutoDark: !preferredDark
+    };
+  }
+  function pickConfiguredMode(collection, modeName) {
+    var _a;
+    if (!modeName) {
+      return null;
+    }
+    var normalized = normalizeModeLookup(modeName);
+    return (_a = collection.modes.find(function(mode) {
+      return normalizeModeLookup(mode.name) === normalized;
+    })) !== null && _a !== void 0 ? _a : null;
+  }
+  function pickAutoLightMode(collection) {
+    var _a, _b;
+    return (_b = (_a = collection.modes.find(function(mode) {
+      return isLightModeName(mode.name);
+    })) !== null && _a !== void 0 ? _a : collection.modes.find(function(mode) {
+      return mode.isDefault;
+    })) !== null && _b !== void 0 ? _b : collection.modes[0];
+  }
+  function pickAutoDarkMode(collection) {
+    var _a;
+    return (_a = collection.modes.find(function(mode) {
+      return isDarkModeName(mode.name);
+    })) !== null && _a !== void 0 ? _a : null;
+  }
+  function isLightModeName(value) {
+    var lower = value.toLowerCase();
+    var normalized = normalizeModeLookup(value);
+    return normalized === "light" || normalized === "default" || normalized.indexOf("light") !== -1 || normalized.indexOf("default") !== -1 || lower.indexOf("\u4EAE") !== -1 || lower.indexOf("\u6D45") !== -1 || lower.indexOf("\u9ED8\u8BA4") !== -1;
+  }
+  function isDarkModeName(value) {
+    var lower = value.toLowerCase();
+    var normalized = normalizeModeLookup(value);
+    return normalized === "dark" || normalized.indexOf("dark") !== -1 || lower.indexOf("\u6697") !== -1 || lower.indexOf("\u6DF1") !== -1 || lower.indexOf("\u9ED1") !== -1;
+  }
+  function normalizeModeLookup(value) {
+    var normalized = normalizeName(value);
+    return normalized || value.trim().toLowerCase();
+  }
+  function inferTDesignThemeKey(collection, variable) {
+    if (variable.resolvedType !== "COLOR") {
+      return null;
+    }
+    var segments = __spreadArray2(__spreadArray2([], __read2(tokenize(collection.name)), false), __read2(tokenize(variable.name)), false);
+    var compact = segments.join("");
+    var semanticKey = inferSemanticThemeKey(compact);
+    if (semanticKey) {
+      return semanticKey;
+    }
+    var paletteKey = inferPaletteThemeKey(segments, compact);
+    if (paletteKey) {
+      return paletteKey;
+    }
+    if (compact.indexOf("whitecolor1") !== -1 || containsSegments(segments, ["white", "1"])) {
+      return "whiteColor1";
+    }
+    return null;
+  }
+  function inferSemanticThemeKey(compact) {
+    var e_12, _a, e_13, _b;
+    var colorTypes = ["brand", "warning", "error", "success"];
+    var states = ["normal", "hover", "focus", "click", "disabled", "light"];
+    try {
+      for (var colorTypes_1 = __values2(colorTypes), colorTypes_1_1 = colorTypes_1.next(); !colorTypes_1_1.done; colorTypes_1_1 = colorTypes_1.next()) {
+        var colorType = colorTypes_1_1.value;
+        try {
+          for (var states_1 = (e_13 = void 0, __values2(states)), states_1_1 = states_1.next(); !states_1_1.done; states_1_1 = states_1.next()) {
+            var state = states_1_1.value;
+            if (compact.indexOf("".concat(colorType).concat(state, "color")) !== -1 || compact.indexOf("".concat(colorType, "color").concat(state)) !== -1) {
+              return "".concat(colorType).concat(capitalize(state), "Color");
+            }
+          }
+        } catch (e_13_1) {
+          e_13 = { error: e_13_1 };
+        } finally {
+          try {
+            if (states_1_1 && !states_1_1.done && (_b = states_1.return)) _b.call(states_1);
+          } finally {
+            if (e_13) throw e_13.error;
+          }
+        }
+      }
+    } catch (e_12_1) {
+      e_12 = { error: e_12_1 };
+    } finally {
+      try {
+        if (colorTypes_1_1 && !colorTypes_1_1.done && (_a = colorTypes_1.return)) _a.call(colorTypes_1);
+      } finally {
+        if (e_12) throw e_12.error;
+      }
+    }
+    return null;
+  }
+  function inferPaletteThemeKey(segments, compact) {
+    var e_14, _a;
+    var _b, _c;
+    var colorTypes = ["brand", "warning", "error", "success"];
+    try {
+      for (var colorTypes_2 = __values2(colorTypes), colorTypes_2_1 = colorTypes_2.next(); !colorTypes_2_1.done; colorTypes_2_1 = colorTypes_2.next()) {
+        var colorType = colorTypes_2_1.value;
+        var matchedNumber = matchPaletteNumber(compact, segments, colorType, 10);
+        if (matchedNumber) {
+          return "".concat(colorType, "Color").concat(matchedNumber);
+        }
+      }
+    } catch (e_14_1) {
+      e_14 = { error: e_14_1 };
+    } finally {
+      try {
+        if (colorTypes_2_1 && !colorTypes_2_1.done && (_a = colorTypes_2.return)) _a.call(colorTypes_2);
+      } finally {
+        if (e_14) throw e_14.error;
+      }
+    }
+    var grayNumber = matchPaletteNumber(compact, segments, "gray", 14);
+    if (grayNumber) {
+      return "grayColor".concat(grayNumber);
+    }
+    var fontWhiteNumber = (_b = matchPaletteNumber(compact, segments, "fontwh", 4)) !== null && _b !== void 0 ? _b : matchPaletteNumber(compact, segments, "fontwhite", 4);
+    if (fontWhiteNumber) {
+      return "fontWhColor".concat(fontWhiteNumber);
+    }
+    var fontGrayNumber = (_c = matchPaletteNumber(compact, segments, "fontgy", 4)) !== null && _c !== void 0 ? _c : matchPaletteNumber(compact, segments, "fontgray", 4);
+    if (fontGrayNumber) {
+      return "fontGyColor".concat(fontGrayNumber);
+    }
+    return null;
+  }
+  function matchPaletteNumber(compact, segments, base, max) {
+    for (var index = max; index >= 1; index -= 1) {
+      if (compact.indexOf("".concat(base, "color").concat(index)) !== -1 || compact.indexOf("".concat(base).concat(index)) !== -1) {
+        return index;
+      }
+      if (containsSegments(segments, [base, String(index)]) || containsSegments(segments, [base, "color", String(index)])) {
+        return index;
+      }
+    }
+    return null;
+  }
+  function containsSegments(segments, expected) {
+    for (var index = 0; index <= segments.length - expected.length; index += 1) {
+      var matched = true;
+      for (var expectedIndex = 0; expectedIndex < expected.length; expectedIndex += 1) {
+        if (segments[index + expectedIndex] !== expected[expectedIndex]) {
+          matched = false;
+          break;
+        }
+      }
+      if (matched) {
+        return true;
+      }
+    }
+    return false;
+  }
+  function shouldUsePx(category) {
+    return category === "spacing" || category === "radius" || category === "size";
+  }
+  function formatNumber(value) {
+    if (Math.round(value) === value) {
+      return String(value);
+    }
+    return String(Number(value.toFixed(4)));
+  }
+  function channelToHex(channel) {
+    var normalized = Math.max(0, Math.min(255, Math.round(channel * 255)));
+    var hex = normalized.toString(16).toUpperCase();
+    return hex.length === 1 ? "0".concat(hex) : hex;
+  }
+  function capitalize(value) {
+    return value.slice(0, 1).toUpperCase() + value.slice(1);
+  }
+
+  // .build-tmp/shared/multi-artifacts.js
+  var __read3 = function(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+      while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    } catch (error) {
+      e = { error: error };
+    } finally {
+      try {
+        if (r && !r.done && (m = i["return"])) m.call(i);
+      } finally {
+        if (e) throw e.error;
+      }
+    }
+    return ar;
+  };
+  var __spreadArray3 = function(to, from, pack) {
+    if (pack || arguments.length === 2) for (var i = 0, l = from.length, ar; i < l; i++) {
+      if (ar || !(i in from)) {
+        if (!ar) ar = Array.prototype.slice.call(from, 0, i);
+        ar[i] = from[i];
+      }
+    }
+    return to.concat(ar || Array.prototype.slice.call(from));
+  };
+  var __values3 = function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+      next: function() {
+        if (o && i >= o.length) o = void 0;
+        return { value: o && o[i++], done: !o };
+      }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+  };
+  function generateMultiArtifacts(snapshot2, settings2) {
+    var e_1, _a, e_2, _b;
+    var model = buildTokenModel(snapshot2, settings2);
+    var renderedFiles = [];
+    var warnings = __spreadArray3([], __read3(model.warnings), false);
+    var rows = __spreadArray3([], __read3(model.globalTokens), false).sort(compareTokens);
+    var themeSpecs = buildThemeSpecs(model, rows);
+    var flutterThemes = themeSpecs.map(function(spec) {
+      return {
+        themeId: spec.themeId,
+        lightModeNames: spec.lightModeNames,
+        darkModeNames: spec.darkModeNames,
+        selected: isFlutterThemeSelected(model.settings, spec.themeId)
+      };
+    });
+    if (settings2.includeFullData) {
+      addRenderedFile(renderedFiles, {
+        path: settings2.fullDataFilePath,
+        label: "\u5168\u91CF Figma token \u6570\u636E\u6E90",
+        content: renderFullDataSource(model),
+        mergeStrategy: "overwrite",
+        tokenCount: model.snapshot.variables.length,
+        warnings: []
+      });
+    }
+    if (settings2.includeCssTheme) {
+      var cssResult = renderCssThemeFiles(model, rows, themeSpecs);
+      warnings.push.apply(warnings, __spreadArray3([], __read3(cssResult.warnings), false));
+      try {
+        for (var _c = __values3(cssResult.files), _d = _c.next(); !_d.done; _d = _c.next()) {
+          var cssFile = _d.value;
+          addRenderedFile(renderedFiles, {
+            path: cssFile.path,
+            label: cssFile.label,
+            content: cssFile.content,
+            mergeStrategy: "overwrite",
+            tokenCount: cssFile.tokenCount,
+            warnings: cssFile.warnings
+          });
+        }
+      } catch (e_1_1) {
+        e_1 = { error: e_1_1 };
+      } finally {
+        try {
+          if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+        } finally {
+          if (e_1) throw e_1.error;
+        }
+      }
+    }
+    if (settings2.includeFlutterTheme) {
+      var flutterResult = renderFlutterThemeDartFiles(model, rows, themeSpecs);
+      warnings.push.apply(warnings, __spreadArray3([], __read3(flutterResult.warnings), false));
+      try {
+        for (var _e = __values3(flutterResult.files), _f = _e.next(); !_f.done; _f = _e.next()) {
+          var flutterFile = _f.value;
+          addRenderedFile(renderedFiles, {
+            path: flutterFile.path,
+            label: flutterFile.label,
+            content: flutterFile.content,
+            mergeStrategy: "overwrite",
+            tokenCount: flutterFile.tokenCount,
+            warnings: flutterFile.warnings
+          });
+        }
+      } catch (e_2_1) {
+        e_2 = { error: e_2_1 };
+      } finally {
+        try {
+          if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
+        } finally {
+          if (e_2) throw e_2.error;
+        }
+      }
+    }
+    if (renderedFiles.length === 0) {
+      warnings.push("\u672A\u9009\u62E9\u4EFB\u4F55\u540C\u6B65\u4EA7\u7269\u3002");
+    }
+    var files = renderedFiles.map(function(file) {
+      return file.request;
+    });
+    var fileSummaries = renderedFiles.map(function(file) {
+      return file.summary;
+    });
+    var previewContent2 = renderPreview(model, files, fileSummaries, warnings);
+    return {
+      content: previewContent2,
+      warnings: warnings,
+      tokenCount: model.globalTokens.length,
+      specTokenCount: model.globalTokens.length,
+      fullTokenCount: model.snapshot.variables.length,
+      componentTokenCount: model.componentTokens.length,
+      collectionCount: model.selectedCollections.length,
+      modeCount: countModes(model),
+      files: files,
+      fileSummaries: fileSummaries,
+      flutterThemes: flutterThemes
+    };
+  }
+  function addRenderedFile(files, file) {
+    files.push({
+      request: {
+        path: file.path,
+        label: file.label,
+        content: file.content,
+        mergeStrategy: file.mergeStrategy
+      },
+      summary: {
+        path: file.path,
+        label: file.label,
+        tokenCount: file.tokenCount,
+        warnings: file.warnings
+      }
+    });
+  }
+  function renderCssThemeFiles(model, rows, allThemeSpecs) {
+    var warnings = [];
+    var themeSpecs = allThemeSpecs.filter(function(spec) {
+      return isFlutterThemeSelected(model.settings, spec.themeId);
+    });
+    var files = [];
+    if (allThemeSpecs.length === 0) {
+      warnings.push("CSS \u4E3B\u9898\u672A\u8BC6\u522B\u5230\u53EF\u5BFC\u51FA\u7684 light/dark mode\u3002");
+    } else if (themeSpecs.length === 0) {
+      warnings.push("CSS \u4E3B\u9898\u672A\u9009\u62E9\u4EFB\u4F55\u4E3B\u9898\uFF0C\u5C06\u4E0D\u4F1A\u8F93\u51FA\u4E3B\u9898 CSS\u3002");
+    }
+    for (var index = 0; index < themeSpecs.length; index += 1) {
+      var themeWarnings = [];
+      var themeSpec = themeSpecs[index];
+      var themeResult = renderSingleCssTheme(model, rows, themeSpec, themeWarnings);
+      warnings.push.apply(warnings, __spreadArray3([], __read3(themeWarnings), false));
+      files.push({
+        path: cssThemeTokenFilePath(model.settings.cssFilePath, themeSpec.themeId),
+        label: "CSS ".concat(themeSpec.themeId, " \u4E3B\u9898\u6587\u4EF6"),
+        content: themeResult.content,
+        tokenCount: themeResult.tokenCount,
+        warnings: themeWarnings
+      });
+    }
+    if (themeSpecs.length > 0) {
+      files.push({
+        path: cssThemeEntryFilePath(model.settings.cssFilePath),
+        label: "CSS \u4E3B\u9898\u5165\u53E3\u6587\u4EF6",
+        content: renderCssThemeEntry(model, themeSpecs),
+        tokenCount: themeSpecs.length,
+        warnings: []
+      });
+    }
+    return {
+      files: files,
+      warnings: warnings
+    };
+  }
+  function renderSingleCssTheme(model, rows, themeSpec, warnings) {
+    var e_3, _a;
+    var _b, _c, _d;
+    var lightRows = [];
+    var darkRows = [];
+    try {
+      for (var rows_1 = __values3(rows), rows_1_1 = rows_1.next(); !rows_1_1.done; rows_1_1 = rows_1.next()) {
+        var token = rows_1_1.value;
+        var lightValue = (_b = pickThemeModeValue(token, themeSpec.lightModeIds)) !== null && _b !== void 0 ? _b : token.lightValue;
+        var darkValue = (_d = (_c = pickThemeModeValue(token, themeSpec.darkModeIds)) !== null && _c !== void 0 ? _c : token.darkValue) !== null && _d !== void 0 ? _d : token.category === "color" ? null : lightValue;
+        if (lightValue === null || lightValue === void 0 ? void 0 : lightValue.formatted.cssValue) {
+          lightRows.push({ token: token, value: lightValue });
+        }
+        if (darkValue === null || darkValue === void 0 ? void 0 : darkValue.formatted.cssValue) {
+          darkRows.push({ token: token, value: darkValue });
+        }
+      }
+    } catch (e_3_1) {
+      e_3 = { error: e_3_1 };
+    } finally {
+      try {
+        if (rows_1_1 && !rows_1_1.done && (_a = rows_1.return)) _a.call(rows_1);
+      } finally {
+        if (e_3) throw e_3.error;
+      }
+    }
+    if (darkRows.length === 0) {
+      warnings.push("CSS ".concat(themeSpec.themeId, " \u4E3B\u9898\u672A\u627E\u5230 dark mode token\uFF0C\u53EA\u751F\u6210 light/default CSS \u53D8\u91CF\u3002"));
+    }
+    return {
+      content: renderCssThemeBlock(model, themeSpec.themeId, lightRows, darkRows),
+      tokenCount: lightRows.length + darkRows.length,
+      warnings: warnings
+    };
+  }
+  function renderCssThemeBlock(model, themeId, lightRows, darkRows) {
+    var e_4, _a, e_5, _b;
+    var isDefaultTheme = themeId === model.settings.themeId;
+    var lines = [
+      "/*",
+      " * Generated by Figma Token Sync.",
+      " * Theme: ".concat(themeId),
+      " * Source file: ".concat(model.snapshot.fileName),
+      " * Generated at: ".concat(model.snapshot.generatedAt),
+      " */",
+      "",
+      "".concat(buildCssThemeSelectors(themeId, "light", isDefaultTheme).join(",\n"), " {")
+    ];
+    try {
+      for (var lightRows_1 = __values3(lightRows), lightRows_1_1 = lightRows_1.next(); !lightRows_1_1.done; lightRows_1_1 = lightRows_1.next()) {
+        var row = lightRows_1_1.value;
+        lines.push("  ".concat(row.token.cssVarName, ": ").concat(row.value.formatted.cssValue, ";"));
+      }
+    } catch (e_4_1) {
+      e_4 = { error: e_4_1 };
+    } finally {
+      try {
+        if (lightRows_1_1 && !lightRows_1_1.done && (_a = lightRows_1.return)) _a.call(lightRows_1);
+      } finally {
+        if (e_4) throw e_4.error;
+      }
+    }
+    lines.push("}");
+    if (darkRows.length > 0) {
+      lines.push("", "".concat(buildCssThemeSelectors(themeId, "dark", isDefaultTheme).join(",\n"), " {"));
+      try {
+        for (var darkRows_1 = __values3(darkRows), darkRows_1_1 = darkRows_1.next(); !darkRows_1_1.done; darkRows_1_1 = darkRows_1.next()) {
+          var row = darkRows_1_1.value;
+          lines.push("  ".concat(row.token.cssVarName, ": ").concat(row.value.formatted.cssValue, ";"));
+        }
+      } catch (e_5_1) {
+        e_5 = { error: e_5_1 };
+      } finally {
+        try {
+          if (darkRows_1_1 && !darkRows_1_1.done && (_b = darkRows_1.return)) _b.call(darkRows_1);
+        } finally {
+          if (e_5) throw e_5.error;
+        }
+      }
+      lines.push("}");
+    }
+    return "".concat(lines.join("\n"), "\n");
+  }
+  function renderFlutterThemeDartFiles(model, rows, allThemeSpecs) {
+    var warnings = [];
+    var themeSpecs = allThemeSpecs.filter(function(spec) {
+      return isFlutterThemeSelected(model.settings, spec.themeId);
+    });
+    var files = [];
+    if (allThemeSpecs.length === 0) {
+      warnings.push("Flutter \u4E3B\u9898\u672A\u8BC6\u522B\u5230\u53EF\u5BFC\u51FA\u7684 light/dark mode\u3002");
+    } else if (themeSpecs.length === 0) {
+      warnings.push("Flutter \u4E3B\u9898\u672A\u9009\u62E9\u4EFB\u4F55\u4E3B\u9898\uFF0C\u5C06\u4E0D\u4F1A\u8F93\u51FA\u4E3B\u9898 JSON\u3002");
+    }
+    for (var index = 0; index < themeSpecs.length; index += 1) {
+      var themeWarnings = [];
+      var themeSpec = themeSpecs[index];
+      var themeResult = renderSingleFlutterThemeDart(model, rows, themeSpec, themeWarnings);
+      warnings.push.apply(warnings, __spreadArray3([], __read3(themeWarnings), false));
+      files.push({
+        path: flutterThemeTokenFilePath(model.settings.flutterFilePath, themeSpec.themeId),
+        label: "Flutter RDesign ".concat(themeSpec.themeId, " \u4E3B\u9898 Dart"),
+        content: "".concat(themeResult.content, "\n"),
+        tokenCount: themeResult.tokenCount,
+        warnings: themeWarnings
+      });
+    }
+    if (themeSpecs.length > 0) {
+      files.push({
+        path: flutterThemeEntryFilePath(model.settings.flutterFilePath),
+        label: "Flutter RDesign \u4E3B\u9898\u5165\u53E3 Dart",
+        content: renderFlutterThemeEntryDart(model, themeSpecs),
+        tokenCount: themeSpecs.length,
+        warnings: []
+      });
+    }
+    return {
+      files: files,
+      warnings: warnings
+    };
+  }
+  function renderFullDataSource(model) {
+    var tokenByVariableId = new Map(model.tokens.map(function(token) {
+      return [token.variable.id, token];
+    }));
+    var variables = model.snapshot.variables.map(function(variable) {
+      return renderFullDataVariable(model, tokenByVariableId, variable);
+    });
+    var rows = __spreadArray3([], __read3(model.globalTokens), false).sort(compareTokens);
+    var themeSpecs = buildThemeSpecs(model, rows);
+    var selectedThemeSpecs = themeSpecs.filter(function(spec) {
+      return isFlutterThemeSelected(model.settings, spec.themeId);
+    });
+    return "".concat(JSON.stringify({
+      schema_version: "figma-token-source/v2",
+      generated_at: model.snapshot.generatedAt,
+      source_file: model.snapshot.fileName,
+      theme_id: model.settings.themeId,
+      generated_artifacts: {
+        full_data_path: model.settings.fullDataFilePath,
+        css_theme_entry_path: cssThemeEntryFilePath(model.settings.cssFilePath),
+        css_theme_paths: selectedThemeSpecs.map(function(spec) {
+          return cssThemeTokenFilePath(model.settings.cssFilePath, spec.themeId);
+        }),
+        flutter_theme_entry_path: flutterThemeEntryFilePath(model.settings.flutterFilePath),
+        flutter_theme_paths: selectedThemeSpecs.map(function(spec) {
+          return flutterThemeTokenFilePath(model.settings.flutterFilePath, spec.themeId);
+        })
+      },
+      themes: themeSpecs.map(function(spec) {
+        return {
+          theme_id: spec.themeId,
+          light_modes: spec.lightModeNames,
+          dark_modes: spec.darkModeNames,
+          selected: isFlutterThemeSelected(model.settings, spec.themeId)
+        };
+      }),
+      mode_mappings: model.modeMappings,
+      component_token_prefixes: sortedSetValues(model.componentPrefixes),
+      stats: {
+        collections: model.snapshot.collections.length,
+        variables: model.snapshot.variables.length,
+        selected_collections: model.selectedCollections.length,
+        selected_tokens: model.tokens.length,
+        global_tokens: model.globalTokens.length,
+        component_tokens: model.componentTokens.length
+      },
+      collections: model.snapshot.collections,
+      variables: variables
+    }, null, 2), "\n");
+  }
+  function sortedSetValues(values) {
+    var result = [];
+    values.forEach(function(value) {
+      result.push(value);
+    });
+    return result.sort();
+  }
+  function renderFullDataVariable(model, tokenByVariableId, variable) {
+    var e_6, _a;
+    var _b, _c, _d, _e, _f;
+    var collection = model.collectionMap.get(variable.collectionId);
+    var token = tokenByVariableId.get(variable.id);
+    var valuesByMode = {};
+    if (collection) {
+      var category = inferTokenCategory(variable);
+      try {
+        for (var _g = __values3(collection.modes), _h = _g.next(); !_h.done; _h = _g.next()) {
+          var mode = _h.value;
+          var rawValue = (_b = variable.valuesByMode[mode.modeId]) !== null && _b !== void 0 ? _b : variable.valuesByMode[collection.defaultModeId];
+          var resolved = resolveTokenValue(variable, mode.modeId, model.collectionMap, model.variableMap, []);
+          valuesByMode[mode.name] = {
+            mode_id: mode.modeId,
+            raw: rawValue,
+            resolved: resolved ? {
+              value: formatTokenValue(resolved.value, category),
+              alias_trail: resolved.aliasTrail
+            } : null
+          };
+        }
+      } catch (e_6_1) {
+        e_6 = { error: e_6_1 };
+      } finally {
+        try {
+          if (_h && !_h.done && (_a = _g.return)) _a.call(_g);
+        } finally {
+          if (e_6) throw e_6.error;
+        }
+      }
+    }
+    return {
+      id: variable.id,
+      key: variable.key,
+      name: variable.name,
+      description: variable.description,
+      collection_id: variable.collectionId,
+      collection_name: (_c = collection === null || collection === void 0 ? void 0 : collection.name) !== null && _c !== void 0 ? _c : "",
+      resolved_type: variable.resolvedType,
+      category: inferTokenCategory(variable),
+      scopes: variable.scopes,
+      hidden_from_publishing: variable.hiddenFromPublishing,
+      is_selected: model.selectedCollectionIds.has(variable.collectionId),
+      is_component_level: token ? token.isComponentLevel : collection ? isComponentLevelToken(collection, variable, model.componentPrefixes) : false,
+      token_id: (_d = token === null || token === void 0 ? void 0 : token.tokenId) !== null && _d !== void 0 ? _d : null,
+      css_variable: (_e = token === null || token === void 0 ? void 0 : token.cssVarName) !== null && _e !== void 0 ? _e : null,
+      flutter_theme_key: (_f = token === null || token === void 0 ? void 0 : token.tdesignThemeKey) !== null && _f !== void 0 ? _f : null,
+      values_by_mode: valuesByMode
+    };
+  }
+  function renderPreview(model, files, summaries, warnings) {
+    var e_7, _a, e_8, _b, e_9, _c;
+    var lines = [
+      "# Figma Token Sync Preview",
+      "",
+      "- Theme ID: ".concat(model.settings.themeId),
+      "- Source file: ".concat(model.snapshot.fileName),
+      "- Global tokens: ".concat(model.globalTokens.length),
+      "- Component-level tokens excluded from global outputs: ".concat(model.componentTokens.length),
+      "- Files: ".concat(files.length)
+    ];
+    var selectedThemeIds = buildThemeSpecs(model, __spreadArray3([], __read3(model.globalTokens), false).sort(compareTokens)).filter(function(spec) {
+      return isFlutterThemeSelected(model.settings, spec.themeId);
+    }).map(function(spec) {
+      return spec.themeId;
+    });
+    if (selectedThemeIds.length > 0) {
+      lines.push("- Selected Flutter themes: ".concat(selectedThemeIds.join(", ")));
+    }
+    if (warnings.length > 0) {
+      lines.push("", "## Warnings", "");
+      try {
+        for (var warnings_1 = __values3(warnings), warnings_1_1 = warnings_1.next(); !warnings_1_1.done; warnings_1_1 = warnings_1.next()) {
+          var warning = warnings_1_1.value;
+          lines.push("- ".concat(warning));
+        }
+      } catch (e_7_1) {
+        e_7 = { error: e_7_1 };
+      } finally {
+        try {
+          if (warnings_1_1 && !warnings_1_1.done && (_a = warnings_1.return)) _a.call(warnings_1);
+        } finally {
+          if (e_7) throw e_7.error;
+        }
+      }
+    }
+    lines.push("", "## Files", "");
+    try {
+      for (var summaries_1 = __values3(summaries), summaries_1_1 = summaries_1.next(); !summaries_1_1.done; summaries_1_1 = summaries_1.next()) {
+        var summary = summaries_1_1.value;
+        lines.push("- ".concat(summary.path, " (").concat(summary.label, ", ").concat(summary.tokenCount, " tokens)"));
+      }
+    } catch (e_8_1) {
+      e_8 = { error: e_8_1 };
+    } finally {
+      try {
+        if (summaries_1_1 && !summaries_1_1.done && (_b = summaries_1.return)) _b.call(summaries_1);
+      } finally {
+        if (e_8) throw e_8.error;
+      }
+    }
+    try {
+      for (var files_1 = __values3(files), files_1_1 = files_1.next(); !files_1_1.done; files_1_1 = files_1.next()) {
+        var file = files_1_1.value;
+        lines.push("", "## ".concat(file.path), "", "```", trimRightCompat(file.content.slice(0, 6e3)));
+        if (file.content.length > 6e3) {
+          lines.push("...");
+        }
+        lines.push("```");
+      }
+    } catch (e_9_1) {
+      e_9 = { error: e_9_1 };
+    } finally {
+      try {
+        if (files_1_1 && !files_1_1.done && (_c = files_1.return)) _c.call(files_1);
+      } finally {
+        if (e_9) throw e_9.error;
+      }
+    }
+    return "".concat(lines.join("\n"), "\n");
+  }
+  function buildThemeSpecs(model, rows) {
+    var e_10, _a, e_11, _b;
+    var specs = [];
+    var specByThemeId = /* @__PURE__ */ new Map();
+    var seenModeIds = /* @__PURE__ */ new Set();
+    try {
+      for (var rows_2 = __values3(rows), rows_2_1 = rows_2.next(); !rows_2_1.done; rows_2_1 = rows_2.next()) {
+        var token = rows_2_1.value;
+        if (token.category !== "color") {
+          continue;
+        }
+        try {
+          for (var _c = (e_11 = void 0, __values3(token.valuesByMode)), _d = _c.next(); !_d.done; _d = _c.next()) {
+            var modeValue = _d.value;
+            if (seenModeIds.has(modeValue.modeId)) {
+              continue;
+            }
+            seenModeIds.add(modeValue.modeId);
+            var parsed = parseFlutterThemeModeName(modeValue, model.settings.themeId || "rdesign");
+            if (!parsed) {
+              continue;
+            }
+            var spec = specByThemeId.get(parsed.themeId);
+            if (!spec) {
+              spec = {
+                themeId: parsed.themeId,
+                lightModeIds: [],
+                darkModeIds: [],
+                lightModeNames: [],
+                darkModeNames: []
+              };
+              specByThemeId.set(parsed.themeId, spec);
+              specs.push(spec);
+            }
+            var ids = parsed.role === "light" ? spec.lightModeIds : spec.darkModeIds;
+            if (ids.indexOf(modeValue.modeId) === -1) {
+              ids.push(modeValue.modeId);
+            }
+            var names = parsed.role === "light" ? spec.lightModeNames : spec.darkModeNames;
+            if (names.indexOf(modeValue.modeName) === -1) {
+              names.push(modeValue.modeName);
+            }
+          }
+        } catch (e_11_1) {
+          e_11 = { error: e_11_1 };
+        } finally {
+          try {
+            if (_d && !_d.done && (_b = _c.return)) _b.call(_c);
+          } finally {
+            if (e_11) throw e_11.error;
+          }
+        }
+      }
+    } catch (e_10_1) {
+      e_10 = { error: e_10_1 };
+    } finally {
+      try {
+        if (rows_2_1 && !rows_2_1.done && (_a = rows_2.return)) _a.call(rows_2);
+      } finally {
+        if (e_10) throw e_10.error;
+      }
+    }
+    return specs.filter(function(spec2) {
+      return spec2.lightModeIds.length > 0 || spec2.darkModeIds.length > 0;
+    });
+  }
+  function isFlutterThemeSelected(settings2, themeId) {
+    var selectedThemeIds = settings2.selectedThemeIds;
+    if (selectedThemeIds.indexOf(ALL_THEMES) !== -1) {
+      return true;
+    }
+    return selectedThemeIds.indexOf(themeId) !== -1;
+  }
+  function parseFlutterThemeModeName(modeValue, defaultThemeId2) {
+    var role = inferThemeModeRole(modeValue);
+    if (!role) {
+      return null;
+    }
+    var baseName = stripThemeModeRole(modeValue.modeName, role);
+    var themeId = themeIdFromModeBase(baseName, defaultThemeId2);
+    return {
+      themeId: themeId,
+      role: role
+    };
+  }
+  function inferThemeModeRole(modeValue) {
+    var lower = modeValue.modeName.toLowerCase();
+    var words = lower.match(/[a-z0-9]+/g) || [];
+    if (words.indexOf("dark") !== -1 || lower.indexOf("\u6697\u8272") !== -1 || lower.indexOf("\u6DF1\u8272") !== -1 || lower.indexOf("\u9ED1\u8272") !== -1) {
+      return "dark";
+    }
+    if (words.indexOf("light") !== -1 || words.indexOf("default") !== -1 || lower.indexOf("\u4EAE\u8272") !== -1 || lower.indexOf("\u6D45\u8272") !== -1 || lower.indexOf("\u9ED8\u8BA4") !== -1) {
+      return "light";
+    }
+    return modeValue.modeRole === "light" || modeValue.modeRole === "dark" ? modeValue.modeRole : null;
+  }
+  function stripThemeModeRole(modeName, role) {
+    var value = modeName;
+    if (role === "light") {
+      value = value.replace(/\b(light|default)\b/gi, " ").replace(/亮色|浅色|默认/g, " ");
+    } else {
+      value = value.replace(/\bdark\b/gi, " ").replace(/暗色|深色|黑色/g, " ");
+    }
+    return value.replace(/[\/_-]+/g, " ").replace(/\s+/g, " ").trim();
+  }
+  function themeIdFromModeBase(baseName, defaultThemeId2) {
+    var _a;
+    var normalizedBase = baseName.toLowerCase();
+    if (!normalizedBase || normalizedBase === "default" || normalizedBase === "\u9ED8\u8BA4") {
+      return defaultThemeId2 || "rdesign";
+    }
+    var matches = (_a = normalizedBase.match(/[a-z0-9]+/g)) !== null && _a !== void 0 ? _a : [];
+    return matches.join("_") || defaultThemeId2 || "rdesign";
+  }
+  function cssThemeEntryFilePath(pathValue) {
+    var value = pathValue || defaultCssFilePath();
+    if (isCssFilePath(value)) {
+      return value;
+    }
+    return "".concat(trimSlashes(value), "/theme.css");
+  }
+  function cssThemeTokenFilePath(pathValue, themeId) {
+    var entryPath = cssThemeEntryFilePath(pathValue);
+    var slashIndex = entryPath.lastIndexOf("/");
+    var directory = slashIndex >= 0 ? entryPath.slice(0, slashIndex) : "";
+    var prefix = directory ? "".concat(directory, "/") : "";
+    return "".concat(prefix, "themes/").concat(themeIdToFileSlug(themeId), ".css");
+  }
+  function renderCssThemeEntry(model, themeSpecs) {
+    var e_12, _a;
+    var entryPath = cssThemeEntryFilePath(model.settings.cssFilePath);
+    var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
+    var lines = [
+      "/*",
+      " * Generated by Figma Token Sync.",
+      " * Source file: ".concat(model.snapshot.fileName),
+      " * Generated at: ".concat(model.snapshot.generatedAt),
+      " */",
+      ""
+    ];
+    try {
+      for (var themeSpecs_1 = __values3(themeSpecs), themeSpecs_1_1 = themeSpecs_1.next(); !themeSpecs_1_1.done; themeSpecs_1_1 = themeSpecs_1.next()) {
+        var themeSpec = themeSpecs_1_1.value;
+        lines.push('@import "'.concat(relativeCssImportPath(entryDirectory, cssThemeTokenFilePath(model.settings.cssFilePath, themeSpec.themeId)), '";'));
+      }
+    } catch (e_12_1) {
+      e_12 = { error: e_12_1 };
+    } finally {
+      try {
+        if (themeSpecs_1_1 && !themeSpecs_1_1.done && (_a = themeSpecs_1.return)) _a.call(themeSpecs_1);
+      } finally {
+        if (e_12) throw e_12.error;
+      }
+    }
+    return "".concat(lines.join("\n"), "\n");
+  }
+  function buildCssThemeSelectors(themeId, mode, isDefaultTheme) {
+    var e_13, _a, e_14, _b;
+    var escapedThemeId = escapeCssAttributeValue(themeId);
+    var themeAttributes = ["theme-id", "data-theme", "theme"];
+    var selectors = [];
+    if (mode === "light") {
+      if (isDefaultTheme) {
+        selectors.push(":root", ':root[theme-mode="light"]');
+      }
+      try {
+        for (var themeAttributes_1 = __values3(themeAttributes), themeAttributes_1_1 = themeAttributes_1.next(); !themeAttributes_1_1.done; themeAttributes_1_1 = themeAttributes_1.next()) {
+          var attributeName = themeAttributes_1_1.value;
+          selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"]'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="light"]'));
+        }
+      } catch (e_13_1) {
+        e_13 = { error: e_13_1 };
+      } finally {
+        try {
+          if (themeAttributes_1_1 && !themeAttributes_1_1.done && (_a = themeAttributes_1.return)) _a.call(themeAttributes_1);
+        } finally {
+          if (e_13) throw e_13.error;
+        }
+      }
+    } else {
+      if (isDefaultTheme) {
+        selectors.push(":root.dark", ':root[theme-mode="dark"]');
+      }
+      try {
+        for (var themeAttributes_2 = __values3(themeAttributes), themeAttributes_2_1 = themeAttributes_2.next(); !themeAttributes_2_1.done; themeAttributes_2_1 = themeAttributes_2.next()) {
+          var attributeName = themeAttributes_2_1.value;
+          selectors.push(":root[".concat(attributeName, '="').concat(escapedThemeId, '"].dark'), ":root[".concat(attributeName, '="').concat(escapedThemeId, '"][theme-mode="dark"]'));
+        }
+      } catch (e_14_1) {
+        e_14 = { error: e_14_1 };
+      } finally {
+        try {
+          if (themeAttributes_2_1 && !themeAttributes_2_1.done && (_b = themeAttributes_2.return)) _b.call(themeAttributes_2);
+        } finally {
+          if (e_14) throw e_14.error;
+        }
+      }
+    }
+    return selectors;
+  }
+  function isCssFilePath(pathValue) {
+    return /\.css$/i.test(pathValue);
+  }
+  function relativeCssImportPath(fromDirectory, toPath) {
+    if (fromDirectory && toPath.indexOf("".concat(fromDirectory, "/")) === 0) {
+      return "./".concat(toPath.slice(fromDirectory.length + 1));
+    }
+    if (toPath.charAt(0) !== "." && toPath.charAt(0) !== "/") {
+      return "./".concat(toPath);
+    }
+    return toPath;
+  }
+  function escapeCssAttributeValue(value) {
+    return value.replace(/\\/g, "\\\\").replace(/"/g, '\\"');
+  }
+  function flutterThemeEntryFilePath(pathValue) {
+    var value = pathValue || defaultFlutterFilePath("default");
+    if (isDartFilePath(value)) {
+      return value;
+    }
+    return "".concat(trimSlashes(value), "/rdesign_theme_tokens.dart");
+  }
+  function flutterThemeTokenFilePath(pathValue, themeId) {
+    var entryPath = flutterThemeEntryFilePath(pathValue);
+    var slashIndex = entryPath.lastIndexOf("/");
+    var directory = slashIndex >= 0 ? entryPath.slice(0, slashIndex) : "";
+    var prefix = directory ? "".concat(directory, "/") : "";
+    return "".concat(prefix).concat(themeIdToFileSlug(themeId), "_tokens.dart");
+  }
+  function isDartFilePath(pathValue) {
+    return /\.dart$/i.test(pathValue);
+  }
+  function trimSlashes(value) {
+    return value.replace(/^\/+|\/+$/g, "");
+  }
+  function themeIdToFileSlug(themeId) {
+    var matches = themeId.toLowerCase().match(/[a-z0-9]+/g) || [];
+    return matches.join("_") || "default";
+  }
+  function renderFlutterThemeEntryDart(model, themeSpecs) {
+    var e_15, _a, e_16, _b, e_17, _c;
+    var entryPath = flutterThemeEntryFilePath(model.settings.flutterFilePath);
+    var entryDirectory = entryPath.lastIndexOf("/") >= 0 ? entryPath.slice(0, entryPath.lastIndexOf("/")) : "";
+    var imports = themeSpecs.map(function(themeSpec2) {
+      return relativeDartImportPath(entryDirectory, flutterThemeTokenFilePath(model.settings.flutterFilePath, themeSpec2.themeId));
+    });
+    var lines = [
+      "// Generated by Figma Token Sync.",
+      "// Source file: ".concat(model.snapshot.fileName),
+      "// Generated at: ".concat(model.snapshot.generatedAt),
+      ""
+    ];
+    try {
+      for (var imports_1 = __values3(imports), imports_1_1 = imports_1.next(); !imports_1_1.done; imports_1_1 = imports_1.next()) {
+        var importPath = imports_1_1.value;
+        lines.push("import '".concat(importPath, "';"));
+      }
+    } catch (e_15_1) {
+      e_15 = { error: e_15_1 };
+    } finally {
+      try {
+        if (imports_1_1 && !imports_1_1.done && (_a = imports_1.return)) _a.call(imports_1);
+      } finally {
+        if (e_15) throw e_15.error;
+      }
+    }
+    lines.push("");
+    try {
+      for (var imports_2 = __values3(imports), imports_2_1 = imports_2.next(); !imports_2_1.done; imports_2_1 = imports_2.next()) {
+        var importPath = imports_2_1.value;
+        lines.push("export '".concat(importPath, "';"));
+      }
+    } catch (e_16_1) {
+      e_16 = { error: e_16_1 };
+    } finally {
+      try {
+        if (imports_2_1 && !imports_2_1.done && (_b = imports_2.return)) _b.call(imports_2);
+      } finally {
+        if (e_16) throw e_16.error;
+      }
+    }
+    lines.push("", "class RDThemeTokenSpec {", "  const RDThemeTokenSpec({", "    required this.id,", "    required this.darkId,", "    required this.lightJson,", "    required this.darkJson,", "  });", "", "  final String id;", "  final String darkId;", "  final String lightJson;", "  final String darkJson;", "}", "", "const List<RDThemeTokenSpec> rdThemeTokenSpecs = [");
+    try {
+      for (var themeSpecs_2 = __values3(themeSpecs), themeSpecs_2_1 = themeSpecs_2.next(); !themeSpecs_2_1.done; themeSpecs_2_1 = themeSpecs_2.next()) {
+        var themeSpec = themeSpecs_2_1.value;
+        var dartPrefix = "rd".concat(toPascalCase([themeSpec.themeId]));
+        lines.push("  RDThemeTokenSpec(", "    id: '".concat(escapeDartSingleQuotedString(themeSpec.themeId), "',"), "    darkId: '".concat(escapeDartSingleQuotedString("".concat(themeSpec.themeId, "Dark")), "',"), "    lightJson: ".concat(dartPrefix, "LightJson,"), "    darkJson: ".concat(dartPrefix, "DarkJson,"), "  ),");
+      }
+    } catch (e_17_1) {
+      e_17 = { error: e_17_1 };
+    } finally {
+      try {
+        if (themeSpecs_2_1 && !themeSpecs_2_1.done && (_c = themeSpecs_2.return)) _c.call(themeSpecs_2);
+      } finally {
+        if (e_17) throw e_17.error;
+      }
+    }
+    lines.push("];");
+    return "".concat(lines.join("\n"), "\n");
+  }
+  function relativeDartImportPath(fromDirectory, toPath) {
+    if (fromDirectory && toPath.indexOf("".concat(fromDirectory, "/")) === 0) {
+      return toPath.slice(fromDirectory.length + 1);
+    }
+    return toPath;
+  }
+  function renderSingleFlutterThemeDart(model, rows, themeSpec, warnings) {
+    var e_18, _a;
+    var _b, _c, _d;
+    var lightSections = createEmptyFlutterThemeSections();
+    var darkSections = createEmptyFlutterThemeSections();
+    var mappedTokenCount = 0;
+    try {
+      for (var rows_3 = __values3(rows), rows_3_1 = rows_3.next(); !rows_3_1.done; rows_3_1 = rows_3.next()) {
+        var token = rows_3_1.value;
+        var lightValue = (_b = pickThemeModeValue(token, themeSpec.lightModeIds)) !== null && _b !== void 0 ? _b : token.lightValue;
+        var darkValue = (_d = (_c = pickThemeModeValue(token, themeSpec.darkModeIds)) !== null && _c !== void 0 ? _c : token.darkValue) !== null && _d !== void 0 ? _d : token.category === "color" ? null : lightValue;
+        mappedTokenCount += addFlutterThemeToken(token, lightValue, lightSections, warnings, "".concat(themeSpec.themeId, " light"));
+        mappedTokenCount += addFlutterThemeToken(token, darkValue, darkSections, warnings, "".concat(themeSpec.themeId, " dark"));
+      }
+    } catch (e_18_1) {
+      e_18 = { error: e_18_1 };
+    } finally {
+      try {
+        if (rows_3_1 && !rows_3_1.done && (_a = rows_3.return)) _a.call(rows_3);
+      } finally {
+        if (e_18) throw e_18.error;
+      }
+    }
+    appendMissingFlutterWarnings("".concat(themeSpec.themeId, " light"), lightSections.color, warnings);
+    appendMissingFlutterWarnings("".concat(themeSpec.themeId, " dark"), darkSections.color, warnings);
+    return {
+      content: renderFlutterThemeDartBlock(model, themeSpec.themeId, lightSections, darkSections),
+      tokenCount: mappedTokenCount
+    };
+  }
+  function pickThemeModeValue(token, modeIds) {
+    var e_19, _a;
+    var _loop_1 = function(modeId2) {
+      var value = token.valuesByMode.find(function(modeValue) {
+        return modeValue.modeId === modeId2;
+      });
+      if (value) {
+        return { value: value };
+      }
+    };
+    try {
+      for (var modeIds_1 = __values3(modeIds), modeIds_1_1 = modeIds_1.next(); !modeIds_1_1.done; modeIds_1_1 = modeIds_1.next()) {
+        var modeId = modeIds_1_1.value;
+        var state_1 = _loop_1(modeId);
+        if (typeof state_1 === "object")
+          return state_1.value;
+      }
+    } catch (e_19_1) {
+      e_19 = { error: e_19_1 };
+    } finally {
+      try {
+        if (modeIds_1_1 && !modeIds_1_1.done && (_a = modeIds_1.return)) _a.call(modeIds_1);
+      } finally {
+        if (e_19) throw e_19.error;
+      }
+    }
+    return null;
+  }
+  function createEmptyFlutterThemeSections() {
+    return {
+      color: {},
+      radius: {},
+      margin: {},
+      shadow: {}
+    };
+  }
+  function addFlutterThemeToken(token, modeValue, sections, warnings, modeLabel) {
+    if (!modeValue) {
+      return 0;
+    }
+    if (token.category === "color" && token.tdesignThemeKey) {
+      if (typeof modeValue.formatted.value !== "string" || !modeValue.formatted.value) {
+        return 0;
+      }
+      if (sections.color[token.tdesignThemeKey]) {
+        warnings.push("Flutter ".concat(modeLabel, " \u4E3B\u9898 key ").concat(token.tdesignThemeKey, " \u88AB\u591A\u4E2A Figma token \u547D\u4E2D\uFF0C\u4FDD\u7559\u540E\u547D\u4E2D\u7684 ").concat(token.semanticName, "\u3002"));
+      }
+      sections.color[token.tdesignThemeKey] = modeValue.formatted.value;
+      return 1;
+    }
+    if (token.category === "radius") {
+      var radiusKey = inferFlutterRadiusKey(token);
+      var radiusValue = numberFromModeValue(modeValue);
+      if (!radiusKey || radiusValue === null) {
+        warnings.push("Flutter ".concat(modeLabel, " \u5706\u89D2 token ").concat(token.semanticName, " \u65E0\u6CD5\u6620\u5C04\u5230 TDesign radius key\uFF0C\u5DF2\u8DF3\u8FC7\u3002"));
+        return 0;
+      }
+      if (typeof sections.radius[radiusKey] === "number") {
+        warnings.push("Flutter ".concat(modeLabel, " \u4E3B\u9898 key ").concat(radiusKey, " \u88AB\u591A\u4E2A Figma token \u547D\u4E2D\uFF0C\u4FDD\u7559\u540E\u547D\u4E2D\u7684 ").concat(token.semanticName, "\u3002"));
+      }
+      sections.radius[radiusKey] = radiusValue;
+      return 1;
+    }
+    if (token.category === "spacing") {
+      var spacerValue = numberFromModeValue(modeValue);
+      var spacerKey = spacerValue === null ? null : inferFlutterSpacerKey(token, spacerValue);
+      if (!spacerKey || spacerValue === null) {
+        warnings.push("Flutter ".concat(modeLabel, " \u95F4\u8DDD token ").concat(token.semanticName, " \u65E0\u6CD5\u6620\u5C04\u5230 TDesign spacer key\uFF0C\u5DF2\u8DF3\u8FC7\u3002"));
+        return 0;
+      }
+      if (typeof sections.margin[spacerKey] === "number") {
+        warnings.push("Flutter ".concat(modeLabel, " \u4E3B\u9898 key ").concat(spacerKey, " \u88AB\u591A\u4E2A Figma token \u547D\u4E2D\uFF0C\u4FDD\u7559\u540E\u547D\u4E2D\u7684 ").concat(token.semanticName, "\u3002"));
+      }
+      sections.margin[spacerKey] = spacerValue;
+      return 1;
+    }
+    if (token.category === "shadow") {
+      var shadowKey = inferFlutterShadowKey(token);
+      var shadowValue = parseFlutterShadowValue(modeValue.formatted.value);
+      if (!shadowKey || !shadowValue) {
+        warnings.push("Flutter ".concat(modeLabel, " \u9634\u5F71 token ").concat(token.semanticName, " \u65E0\u6CD5\u89E3\u6790\u4E3A TDesign shadow \u7ED3\u6784\uFF0C\u5DF2\u8DF3\u8FC7\u3002"));
+        return 0;
+      }
+      if (sections.shadow[shadowKey]) {
+        warnings.push("Flutter ".concat(modeLabel, " \u4E3B\u9898 key ").concat(shadowKey, " \u88AB\u591A\u4E2A Figma token \u547D\u4E2D\uFF0C\u4FDD\u7559\u540E\u547D\u4E2D\u7684 ").concat(token.semanticName, "\u3002"));
+      }
+      sections.shadow[shadowKey] = shadowValue;
+      return 1;
+    }
+    return 0;
+  }
+  function renderFlutterThemeDartBlock(model, themeId, lightSections, darkSections) {
+    var darkThemeId = "".concat(themeId, "Dark");
+    var dartPrefix = "rd".concat(toPascalCase([themeId]));
+    var lightJson = renderFlutterThemeJson(themeId, lightSections);
+    var darkJson = renderFlutterThemeJson(darkThemeId, darkSections);
+    var generatedDate = model.snapshot.generatedAt.slice(0, 10);
+    var brandNormalColor = normalizeFlutterColorValue(lightSections.color.brandNormalColor || lightSections.color.brandColor7 || "\u672A\u63D0\u4F9B");
+    var brandColor7 = normalizeFlutterColorValue(lightSections.color.brandColor7 || "");
+    var brandSourceKey = brandColor7 === brandNormalColor ? "brandColor7" : "brandNormalColor";
+    var lines = [
+      "// \u54C1\u724C\u4E3B\u8272\uFF1A".concat(brandNormalColor, "\uFF08").concat(themeId, "\uFF0C\u5BF9\u5E94 ").concat(themeColorKeyToCssVar(model.settings.namePrefix, brandSourceKey), "\uFF09"),
+      "// \u8272\u503C\u6765\u6E90\uFF1A".concat(model.snapshot.fileName, "\uFF0C\u7531 Figma Token Sync \u751F\u6210"),
+      "// \u6700\u540E\u66F4\u65B0\uFF1A".concat(generatedDate),
+      "",
+      "/// ".concat(themeId, " light \u6A21\u5F0F\u5B8C\u6574\u8272\u503C JSON"),
+      "///",
+      '/// \u5305\u542B\u54C1\u724C\u8272\u3001\u529F\u80FD\u8272\u3001\u4E2D\u6027\u8272\u3001\u8BED\u4E49\u8272\uFF0C\u4E0E CSS \u6587\u4EF6 :root[theme-mode="light"] \u5B8C\u5168\u5BF9\u5E94\u3002',
+      "const String ".concat(dartPrefix, "LightJson = r'''"),
+      lightJson,
+      "''';",
+      "",
+      "/// ".concat(themeId, " dark \u6A21\u5F0F\u5B8C\u6574\u8272\u503C JSON"),
+      "///",
+      '/// \u4E0E CSS \u6587\u4EF6 :root[theme-mode="dark"] \u5B8C\u5168\u5BF9\u5E94\u3002',
+      "const String ".concat(dartPrefix, "DarkJson = r'''"),
+      darkJson,
+      "''';"
+    ];
+    return lines.join("\n");
+  }
+  function inferFlutterRadiusKey(token) {
+    var segments = token.tokenSegments;
+    var compact = segments.join("");
+    if (compact.indexOf("extralarge") !== -1 || containsAllParts(segments, ["extra", "large"])) {
+      return "radiusExtraLarge";
+    }
+    if (segments.indexOf("small") !== -1 || segments.indexOf("s") !== -1) {
+      return "radiusSmall";
+    }
+    if (segments.indexOf("default") !== -1 || segments.indexOf("medium") !== -1 || segments.indexOf("m") !== -1) {
+      return "radiusDefault";
+    }
+    if (segments.indexOf("large") !== -1 || segments.indexOf("l") !== -1) {
+      return "radiusLarge";
+    }
+    if (segments.indexOf("round") !== -1 || segments.indexOf("pill") !== -1) {
+      return "radiusRound";
+    }
+    if (segments.indexOf("circle") !== -1) {
+      return "radiusCircle";
+    }
+    return null;
+  }
+  function inferFlutterSpacerKey(token, value) {
+    if (!isFiniteNumber(value)) {
+      return null;
+    }
+    return "spacer".concat(numberToTokenKeyPart(value));
+  }
+  function inferFlutterShadowKey(token) {
+    var segments = token.tokenSegments;
+    if (segments.indexOf("base") !== -1 || segments.indexOf("basic") !== -1) {
+      return "shadowsBase";
+    }
+    if (segments.indexOf("middle") !== -1 || segments.indexOf("medium") !== -1) {
+      return "shadowsMiddle";
+    }
+    if (segments.indexOf("top") !== -1 || segments.indexOf("high") !== -1) {
+      return "shadowsTop";
+    }
+    var meaningful = segments.filter(function(segment) {
+      return segment !== "rd" && segment !== "shadow" && segment !== "shadows";
+    });
+    if (meaningful.length === 0) {
+      return null;
+    }
+    return "shadows".concat(toPascalCase([meaningful[meaningful.length - 1]]));
+  }
+  function numberFromModeValue(modeValue) {
+    if (typeof modeValue.formatted.rawValue === "number" && isFiniteNumber(modeValue.formatted.rawValue)) {
+      return modeValue.formatted.rawValue;
+    }
+    if (typeof modeValue.formatted.value === "number" && isFiniteNumber(modeValue.formatted.value)) {
+      return modeValue.formatted.value;
+    }
+    if (typeof modeValue.formatted.value === "string") {
+      return parseCssNumber(modeValue.formatted.value);
+    }
+    return null;
+  }
+  function parseFlutterShadowValue(value) {
+    var e_20, _a;
+    if (Array.isArray(value)) {
+      return normalizeShadowLayerArray(value);
+    }
+    if (typeof value !== "string") {
+      return null;
+    }
+    var trimmed = value.trim();
+    if (!trimmed) {
+      return null;
+    }
+    if (trimmed.charAt(0) === "[") {
+      try {
+        var parsed = JSON.parse(trimmed);
+        if (Array.isArray(parsed)) {
+          return normalizeShadowLayerArray(parsed);
+        }
+      } catch (_b) {
+      }
+    }
+    var layers = [];
+    var parts = splitByTopLevelComma(trimmed);
+    try {
+      for (var parts_1 = __values3(parts), parts_1_1 = parts_1.next(); !parts_1_1.done; parts_1_1 = parts_1.next()) {
+        var part = parts_1_1.value;
+        var layer = parseCssShadowLayer(part);
+        if (!layer) {
+          return null;
+        }
+        layers.push(layer);
+      }
+    } catch (e_20_1) {
+      e_20 = { error: e_20_1 };
+    } finally {
+      try {
+        if (parts_1_1 && !parts_1_1.done && (_a = parts_1.return)) _a.call(parts_1);
+      } finally {
+        if (e_20) throw e_20.error;
+      }
+    }
+    return layers.length > 0 ? layers : null;
+  }
+  function normalizeShadowLayerArray(value) {
+    var e_21, _a;
+    var layers = [];
+    try {
+      for (var value_1 = __values3(value), value_1_1 = value_1.next(); !value_1_1.done; value_1_1 = value_1.next()) {
+        var item = value_1_1.value;
+        if (!item || typeof item !== "object") {
+          return null;
+        }
+        var record = item;
+        var offset = record.offset && typeof record.offset === "object" ? record.offset : {};
+        var color = normalizeShadowColor(typeof record.color === "string" ? record.color : "");
+        var blurRadius = numberFromUnknown(record.blurRadius);
+        var spreadRadius = numberFromUnknown(record.spreadRadius);
+        var x = numberFromUnknown(offset.x);
+        var y = numberFromUnknown(offset.y);
+        if (!color || blurRadius === null || spreadRadius === null || x === null || y === null) {
+          return null;
+        }
+        layers.push({
+          color: color,
+          blurRadius: blurRadius,
+          spreadRadius: spreadRadius,
+          offset: { x: x, y: y }
+        });
+      }
+    } catch (e_21_1) {
+      e_21 = { error: e_21_1 };
+    } finally {
+      try {
+        if (value_1_1 && !value_1_1.done && (_a = value_1.return)) _a.call(value_1);
+      } finally {
+        if (e_21) throw e_21.error;
+      }
+    }
+    return layers;
+  }
+  function parseCssShadowLayer(value) {
+    var e_22, _a;
+    var tokens = splitCssTokens(value).filter(function(token2) {
+      return token2.toLowerCase() !== "inset";
+    });
+    var color = "";
+    var lengths = [];
+    try {
+      for (var tokens_1 = __values3(tokens), tokens_1_1 = tokens_1.next(); !tokens_1_1.done; tokens_1_1 = tokens_1.next()) {
+        var token = tokens_1_1.value;
+        var normalizedColor = normalizeShadowColor(token);
+        if (normalizedColor && !color) {
+          color = normalizedColor;
+          continue;
+        }
+        var numberValue = parseCssNumber(token);
+        if (numberValue !== null) {
+          lengths.push(numberValue);
+        }
+      }
+    } catch (e_22_1) {
+      e_22 = { error: e_22_1 };
+    } finally {
+      try {
+        if (tokens_1_1 && !tokens_1_1.done && (_a = tokens_1.return)) _a.call(tokens_1);
+      } finally {
+        if (e_22) throw e_22.error;
+      }
+    }
+    if (!color || lengths.length < 2) {
+      return null;
+    }
+    return {
+      color: color,
+      blurRadius: lengths.length > 2 ? lengths[2] : 0,
+      spreadRadius: lengths.length > 3 ? lengths[3] : 0,
+      offset: {
+        x: lengths[0],
+        y: lengths[1]
+      }
+    };
+  }
+  function normalizeShadowColor(value) {
+    var trimmed = value.trim();
+    var rgbaMatch = trimmed.match(/^rgba?\(\s*([0-9.]+)\s*,\s*([0-9.]+)\s*,\s*([0-9.]+)(?:\s*,\s*([0-9.]+%?))?\s*\)$/i);
+    if (rgbaMatch) {
+      var red = clampByte(Number(rgbaMatch[1]));
+      var green = clampByte(Number(rgbaMatch[2]));
+      var blue = clampByte(Number(rgbaMatch[3]));
+      var alpha = rgbaMatch[4] ? parseAlphaChannel(rgbaMatch[4]) : 1;
+      return "#".concat(channelToHexFromByte(alphaToByte(alpha))).concat(channelToHexFromByte(red)).concat(channelToHexFromByte(green)).concat(channelToHexFromByte(blue));
+    }
+    var hexMatch = trimmed.match(/^#([0-9a-f]{3}|[0-9a-f]{4}|[0-9a-f]{6}|[0-9a-f]{8})$/i);
+    if (!hexMatch) {
+      return null;
+    }
+    var hex = hexMatch[1];
+    if (hex.length === 3) {
+      return "#".concat(hex.charAt(0)).concat(hex.charAt(0)).concat(hex.charAt(1)).concat(hex.charAt(1)).concat(hex.charAt(2)).concat(hex.charAt(2)).toUpperCase();
+    }
+    if (hex.length === 4) {
+      return "#".concat(hex.charAt(3)).concat(hex.charAt(3)).concat(hex.charAt(0)).concat(hex.charAt(0)).concat(hex.charAt(1)).concat(hex.charAt(1)).concat(hex.charAt(2)).concat(hex.charAt(2)).toUpperCase();
+    }
+    if (hex.length === 8) {
+      return "#".concat(hex.slice(6, 8)).concat(hex.slice(0, 6)).toUpperCase();
+    }
+    return "#".concat(hex).toUpperCase();
+  }
+  function splitByTopLevelComma(value) {
+    var parts = [];
+    var depth = 0;
+    var current = "";
+    for (var index = 0; index < value.length; index += 1) {
+      var character = value.charAt(index);
+      if (character === "(") {
+        depth += 1;
+      } else if (character === ")") {
+        depth = Math.max(0, depth - 1);
+      }
+      if (character === "," && depth === 0) {
+        if (current.trim()) {
+          parts.push(current.trim());
+        }
+        current = "";
+        continue;
+      }
+      current += character;
+    }
+    if (current.trim()) {
+      parts.push(current.trim());
+    }
+    return parts;
+  }
+  function splitCssTokens(value) {
+    var tokens = [];
+    var depth = 0;
+    var current = "";
+    for (var index = 0; index < value.length; index += 1) {
+      var character = value.charAt(index);
+      if (character === "(") {
+        depth += 1;
+      } else if (character === ")") {
+        depth = Math.max(0, depth - 1);
+      }
+      if (/\s/.test(character) && depth === 0) {
+        if (current) {
+          tokens.push(current);
+          current = "";
+        }
+        continue;
+      }
+      current += character;
+    }
+    if (current) {
+      tokens.push(current);
+    }
+    return tokens;
+  }
+  function containsAllParts(segments, parts) {
+    var e_23, _a;
+    try {
+      for (var parts_2 = __values3(parts), parts_2_1 = parts_2.next(); !parts_2_1.done; parts_2_1 = parts_2.next()) {
+        var part = parts_2_1.value;
+        if (segments.indexOf(part) === -1) {
+          return false;
+        }
+      }
+    } catch (e_23_1) {
+      e_23 = { error: e_23_1 };
+    } finally {
+      try {
+        if (parts_2_1 && !parts_2_1.done && (_a = parts_2.return)) _a.call(parts_2);
+      } finally {
+        if (e_23) throw e_23.error;
+      }
+    }
+    return true;
+  }
+  function appendMissingFlutterWarnings(modeName, colors, warnings) {
+    var e_24, _a;
+    var missing = [];
+    try {
+      for (var REQUIRED_TDESIGN_COLOR_KEYS_1 = __values3(REQUIRED_TDESIGN_COLOR_KEYS), REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next(); !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done; REQUIRED_TDESIGN_COLOR_KEYS_1_1 = REQUIRED_TDESIGN_COLOR_KEYS_1.next()) {
+        var key = REQUIRED_TDESIGN_COLOR_KEYS_1_1.value;
+        if (!colors[key]) {
+          missing.push(key);
+        }
+      }
+    } catch (e_24_1) {
+      e_24 = { error: e_24_1 };
+    } finally {
+      try {
+        if (REQUIRED_TDESIGN_COLOR_KEYS_1_1 && !REQUIRED_TDESIGN_COLOR_KEYS_1_1.done && (_a = REQUIRED_TDESIGN_COLOR_KEYS_1.return)) _a.call(REQUIRED_TDESIGN_COLOR_KEYS_1);
+      } finally {
+        if (e_24) throw e_24.error;
+      }
+    }
+    if (missing.length > 0) {
+      warnings.push("Flutter ".concat(modeName, " \u4E3B\u9898\u7F3A\u5C11 ").concat(missing.length, " \u4E2A TDesign/RDesign color key: ").concat(missing.slice(0, 24).join(", ")).concat(missing.length > 24 ? "..." : ""));
+    }
+  }
+  function renderFlutterThemeJson(themeId, sections) {
+    var themeBody = {};
+    var colorValues = buildFlutterColorValues(sections.color);
+    if (hasObjectKeys(colorValues)) {
+      themeBody.color = colorValues;
+    }
+    var radiusValues = buildFlutterNumberValues(sections.radius, [
+      "radiusSmall",
+      "radiusDefault",
+      "radiusLarge",
+      "radiusExtraLarge",
+      "radiusRound",
+      "radiusCircle"
+    ]);
+    if (hasObjectKeys(radiusValues)) {
+      themeBody.radius = radiusValues;
+    }
+    var marginValues = buildFlutterNumberValues(sections.margin, sortFlutterSpacerKeys(Object.keys(sections.margin)));
+    if (hasObjectKeys(marginValues)) {
+      themeBody.margin = marginValues;
+    }
+    var shadowValues = buildFlutterShadowValues(sections.shadow);
+    if (hasObjectKeys(shadowValues)) {
+      themeBody.shadow = shadowValues;
+    }
+    var root = {};
+    root[themeId] = themeBody;
+    return JSON.stringify(root);
+  }
+  function buildFlutterColorValues(colors) {
+    var e_25, _a;
+    var groups = [
+      rangeThemeKeys("brandColor", 10),
+      rangeThemeKeys("warningColor", 10),
+      rangeThemeKeys("errorColor", 10),
+      rangeThemeKeys("successColor", 10),
+      rangeThemeKeys("grayColor", 14),
+      __spreadArray3(__spreadArray3([], __read3(rangeThemeKeys("fontWhColor", 4)), false), __read3(rangeThemeKeys("fontGyColor", 4)), false),
+      [
+        "brandNormalColor",
+        "brandHoverColor",
+        "brandFocusColor",
+        "brandClickColor",
+        "brandDisabledColor",
+        "brandLightColor"
+      ],
+      [
+        "warningNormalColor",
+        "warningHoverColor",
+        "warningFocusColor",
+        "warningClickColor",
+        "warningDisabledColor",
+        "warningLightColor"
+      ],
+      [
+        "errorNormalColor",
+        "errorHoverColor",
+        "errorFocusColor",
+        "errorClickColor",
+        "errorDisabledColor",
+        "errorLightColor"
+      ],
+      [
+        "successNormalColor",
+        "successHoverColor",
+        "successFocusColor",
+        "successClickColor",
+        "successDisabledColor",
+        "successLightColor"
+      ],
+      ["whiteColor1"]
+    ];
+    var used = /* @__PURE__ */ new Set();
+    var values = {};
+    try {
+      for (var groups_1 = __values3(groups), groups_1_1 = groups_1.next(); !groups_1_1.done; groups_1_1 = groups_1.next()) {
+        var group = groups_1_1.value;
+        var keys = group.filter(function(key) {
+          return colors[key];
+        });
+        if (keys.length === 0) {
+          continue;
+        }
+        pushOrderedColorValues(values, keys, colors, used);
+      }
+    } catch (e_25_1) {
+      e_25 = { error: e_25_1 };
+    } finally {
+      try {
+        if (groups_1_1 && !groups_1_1.done && (_a = groups_1.return)) _a.call(groups_1);
+      } finally {
+        if (e_25) throw e_25.error;
+      }
+    }
+    var extraKeys = Object.keys(colors).filter(function(key) {
+      return !used.has(key);
+    }).sort();
+    if (extraKeys.length > 0) {
+      pushOrderedColorValues(values, extraKeys, colors, used);
+    }
+    return values;
+  }
+  function buildFlutterNumberValues(values, preferredOrder) {
+    var e_26, _a;
+    var keys = sortKnownKeys(Object.keys(values), preferredOrder);
+    var output = {};
+    try {
+      for (var keys_1 = __values3(keys), keys_1_1 = keys_1.next(); !keys_1_1.done; keys_1_1 = keys_1.next()) {
+        var key = keys_1_1.value;
+        output[key] = normalizeJsonNumber(values[key]);
+      }
+    } catch (e_26_1) {
+      e_26 = { error: e_26_1 };
+    } finally {
+      try {
+        if (keys_1_1 && !keys_1_1.done && (_a = keys_1.return)) _a.call(keys_1);
+      } finally {
+        if (e_26) throw e_26.error;
+      }
+    }
+    return output;
+  }
+  function buildFlutterShadowValues(shadows) {
+    var e_27, _a;
+    var keys = sortKnownKeys(Object.keys(shadows), ["shadowsBase", "shadowsMiddle", "shadowsTop"]);
+    var output = {};
+    try {
+      for (var keys_2 = __values3(keys), keys_2_1 = keys_2.next(); !keys_2_1.done; keys_2_1 = keys_2.next()) {
+        var key = keys_2_1.value;
+        output[key] = shadows[key].map(function(layer) {
+          return {
+            color: layer.color,
+            blurRadius: normalizeJsonNumber(layer.blurRadius),
+            spreadRadius: normalizeJsonNumber(layer.spreadRadius),
+            offset: {
+              x: normalizeJsonNumber(layer.offset.x),
+              y: normalizeJsonNumber(layer.offset.y)
+            }
+          };
+        });
+      }
+    } catch (e_27_1) {
+      e_27 = { error: e_27_1 };
+    } finally {
+      try {
+        if (keys_2_1 && !keys_2_1.done && (_a = keys_2.return)) _a.call(keys_2);
+      } finally {
+        if (e_27) throw e_27.error;
+      }
+    }
+    return output;
+  }
+  function pushOrderedColorValues(output, keys, colors, used) {
+    var e_28, _a;
+    try {
+      for (var keys_3 = __values3(keys), keys_3_1 = keys_3.next(); !keys_3_1.done; keys_3_1 = keys_3.next()) {
+        var key = keys_3_1.value;
+        output[key] = normalizeFlutterColorValue(colors[key]);
+        used.add(key);
+      }
+    } catch (e_28_1) {
+      e_28 = { error: e_28_1 };
+    } finally {
+      try {
+        if (keys_3_1 && !keys_3_1.done && (_a = keys_3.return)) _a.call(keys_3);
+      } finally {
+        if (e_28) throw e_28.error;
+      }
+    }
+  }
+  function hasObjectKeys(value) {
+    return Object.keys(value).length > 0;
+  }
+  function sortKnownKeys(keys, preferredOrder) {
+    return keys.sort(function(left, right) {
+      var leftIndex = preferredOrder.indexOf(left);
+      var rightIndex = preferredOrder.indexOf(right);
+      if (leftIndex !== -1 || rightIndex !== -1) {
+        if (leftIndex === -1) {
+          return 1;
+        }
+        if (rightIndex === -1) {
+          return -1;
+        }
+        return leftIndex - rightIndex;
+      }
+      return left.localeCompare(right, "en");
+    });
+  }
+  function sortFlutterSpacerKeys(keys) {
+    return keys.sort(function(left, right) {
+      var leftNumber = parseCssNumber(left.replace(/^spacer/i, ""));
+      var rightNumber = parseCssNumber(right.replace(/^spacer/i, ""));
+      if (leftNumber !== null && rightNumber !== null && leftNumber !== rightNumber) {
+        return leftNumber - rightNumber;
+      }
+      return left.localeCompare(right, "en");
+    });
+  }
+  function normalizeJsonNumber(value) {
+    return isIntegerCompat(value) ? value : Number(value.toFixed(4));
+  }
+  function parseCssNumber(value) {
+    var match = value.trim().match(/^-?\d+(?:\.\d+)?/);
+    if (!match) {
+      return null;
+    }
+    var parsed = Number(match[0]);
+    return isFiniteNumber(parsed) ? parsed : null;
+  }
+  function numberFromUnknown(value) {
+    if (typeof value === "number" && isFiniteNumber(value)) {
+      return value;
+    }
+    if (typeof value === "string") {
+      return parseCssNumber(value);
+    }
+    return null;
+  }
+  function isFiniteNumber(value) {
+    return typeof value === "number" && isFinite(value);
+  }
+  function numberToTokenKeyPart(value) {
+    return isIntegerCompat(value) ? String(value) : String(Number(value.toFixed(4))).replace(/\./g, "_");
+  }
+  function isIntegerCompat(value) {
+    return isFiniteNumber(value) && Math.floor(value) === value;
+  }
+  function clampByte(value) {
+    if (!isFiniteNumber(value)) {
+      return 0;
+    }
+    return Math.max(0, Math.min(255, Math.round(value)));
+  }
+  function parseAlphaChannel(value) {
+    if (value.indexOf("%") !== -1) {
+      var percentage = Number(value.replace("%", ""));
+      return isFiniteNumber(percentage) ? Math.max(0, Math.min(1, percentage / 100)) : 1;
+    }
+    var alpha = Number(value);
+    return isFiniteNumber(alpha) ? Math.max(0, Math.min(1, alpha)) : 1;
+  }
+  function alphaToByte(value) {
+    return Math.max(0, Math.min(255, Math.round(value * 255)));
+  }
+  function channelToHexFromByte(value) {
+    var hex = clampByte(value).toString(16).toUpperCase();
+    return hex.length === 1 ? "0".concat(hex) : hex;
+  }
+  function normalizeFlutterColorValue(value) {
+    if (/^#[0-9a-f]{6}([0-9a-f]{2})?$/i.test(value)) {
+      return value.toLowerCase();
+    }
+    return value;
+  }
+  function rangeThemeKeys(prefix, count) {
+    var keys = [];
+    for (var index = 1; index <= count; index += 1) {
+      keys.push("".concat(prefix).concat(index));
+    }
+    return keys;
+  }
+  function themeColorKeyToCssVar(prefix, key) {
+    var parts = key.replace(/([a-z])([A-Z0-9])/g, "$1-$2").toLowerCase();
+    return "--".concat(prefix, "-").concat(parts);
+  }
+  function escapeDartSingleQuotedString(value) {
+    return value.replace(/\\/g, "\\\\").replace(/'/g, "\\'");
+  }
+  function countModes(model) {
+    var e_29, _a, e_30, _b;
+    var modeNames = /* @__PURE__ */ new Set();
+    try {
+      for (var _c = __values3(model.selectedCollections), _d = _c.next(); !_d.done; _d = _c.next()) {
+        var collection = _d.value;
+        try {
+          for (var _e = (e_30 = void 0, __values3(collection.modes)), _f = _e.next(); !_f.done; _f = _e.next()) {
+            var mode = _f.value;
+            modeNames.add(mode.name);
+          }
+        } catch (e_30_1) {
+          e_30 = { error: e_30_1 };
+        } finally {
+          try {
+            if (_f && !_f.done && (_b = _e.return)) _b.call(_e);
+          } finally {
+            if (e_30) throw e_30.error;
+          }
+        }
+      }
+    } catch (e_29_1) {
+      e_29 = { error: e_29_1 };
+    } finally {
+      try {
+        if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+      } finally {
+        if (e_29) throw e_29.error;
+      }
+    }
+    return modeNames.size;
+  }
+  function trimRightCompat(value) {
+    return value.replace(/\s+$/g, "");
+  }
+
+  // .build-tmp/ui.js
+  var __assign = function() {
+    __assign = Object.assign || function(t) {
+      for (var s, i = 1, n = arguments.length; i < n; i++) {
+        s = arguments[i];
+        for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
+          t[p] = s[p];
+      }
+      return t;
+    };
+    return __assign.apply(this, arguments);
+  };
+  var __awaiter = function(thisArg, _arguments, P, generator) {
+    function adopt(value) {
+      return value instanceof P ? value : new P(function(resolve) {
+        resolve(value);
+      });
+    }
+    return new (P || (P = Promise))(function(resolve, reject) {
+      function fulfilled(value) {
+        try {
+          step(generator.next(value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function rejected(value) {
+        try {
+          step(generator["throw"](value));
+        } catch (e) {
+          reject(e);
+        }
+      }
+      function step(result) {
+        result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected);
+      }
+      step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+  };
+  var __generator = function(thisArg, body) {
+    var _ = { label: 0, sent: function() {
+      if (t[0] & 1) throw t[1];
+      return t[1];
+    }, trys: [], ops: [] }, f, y, t, g = Object.create((typeof Iterator === "function" ? Iterator : Object).prototype);
+    return g.next = verb(0), g["throw"] = verb(1), g["return"] = verb(2), typeof Symbol === "function" && (g[Symbol.iterator] = function() {
+      return this;
+    }), g;
+    function verb(n) {
+      return function(v) {
+        return step([n, v]);
+      };
+    }
+    function step(op) {
+      if (f) throw new TypeError("Generator is already executing.");
+      while (g && (g = 0, op[0] && (_ = 0)), _) try {
+        if (f = 1, y && (t = op[0] & 2 ? y["return"] : op[0] ? y["throw"] || ((t = y["return"]) && t.call(y), 0) : y.next) && !(t = t.call(y, op[1])).done) return t;
+        if (y = 0, t) op = [op[0] & 2, t.value];
+        switch (op[0]) {
+          case 0:
+          case 1:
+            t = op;
+            break;
+          case 4:
+            _.label++;
+            return { value: op[1], done: false };
+          case 5:
+            _.label++;
+            y = op[1];
+            op = [0];
+            continue;
+          case 7:
+            op = _.ops.pop();
+            _.trys.pop();
+            continue;
+          default:
+            if (!(t = _.trys, t = t.length > 0 && t[t.length - 1]) && (op[0] === 6 || op[0] === 2)) {
+              _ = 0;
+              continue;
+            }
+            if (op[0] === 3 && (!t || op[1] > t[0] && op[1] < t[3])) {
+              _.label = op[1];
+              break;
+            }
+            if (op[0] === 6 && _.label < t[1]) {
+              _.label = t[1];
+              t = op;
+              break;
+            }
+            if (t && _.label < t[2]) {
+              _.label = t[2];
+              _.ops.push(op);
+              break;
+            }
+            if (t[2]) _.ops.pop();
+            _.trys.pop();
+            continue;
+        }
+        op = body.call(thisArg, _);
+      } catch (e) {
+        op = [6, e];
+        y = 0;
+      } finally {
+        f = t = 0;
+      }
+      if (op[0] & 5) throw op[1];
+      return { value: op[0] ? op[1] : void 0, done: true };
+    }
+  };
+  var __values4 = function(o) {
+    var s = typeof Symbol === "function" && Symbol.iterator, m = s && o[s], i = 0;
+    if (m) return m.call(o);
+    if (o && typeof o.length === "number") return {
+      next: function() {
+        if (o && i >= o.length) o = void 0;
+        return { value: o && o[i++], done: !o };
+      }
+    };
+    throw new TypeError(s ? "Object is not iterable." : "Symbol.iterator is not defined.");
+  };
+  var __read4 = function(o, n) {
+    var m = typeof Symbol === "function" && o[Symbol.iterator];
+    if (!m) return o;
+    var i = m.call(o), r, ar = [], e;
+    try {
+      while ((n === void 0 || n-- > 0) && !(r = i.next()).done) ar.push(r.value);
+    } catch (error) {
+      e = { error: error };
+    } finally {
+      try {
+        if (r && !r.done && (m = i["return"])) m.call(i);
+      } finally {
+        if (e) throw e.error;
+      }
+    }
+    return ar;
+  };
+  var elements = {
+    collectionCount: getElement("collection-count"),
+    tokenCount: getElement("token-count"),
+    warningCount: getElement("warning-count"),
+    collection: getInput("collection"),
+    themeId: getInput("theme-id"),
+    namePrefix: getInput("name-prefix"),
+    lightModeName: getInput("light-mode-name"),
+    darkModeName: getInput("dark-mode-name"),
+    themeList: getElement("theme-list"),
+    selectAllThemesButton: getInput("select-all-themes-button"),
+    clearThemesButton: getInput("clear-themes-button"),
+    includeTokenEntries: getInput("include-token-entries"),
+    includeFullData: getInput("include-full-data"),
+    includeCssTheme: getInput("include-css-theme"),
+    includeFlutterTheme: getInput("include-flutter-theme"),
+    filePath: getInput("file-path"),
+    fullDataFilePath: getInput("full-data-file-path"),
+    cssFilePath: getInput("css-file-path"),
+    flutterFilePath: getInput("flutter-file-path"),
+    componentTokenPrefixes: getInput("component-token-prefixes"),
+    repoOwner: getInput("repo-owner"),
+    repoName: getInput("repo-name"),
+    branch: getInput("branch"),
+    githubToken: getInput("github-token"),
+    commitMessage: getInput("commit-message"),
+    saveTokenButton: getInput("save-token-button"),
+    clearTokenButton: getInput("clear-token-button"),
+    refreshButton: getInput("refresh-button"),
+    copyButton: getInput("copy-button"),
+    copyLogButton: getInput("copy-log-button"),
+    clearLogButton: getInput("clear-log-button"),
+    syncButton: getInput("sync-button"),
+    status: getElement("status"),
+    syncLog: getElement("sync-log"),
+    preview: getElement("preview")
+  };
+  var MAX_SYNC_LOG_ROWS = 120;
+  var snapshot = null;
+  var settings = normalizeSettings();
+  var githubToken = "";
+  var previewContent = "";
+  var syncFiles = [];
+  var artifactWarnings = [];
+  var syncInFlight = false;
+  var syncLogCount = 0;
+  var syncLogEntries = [];
+  var syncLogClearedAt = 0;
+  window.onmessage = function(event) {
+    var _a, _b;
+    var pluginMessage = event.data.pluginMessage;
+    if (!pluginMessage || typeof pluginMessage !== "object" || !("type" in pluginMessage)) {
+      return;
+    }
+    var typedMessage = pluginMessage;
+    if (typedMessage.type === "init") {
+      var payload = pluginMessage;
+      snapshot = payload.snapshot;
+      settings = normalizeSettings(payload.settings, payload.snapshot.fileName);
+      githubToken = (_a = payload.githubToken) !== null && _a !== void 0 ? _a : "";
+      renderCollectionOptions();
+      hydrateForm();
+      refreshPreview();
+      setStatus("\u5DF2\u8BFB\u53D6 ".concat(snapshot.fileName, " \u7684\u672C\u5730 Variables\u3002"), "neutral");
+      return;
+    }
+    if (typedMessage.type === "snapshot") {
+      var payload = pluginMessage;
+      snapshot = payload.snapshot;
+      renderCollectionOptions();
+      refreshPreview();
+      setStatus("\u53D8\u91CF\u6570\u636E\u5DF2\u5237\u65B0\u3002", "success");
+      return;
+    }
+    if (typedMessage.type === "sync-log") {
+      var payload = pluginMessage;
+      appendSyncLog(payload.entry);
+      return;
+    }
+    if (typedMessage.type === "sync-result") {
+      var payload = pluginMessage;
+      syncInFlight = false;
+      syncButtonState();
+      if (payload.result.ok) {
+        var syncedPaths = payload.result.fileUrls.map(function(file) {
+          return file.path;
+        }).join(", ");
+        setStatus("\u540C\u6B65\u6210\u529F\uFF1A".concat(syncedPaths), "success");
+      } else {
+        setStatus(payload.result.error, "error");
+      }
+    }
+    if (typedMessage.type === "github-token-save-result") {
+      var payload = pluginMessage;
+      if (payload.result.ok) {
+        setStatus(githubToken ? "GitHub Token \u5DF2\u4FDD\u5B58\u5230\u672C\u673A\u63D2\u4EF6\u5B58\u50A8\u3002" : "GitHub Token \u5DF2\u6E05\u7A7A\u3002", "success");
+      } else {
+        setStatus((_b = payload.result.error) !== null && _b !== void 0 ? _b : "GitHub Token \u4FDD\u5B58\u5931\u8D25\u3002", "error");
+      }
+    }
+  };
+  wireEvents();
+  syncButtonState();
+  function wireEvents() {
+    var e_1, _a;
+    var _this = this;
+    elements.refreshButton.addEventListener("click", function() {
+      postToPlugin({ type: "refresh" });
+      setStatus("\u6B63\u5728\u91CD\u65B0\u8BFB\u53D6 Figma Variables...", "neutral");
+    });
+    elements.copyButton.addEventListener("click", function() {
+      return __awaiter(_this, void 0, void 0, function() {
+        return __generator(this, function(_a2) {
+          switch (_a2.label) {
+            case 0:
+              if (!previewContent) {
+                return [
+                  2
+                  /*return*/
+                ];
+              }
+              return [4, copyTextToClipboard(previewContent)];
+            case 1:
+              if (_a2.sent()) {
+                setStatus("\u9884\u89C8\u5185\u5BB9\u5DF2\u590D\u5236\u3002", "success");
+              } else {
+                setStatus("\u590D\u5236\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u9009\u4E2D\u6587\u672C\u3002", "error");
+              }
+              return [
+                2
+                /*return*/
+              ];
+          }
+        });
+      });
+    });
+    elements.syncButton.addEventListener("click", function() {
+      var e_2, _a2;
+      if (!snapshot) {
+        setStatus("\u8FD8\u6CA1\u6709\u62FF\u5230 Figma Variables\u3002", "error");
+        return;
+      }
+      if (!previewContent || syncFiles.length === 0) {
+        setStatus("\u5F53\u524D\u6CA1\u6709\u53EF\u540C\u6B65\u7684\u5185\u5BB9\u3002", "error");
+        return;
+      }
+      syncInFlight = true;
+      syncButtonState();
+      clearSyncLog();
+      appendSyncLog({
+        level: "info",
+        message: "\u5F00\u59CB\u540C\u6B65\u4EFB\u52A1\uFF0C\u7B49\u5F85\u63D2\u4EF6\u4E3B\u7EBF\u7A0B\u8FDE\u63A5 GitHub\u3002",
+        timestamp: (/* @__PURE__ */ new Date()).toISOString()
+      });
+      try {
+        for (var artifactWarnings_1 = __values4(artifactWarnings), artifactWarnings_1_1 = artifactWarnings_1.next(); !artifactWarnings_1_1.done; artifactWarnings_1_1 = artifactWarnings_1.next()) {
+          var warning = artifactWarnings_1_1.value;
+          appendSyncLog({
+            level: "warning",
+            message: warning,
+            timestamp: (/* @__PURE__ */ new Date()).toISOString()
+          });
+        }
+      } catch (e_2_1) {
+        e_2 = { error: e_2_1 };
+      } finally {
+        try {
+          if (artifactWarnings_1_1 && !artifactWarnings_1_1.done && (_a2 = artifactWarnings_1.return)) _a2.call(artifactWarnings_1);
+        } finally {
+          if (e_2) throw e_2.error;
+        }
+      }
+      githubToken = elements.githubToken.value.trim();
+      postToPlugin({
+        type: "sync-to-github",
+        payload: {
+          settings: settings,
+          githubToken: githubToken,
+          files: syncFiles
+        }
+      });
+      setStatus("\u6B63\u5728\u540C\u6B65\u5230 GitHub...", "neutral");
+    });
+    var watchedInputs = [
+      elements.collection,
+      elements.themeId,
+      elements.namePrefix,
+      elements.lightModeName,
+      elements.darkModeName,
+      elements.includeTokenEntries,
+      elements.includeFullData,
+      elements.includeCssTheme,
+      elements.includeFlutterTheme,
+      elements.filePath,
+      elements.fullDataFilePath,
+      elements.cssFilePath,
+      elements.flutterFilePath,
+      elements.componentTokenPrefixes,
+      elements.repoOwner,
+      elements.repoName,
+      elements.branch,
+      elements.commitMessage
+    ];
+    try {
+      for (var watchedInputs_1 = __values4(watchedInputs), watchedInputs_1_1 = watchedInputs_1.next(); !watchedInputs_1_1.done; watchedInputs_1_1 = watchedInputs_1.next()) {
+        var input = watchedInputs_1_1.value;
+        input.addEventListener("input", handleSettingsChange);
+        input.addEventListener("change", handleSettingsChange);
+      }
+    } catch (e_1_1) {
+      e_1 = { error: e_1_1 };
+    } finally {
+      try {
+        if (watchedInputs_1_1 && !watchedInputs_1_1.done && (_a = watchedInputs_1.return)) _a.call(watchedInputs_1);
+      } finally {
+        if (e_1) throw e_1.error;
+      }
+    }
+    elements.githubToken.addEventListener("input", handleGithubTokenChange);
+    elements.saveTokenButton.addEventListener("click", function() {
+      githubToken = elements.githubToken.value.trim();
+      persistGithubToken(githubToken);
+      setStatus(githubToken ? "\u6B63\u5728\u4FDD\u5B58 GitHub Token..." : "\u6B63\u5728\u6E05\u7A7A GitHub Token...", "neutral");
+    });
+    elements.clearTokenButton.addEventListener("click", function() {
+      githubToken = "";
+      elements.githubToken.value = "";
+      persistGithubToken("");
+      setStatus("\u6B63\u5728\u6E05\u7A7A GitHub Token...", "neutral");
+    });
+    elements.selectAllThemesButton.addEventListener("click", function() {
+      settings = normalizeSettings(__assign(__assign({}, collectSettingsFromForm()), { selectedThemeIds: [ALL_THEMES] }), snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+      persistSettings();
+      refreshPreview();
+    });
+    elements.clearThemesButton.addEventListener("click", function() {
+      settings = normalizeSettings(__assign(__assign({}, collectSettingsFromForm()), { selectedThemeIds: [] }), snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+      persistSettings();
+      refreshPreview();
+    });
+    elements.copyLogButton.addEventListener("click", function() {
+      return __awaiter(_this, void 0, void 0, function() {
+        return __generator(this, function(_a2) {
+          switch (_a2.label) {
+            case 0:
+              if (syncLogEntries.length === 0) {
+                setStatus("\u5F53\u524D\u6CA1\u6709\u53EF\u590D\u5236\u7684\u540C\u6B65\u65E5\u5FD7\u3002", "neutral");
+                return [
+                  2
+                  /*return*/
+                ];
+              }
+              return [4, copyTextToClipboard(formatSyncLogEntries(syncLogEntries))];
+            case 1:
+              if (_a2.sent()) {
+                setStatus("\u540C\u6B65\u65E5\u5FD7\u5DF2\u590D\u5236\u3002", "success");
+              } else {
+                setStatus("\u590D\u5236\u65E5\u5FD7\u5931\u8D25\uFF0C\u8BF7\u624B\u52A8\u9009\u4E2D\u6587\u672C\u3002", "error");
+              }
+              return [
+                2
+                /*return*/
+              ];
+          }
+        });
+      });
+    });
+    elements.clearLogButton.addEventListener("click", function() {
+      clearSyncLog();
+      setStatus("\u540C\u6B65\u65E5\u5FD7\u5DF2\u6E05\u7A7A\u3002", "success");
+    });
+  }
+  function handleSettingsChange(event) {
+    var previousThemeId = settings.themeId;
+    var previousFlutterFilePath = settings.flutterFilePath;
+    var nextSettings = collectSettingsFromForm();
+    if (event.target === elements.themeId && previousFlutterFilePath === defaultFlutterFilePath(previousThemeId) && nextSettings.flutterFilePath === previousFlutterFilePath) {
+      nextSettings.flutterFilePath = defaultFlutterFilePath(nextSettings.themeId);
+      elements.flutterFilePath.value = nextSettings.flutterFilePath;
+    }
+    settings = normalizeSettings(nextSettings, snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+    persistSettings();
+    refreshPreview();
+  }
+  function refreshPreview() {
+    if (!snapshot) {
+      elements.preview.textContent = "\u7B49\u5F85 Figma Variables...";
+      return;
+    }
+    var artifact = generateMultiArtifacts(snapshot, settings);
+    previewContent = artifact.content;
+    syncFiles = artifact.files;
+    artifactWarnings = artifact.warnings;
+    renderThemeList(artifact.flutterThemes);
+    elements.preview.textContent = artifact.content;
+    elements.collectionCount.textContent = String(artifact.collectionCount);
+    elements.tokenCount.textContent = String(artifact.tokenCount);
+    elements.warningCount.textContent = String(artifact.warnings.length);
+    if (artifact.warnings.length > 0) {
+      setStatus("\u5DF2\u751F\u6210\u9884\u89C8\uFF0C\u4F46\u6709 ".concat(artifact.warnings.length, " \u6761\u89E3\u6790\u8B66\u544A\u3002"), "error");
+    }
+  }
+  function hydrateForm() {
+    elements.collection.value = settings.collectionId;
+    elements.themeId.value = settings.themeId;
+    elements.namePrefix.value = settings.namePrefix;
+    elements.lightModeName.value = settings.lightModeName;
+    elements.darkModeName.value = settings.darkModeName;
+    elements.includeTokenEntries.checked = settings.includeTokenEntries;
+    elements.includeFullData.checked = settings.includeFullData;
+    elements.includeCssTheme.checked = settings.includeCssTheme;
+    elements.includeFlutterTheme.checked = settings.includeFlutterTheme;
+    elements.filePath.value = settings.filePath;
+    elements.fullDataFilePath.value = settings.fullDataFilePath;
+    elements.cssFilePath.value = settings.cssFilePath;
+    elements.flutterFilePath.value = settings.flutterFilePath;
+    elements.componentTokenPrefixes.value = settings.componentTokenPrefixes;
+    elements.repoOwner.value = settings.repoOwner;
+    elements.repoName.value = settings.repoName;
+    elements.branch.value = settings.branch;
+    elements.githubToken.value = githubToken;
+    elements.commitMessage.value = settings.commitMessage;
+  }
+  function renderCollectionOptions() {
+    var e_3, _a;
+    var _b;
+    var currentValue = settings.collectionId;
+    elements.collection.innerHTML = "";
+    var allOption = document.createElement("option");
+    allOption.value = ALL_COLLECTIONS;
+    allOption.textContent = "\u5168\u90E8\u53D8\u91CF\u96C6\u5408";
+    elements.collection.appendChild(allOption);
+    try {
+      for (var _c = __values4((_b = snapshot === null || snapshot === void 0 ? void 0 : snapshot.collections) !== null && _b !== void 0 ? _b : []), _d = _c.next(); !_d.done; _d = _c.next()) {
+        var collection = _d.value;
+        var option = document.createElement("option");
+        option.value = collection.id;
+        option.textContent = "".concat(collection.name, " (").concat(collection.modes.length, " modes)");
+        elements.collection.appendChild(option);
+      }
+    } catch (e_3_1) {
+      e_3 = { error: e_3_1 };
+    } finally {
+      try {
+        if (_d && !_d.done && (_a = _c.return)) _a.call(_c);
+      } finally {
+        if (e_3) throw e_3.error;
+      }
+    }
+    elements.collection.value = (snapshot === null || snapshot === void 0 ? void 0 : snapshot.collections.some(function(collection2) {
+      return collection2.id === currentValue;
+    })) ? currentValue : ALL_COLLECTIONS;
+  }
+  function renderThemeList(themes) {
+    var e_4, _a;
+    elements.themeList.innerHTML = "";
+    if (themes.length === 0) {
+      var empty = document.createElement("div");
+      empty.className = "theme-list-empty";
+      empty.textContent = "\u6682\u672A\u8BC6\u522B\u5230\u53EF\u540C\u6B65\u4E3B\u9898\u3002\u8BF7\u786E\u8BA4 color collection \u4E2D\u5B58\u5728 Light/Dark mode\u3002";
+      elements.themeList.appendChild(empty);
+      return;
+    }
+    try {
+      for (var themes_1 = __values4(themes), themes_1_1 = themes_1.next(); !themes_1_1.done; themes_1_1 = themes_1.next()) {
+        var theme = themes_1_1.value;
+        var label = document.createElement("label");
+        label.className = "theme-option";
+        var checkbox = document.createElement("input");
+        checkbox.type = "checkbox";
+        checkbox.value = theme.themeId;
+        checkbox.checked = theme.selected;
+        checkbox.addEventListener("change", handleThemeSelectionChange);
+        var body = document.createElement("span");
+        body.className = "theme-option-body";
+        var name_1 = document.createElement("span");
+        name_1.className = "theme-option-name";
+        name_1.textContent = theme.themeId;
+        var modes = document.createElement("span");
+        modes.className = "theme-option-modes";
+        modes.textContent = "".concat(formatModeNames(theme.lightModeNames), " / ").concat(formatModeNames(theme.darkModeNames));
+        body.appendChild(name_1);
+        body.appendChild(modes);
+        label.appendChild(checkbox);
+        label.appendChild(body);
+        elements.themeList.appendChild(label);
+      }
+    } catch (e_4_1) {
+      e_4 = { error: e_4_1 };
+    } finally {
+      try {
+        if (themes_1_1 && !themes_1_1.done && (_a = themes_1.return)) _a.call(themes_1);
+      } finally {
+        if (e_4) throw e_4.error;
+      }
+    }
+  }
+  function handleThemeSelectionChange() {
+    settings = normalizeSettings(collectSettingsFromForm(), snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+    persistSettings();
+    refreshPreview();
+  }
+  function collectSelectedThemeIdsFromThemeList() {
+    var inputs = Array.prototype.slice.call(elements.themeList.querySelectorAll('input[type="checkbox"]'));
+    if (inputs.length === 0) {
+      return settings.selectedThemeIds;
+    }
+    var selected = inputs.filter(function(input) {
+      return input.checked;
+    }).map(function(input) {
+      return input.value;
+    });
+    if (selected.length === inputs.length) {
+      return [ALL_THEMES];
+    }
+    return selected;
+  }
+  function formatModeNames(names) {
+    return names.length > 0 ? names.join(", ") : "\u672A\u8BC6\u522B";
+  }
+  function collectSettingsFromForm() {
+    return normalizeSettings({
+      format: "design-system",
+      collectionId: elements.collection.value || ALL_COLLECTIONS,
+      themeId: elements.themeId.value,
+      selectedThemeIds: collectSelectedThemeIdsFromThemeList(),
+      namePrefix: elements.namePrefix.value,
+      lightModeName: elements.lightModeName.value,
+      darkModeName: elements.darkModeName.value,
+      includeTokenEntries: elements.includeTokenEntries.checked,
+      includeFullData: elements.includeFullData.checked,
+      includeCssTheme: elements.includeCssTheme.checked,
+      includeFlutterTheme: elements.includeFlutterTheme.checked,
+      filePath: elements.filePath.value,
+      fullDataFilePath: elements.fullDataFilePath.value,
+      cssFilePath: elements.cssFilePath.value,
+      flutterFilePath: elements.flutterFilePath.value,
+      componentTokenPrefixes: elements.componentTokenPrefixes.value,
+      repoOwner: elements.repoOwner.value,
+      repoName: elements.repoName.value,
+      branch: elements.branch.value,
+      commitMessage: elements.commitMessage.value
+    }, snapshot === null || snapshot === void 0 ? void 0 : snapshot.fileName);
+  }
+  function persistSettings() {
+    postToPlugin({
+      type: "save-settings",
+      settings: settings
+    });
+  }
+  function handleGithubTokenChange() {
+    githubToken = elements.githubToken.value.trim();
+  }
+  function persistGithubToken(token) {
+    postToPlugin({
+      type: "save-github-token",
+      githubToken: token
+    });
+  }
+  function syncButtonState() {
+    elements.syncButton.disabled = syncInFlight;
+    elements.syncButton.textContent = syncInFlight ? "\u540C\u6B65\u4E2D..." : "\u540C\u6B65\u5230 GitHub";
+  }
+  function setStatus(message, variant, allowMarkdownLink) {
+    if (allowMarkdownLink === void 0) {
+      allowMarkdownLink = false;
+    }
+    elements.status.className = "status ".concat(variant === "neutral" ? "" : variant).trim();
+    elements.status.classList.remove("hidden");
+    if (allowMarkdownLink) {
+      var match = message.match(/\[(.+?)\]\((.+?)\)/);
+      if (match) {
+        var _a = __read4(match, 3), label = _a[1], href = _a[2];
+        var plainText = message.replace(match[0], "").trim();
+        elements.status.textContent = plainText ? "".concat(plainText, " ") : "";
+        var link = document.createElement("a");
+        link.href = href;
+        link.textContent = label;
+        link.target = "_blank";
+        link.rel = "noreferrer";
+        link.style.color = "inherit";
+        elements.status.appendChild(link);
+        return;
+      }
+    }
+    elements.status.textContent = message;
+  }
+  function clearSyncLog() {
+    syncLogCount = 0;
+    syncLogEntries = [];
+    syncLogClearedAt = Date.now();
+    elements.syncLog.innerHTML = "";
+    renderEmptySyncLog();
+  }
+  function appendSyncLog(entry) {
+    if (isStaleSyncLogEntry(entry)) {
+      return;
+    }
+    if (syncLogCount === 0) {
+      elements.syncLog.innerHTML = "";
+    }
+    syncLogEntries.push(entry);
+    var row = document.createElement("div");
+    row.className = "sync-log-row ".concat(entry.level);
+    var time = document.createElement("span");
+    time.className = "sync-log-time";
+    time.textContent = formatLogTime(entry.timestamp);
+    var message = document.createElement("span");
+    message.className = "sync-log-message";
+    message.textContent = entry.filePath ? "".concat(entry.filePath, " \xB7 ").concat(entry.message) : entry.message;
+    row.appendChild(time);
+    row.appendChild(message);
+    elements.syncLog.appendChild(row);
+    syncLogCount += 1;
+    while (elements.syncLog.children.length > MAX_SYNC_LOG_ROWS && elements.syncLog.firstChild) {
+      elements.syncLog.removeChild(elements.syncLog.firstChild);
+      syncLogEntries.shift();
+      syncLogCount -= 1;
+    }
+    elements.syncLog.scrollTop = elements.syncLog.scrollHeight;
+  }
+  function isStaleSyncLogEntry(entry) {
+    if (syncLogClearedAt === 0) {
+      return false;
+    }
+    var entryTime = Date.parse(entry.timestamp);
+    return Number.isFinite(entryTime) && entryTime < syncLogClearedAt;
+  }
+  function renderEmptySyncLog() {
+    var empty = document.createElement("div");
+    empty.className = "sync-log-empty";
+    empty.textContent = "\u70B9\u51FB\u201C\u540C\u6B65\u5230 GitHub\u201D\u540E\uFF0C\u8FD9\u91CC\u4F1A\u663E\u793A\u8BFB\u53D6\u3001\u5408\u5E76\u548C\u4E0A\u4F20\u65E5\u5FD7\u3002";
+    elements.syncLog.appendChild(empty);
+  }
+  function formatSyncLogEntries(entries) {
+    return entries.map(function(entry) {
+      var prefix = "[".concat(formatLogTime(entry.timestamp), "] [").concat(entry.level, "]");
+      var filePrefix = entry.filePath ? "".concat(entry.filePath, " \xB7 ") : "";
+      return "".concat(prefix, " ").concat(filePrefix).concat(entry.message);
+    }).join("\n");
+  }
+  function copyTextToClipboard(text) {
+    return __awaiter(this, void 0, void 0, function() {
+      return __generator(this, function(_a) {
+        return [2, copyTextWithTextarea(text)];
+      });
+    });
+  }
+  function copyTextWithTextarea(text) {
+    var textarea = document.createElement("textarea");
+    textarea.value = text;
+    textarea.setAttribute("readonly", "true");
+    textarea.style.position = "fixed";
+    textarea.style.top = "0";
+    textarea.style.left = "0";
+    textarea.style.width = "1px";
+    textarea.style.height = "1px";
+    textarea.style.padding = "0";
+    textarea.style.border = "0";
+    textarea.style.opacity = "0";
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    try {
+      return document.execCommand("copy");
+    } catch (_a) {
+      return false;
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  }
+  function formatLogTime(timestamp) {
+    if (timestamp.length >= 19) {
+      return timestamp.slice(11, 19);
+    }
+    return "--:--:--";
+  }
+  function postToPlugin(message) {
+    parent.postMessage({ pluginMessage: message }, "*");
+  }
+  function getElement(id) {
+    var element = document.getElementById(id);
+    if (!element) {
+      throw new Error("Missing element: ".concat(id));
+    }
+    return element;
+  }
+  function getInput(id) {
+    return getElement(id);
+  }
+})();
+
+    </script>
+  </body>
+</html>

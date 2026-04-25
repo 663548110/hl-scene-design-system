@@ -1,0 +1,21 @@
+{
+  "name": "@hl-scene/figma-token-sync-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Figma plugin for syncing HL Scene design tokens into this monorepo.",
+  "type": "module",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/663548110/hl-scene-design-system.git",
+    "directory": "apps/figma-token-sync-plugin"
+  },
+  "scripts": {
+    "build": "node ./scripts/build.mjs",
+    "check": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@figma/plugin-typings": "^1.117.0",
+    "esbuild": "^0.25.3",
+    "typescript": "^5.8.3"
+  }
+}

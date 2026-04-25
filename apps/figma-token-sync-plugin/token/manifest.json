@@ -1,0 +1,22 @@
+{
+  "name": "Figma Token Sync",
+  "id": "1629389294843322732",
+  "api": "1.0.0",
+  "main": "dist/code.js",
+  "ui": "dist/ui.html",
+  "documentAccess": "dynamic-page",
+  "editorType": [
+    "figma"
+  ],
+  "networkAccess": {
+    "allowedDomains": [
+      "https://api.github.com",
+      "https://github.com"
+    ],
+    "devAllowedDomains": [
+      "https://api.github.com",
+      "https://github.com"
+    ],
+    "reasoning": "Sync generated token artifacts from Figma variables into a GitHub repository."
+  }
+}

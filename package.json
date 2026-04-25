@@ -13,7 +13,9 @@
     "build": "tsc -p tsconfig.json",
     "typecheck": "tsc -p tsconfig.json --noEmit",
     "docs:dev": "pnpm --dir apps/docs site:dev",
-    "docs:build": "pnpm --dir apps/docs site"
+    "docs:build": "pnpm --dir apps/docs site",
+    "figma:check": "npm --prefix apps/figma-token-sync-plugin run check",
+    "figma:build": "npm --prefix apps/figma-token-sync-plugin run build"
   },
   "devDependencies": {
     "@types/node": "^24.0.0",

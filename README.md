@@ -46,6 +46,7 @@ AI skill、prompt、agent 工作流属于消费端，不放在本仓库；它们
 - 当前不改造下游系统
 - 当前组件库代码已纳入 `packages/flutter/rdesign_component`
 - 当前文档站代码已纳入 `apps/docs`
+- 当前 Figma 变量同步插件已纳入 `apps/figma-token-sync-plugin`
 - 当前文档站依赖的主题生成器已纳入 `packages/theme-generator`
 - 当前预留后续扩展需要的字段和解析规则
 
@@ -84,6 +85,10 @@ AI skill、prompt、agent 工作流属于消费端，不放在本仓库；它们
 - `apps/docs/`
   - RDesign Flutter 文档站源码
   - 读取组件文档、站点配置和示例说明，后续逐步对齐本仓库的事实源与组件库源码
+- `apps/figma-token-sync-plugin/`
+  - Figma Variables 同步插件源码
+  - 负责生成并提交全量数据源、CSS 主题和 Flutter 主题 token
+  - `token/manifest.json` 保留为当前 Figma 开发插件加载入口
 - `packages/theme-generator/`
   - 文档站运行所需的主题生成器 WebComponent
   - 当前保留已构建的 `dist/td-theme-generator.js` 供文档站直接引用
